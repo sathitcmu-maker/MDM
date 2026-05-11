@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LACO IPO Roadmap — SET Main Board v4</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0D1B2A;min-width:1200px}
+
+/* ── TAB BAR ── */
+.tab-bar{display:flex;gap:0;background:#0D1B2A;border-bottom:1px solid rgba(255,255,255,.12);padding:0 32px;position:sticky;top:0;z-index:100}
+.tab-btn{padding:14px 24px;font-size:13px;font-weight:600;color:rgba(255,255,255,.45);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .2s;letter-spacing:.04em}
+.tab-btn:hover{color:rgba(255,255,255,.8)}
+.tab-btn.active{color:#fff;border-bottom-color:#1D9E75}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ══════════════════════════════════════
+   TAB 1 STYLES — DARK WOW
+══════════════════════════════════════ */
+.bod{background:#0D1B2A;padding:0 0 60px}
+
+/* Hero */
+.hero{padding:40px 40px 32px;border-bottom:1px solid rgba(255,255,255,.08)}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.4);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:#1D9E75;letter-spacing:.08em;margin-bottom:16px}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:#1D9E75}
+.hero-title{font-size:36px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:8px;letter-spacing:-.02em}
+.hero-title span{color:#1D9E75}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:28px}
+.hero-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.hm{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;gap:3px}
+.hm-label{font-size:11px;color:rgba(255,255,255,.45);font-weight:500;letter-spacing:.04em}
+.hm-value{font-size:26px;font-weight:700;color:#fff;line-height:1.1}
+.hm-sub{font-size:11px;color:rgba(255,255,255,.35)}
+.hm-accent{border-color:rgba(29,158,117,.5);background:rgba(29,158,117,.08)}
+.hm-accent .hm-value{color:#1D9E75}
+
+/* Section label */
+.sec-label{padding:32px 40px 16px;font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+
+/* ── PHASE CARDS ── */
+.phases-wrap{padding:0 40px 8px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:start}
+
+.pc{border-radius:16px;overflow:hidden;position:relative}
+.pc-header{padding:20px 20px 16px;position:relative}
+.pc-num{font-size:56px;font-weight:800;line-height:1;opacity:.18;position:absolute;top:10px;right:14px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.pc-phase{font-size:10px;font-weight:700;letter-spacing:.12em;margin-bottom:6px;opacity:.7}
+.pc-name{font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px}
+.pc-timeline{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:rgba(0,0,0,.2);margin-bottom:8px}
+.pc-budget{font-size:22px;font-weight:800;color:#fff;margin-bottom:2px;letter-spacing:-.02em}
+.pc-budget-label{font-size:10px;opacity:.55;margin-bottom:14px}
+.pc-bar{height:2px;background:rgba(255,255,255,.15);margin:0 -20px;position:relative}
+.pc-bar-fill{height:100%}
+
+.pc-body{padding:16px 20px 20px;background:rgba(0,0,0,.25)}
+.pc-ws-label{font-size:9px;font-weight:700;letter-spacing:.1em;opacity:.5;margin-bottom:8px}
+.pc-ws-row{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.75);margin-bottom:5px;line-height:1.4}
+.pc-ws-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+.pc-gate{margin-top:12px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.pc-gate-label{font-size:9px;font-weight:700;letter-spacing:.1em;opacity:.5;margin-bottom:6px}
+.pc-gate-item{display:flex;align-items:flex-start;gap:5px;font-size:10px;color:rgba(255,255,255,.6);margin-bottom:4px;line-height:1.4}
+.pc-gate-check{width:14px;height:14px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;margin-top:1px}
+
+/* Phase colors */
+.ph0{background:linear-gradient(135deg,#0C3B6B 0%,#0a2d52 100%)}
+.ph0 .pc-num,.ph0 .pc-phase,.ph0 .pc-timeline,.ph0 .pc-gate-check{color:#378ADD}
+.ph0 .pc-timeline{border:1px solid rgba(55,138,221,.3)}
+.ph0 .pc-bar-fill{background:#378ADD}
+.ph0 .pc-gate-check{background:rgba(55,138,221,.2)}
+
+.ph1{background:linear-gradient(135deg,#0A3D2B 0%,#082e20 100%)}
+.ph1 .pc-num,.ph1 .pc-phase,.ph1 .pc-timeline,.ph1 .pc-gate-check{color:#1D9E75}
+.ph1 .pc-timeline{border:1px solid rgba(29,158,117,.3)}
+.ph1 .pc-bar-fill{background:#1D9E75}
+.ph1 .pc-gate-check{background:rgba(29,158,117,.2)}
+
+.ph2{background:linear-gradient(135deg,#2A1F5C 0%,#1e1644 100%)}
+.ph2 .pc-num,.ph2 .pc-phase,.ph2 .pc-timeline,.ph2 .pc-gate-check{color:#9B8FE8}
+.ph2 .pc-timeline{border:1px solid rgba(127,119,221,.3)}
+.ph2 .pc-bar-fill{background:#7F77DD}
+.ph2 .pc-gate-check{background:rgba(127,119,221,.2)}
+
+.ph3{background:linear-gradient(135deg,#4A2800 0%,#3a1f00 100%)}
+.ph3 .pc-num,.ph3 .pc-phase,.ph3 .pc-timeline,.ph3 .pc-gate-check{color:#EF9F27}
+.ph3 .pc-timeline{border:1px solid rgba(186,117,23,.3)}
+.ph3 .pc-bar-fill{background:#EF9F27}
+.ph3 .pc-gate-check{background:rgba(186,117,23,.2)}
+
+.ph4{background:linear-gradient(135deg,#1A2E0A 0%,#122206 100%)}
+.ph4 .pc-num,.ph4 .pc-phase,.ph4 .pc-timeline,.ph4 .pc-gate-check{color:#97C459}
+.ph4 .pc-timeline{border:1px solid rgba(99,153,34,.3)}
+.ph4 .pc-bar-fill{background:#97C459}
+.ph4 .pc-gate-check{background:rgba(99,153,34,.2)}
+
+/* ── WORKSTREAM COVERAGE ── */
+.ws-section{padding:0 40px;margin-bottom:8px}
+.ws-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.ws-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px}
+.ws-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}
+.ws-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+.ws-desc{font-size:10px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:10px}
+.ws-tags{display:flex;flex-wrap:wrap;gap:4px}
+.ws-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:8px;letter-spacing:.02em}
+
+/* ── RISK ROW ── */
+.risk-section{padding:0 40px;margin-bottom:8px}
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.rc-badge{flex-shrink:0;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.rc-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+.rc-desc{font-size:11px;color:rgba(255,255,255,.45);line-height:1.5}
+.rc-level{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:6px;letter-spacing:.04em}
+
+/* ── BUDGET BAR ── */
+.budget-section{padding:0 40px}
+.budget-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px 28px}
+.budget-bars{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:end;margin-bottom:12px}
+.bb{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bb-amt{font-size:13px;font-weight:700;color:#fff}
+.bb-fill{width:100%;border-radius:6px 6px 0 0}
+.bb-label{font-size:10px;color:rgba(255,255,255,.4);text-align:center;line-height:1.5}
+.bb-label strong{color:rgba(255,255,255,.7);display:block;font-size:11px}
+.budget-line{height:1px;background:rgba(255,255,255,.1);margin-bottom:10px}
+.budget-note{font-size:10px;color:rgba(255,255,255,.3);text-align:center}
+
+/* ── FOOTER ── */
+.bod-footer{margin:32px 40px 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-left{font-size:11px;color:rgba(255,255,255,.25)}
+.footer-right{display:flex;gap:8px;align-items:center}
+.footer-badge{font-size:10px;font-weight:600;padding:4px 12px;border-radius:20px;background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);color:#1D9E75}
+
+/* ══════════════════════════════════════
+   TAB 2 — DETAIL ROADMAP (original)
+══════════════════════════════════════ */
+.detail-wrap{padding:24px 16px 60px;background:#f5f4f0}
+h1{font-size:15px;font-weight:600;color:#1a3a1a;margin-bottom:4px}
+.subtitle{font-size:11px;color:#888;margin-bottom:16px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#666}
+.leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.grid{display:grid;grid-template-columns:160px 1fr 1fr 1fr 1fr 1fr;gap:0;border-radius:10px;overflow:hidden;border:1px solid #d9d7ce;background:#fff}
+.hdr-phase{background:#f1efe8;display:flex;align-items:center;padding:0 10px;font-size:11px;font-weight:500;color:#888;letter-spacing:.05em;border-bottom:1.5px solid #c8c6bd}
+.hdr-party{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:10px 6px;border-left:1px solid #d9d7ce;border-bottom:1.5px solid #c8c6bd}
+.hdr-party .pn{font-size:12px;font-weight:600}
+.hdr-party .pr{font-size:10px;color:#999}
+.hws1{background:#E6F1FB;color:#0C447C}
+.hws2{background:#E1F5EE;color:#085041}
+.hws3{background:#EEEDFE;color:#3C3489}
+.hws4{background:#FAEEDA;color:#633806}
+.hws5{background:#FDE8F0;color:#7C1040}
+.ph-label{background:#f8f7f4;display:flex;flex-direction:column;justify-content:flex-start;padding:14px 10px 12px;border-bottom:1px solid #d9d7ce}
+.ph-nb{border-bottom:none}
+.ph-num{font-size:10px;font-weight:500;color:#999;margin-bottom:2px}
+.ph-name{font-size:11px;font-weight:600;color:#555;line-height:1.4}
+.ph-sla{font-size:10px;color:#aaa;margin-top:5px}
+.ph-budget{font-size:10px;font-weight:600;margin-top:4px}
+.sla-bar{height:3px;border-radius:2px;margin-top:6px;margin-bottom:1px}
+.s1{background:#378ADD}.s2{background:#1D9E75}.s3{background:#7F77DD}.s4{background:#BA7517}.s5{background:#D64A8A}.s6{background:#639922}
+.lane{border-left:1px solid #d9d7ce;border-bottom:1px solid #d9d7ce;padding:10px 8px;display:flex;flex-direction:column;gap:0}
+.lane-nb{border-bottom:none}
+.card{border-radius:7px;overflow:hidden;font-size:11px;line-height:1.45}
+.ch{padding:6px 9px 5px;display:flex;align-items:flex-start;gap:6px}
+.sb{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500}
+.ct{font-weight:500;font-size:11px;flex:1}
+.cs{font-size:10px;opacity:.72;padding:0 9px 5px;margin-top:-2px}
+.docs{padding:5px 9px 7px;border-top:1px dashed #d9d7ce;margin-top:1px}
+.dr{display:flex;align-items:flex-start;gap:4px;font-size:10px;color:#666;line-height:1.4;margin-bottom:2px}
+.di{flex-shrink:0;margin-top:1px;width:8px;height:10px;border:1px solid currentColor;border-radius:1px;position:relative;opacity:.5}
+.di::after{content:'';position:absolute;top:2px;left:1px;right:1px;height:1px;background:currentColor;box-shadow:0 2px 0 currentColor}
+.cws1{background:#E6F1FB;border:1px solid #85B7EB;color:#0C447C}
+.cws2{background:#E1F5EE;border:1px solid #5DCAA5;color:#085041}
+.cws3{background:#EEEDFE;border:1px solid #AFA9EC;color:#3C3489}
+.cws4{background:#FAEEDA;border:1px solid #EF9F27;color:#633806}
+.cws5{background:#FDE8F0;border:1px solid #F4A0C0;color:#7C1040}
+.cok{background:#EAF3DE;border:1px solid #97C459;color:#27500A}
+.sws1{background:#378ADD;color:#fff}
+.sws2{background:#1D9E75;color:#fff}
+.sws3{background:#7F77DD;color:#fff}
+.sws4{background:#BA7517;color:#fff}
+.sws5{background:#D64A8A;color:#fff}
+.sok{background:#639922;color:#fff}
+.vc{display:flex;flex-direction:column;align-items:center;height:14px;margin:0 auto}
+.vcl{width:1.5px;flex:1;background:#c8c6bd}
+.vca{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #c8c6bd}
+.gate-row{grid-column:1/-1;display:flex;align-items:stretch;border-top:1px solid #AFA9EC;border-bottom:1px solid #AFA9EC;background:#F4F3FD}
+.gate-lbl{width:160px;flex-shrink:0;background:#EEEDFE;border-right:1px solid #AFA9EC;display:flex;align-items:center;justify-content:center;padding:10px;flex-direction:column;gap:4px}
+.gate-lbl-icon{font-size:16px;line-height:1}
+.gate-lbl-t{font-size:10px;font-weight:500;color:#3C3489;text-align:center;line-height:1.4}
+.gate-body{flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:5px}
+.gate-title{font-size:11px;font-weight:600;color:#3C3489;margin-bottom:2px}
+.gate-rule{font-size:10px;color:#534AB7;line-height:1.55;display:flex;gap:6px;align-items:flex-start}
+.gate-rule-dot{flex-shrink:0;width:14px;height:14px;border-radius:50%;background:#CECBF6;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;color:#3C3489;margin-top:1px}
+.risk-row{grid-column:1/-1;display:flex;align-items:stretch;border-top:1px solid #F09595;border-bottom:1px solid #F09595;background:#FEF5F5}
+.risk-lbl{width:160px;flex-shrink:0;background:#FCEBEB;border-right:1px solid #F09595;display:flex;align-items:center;justify-content:center;padding:10px;flex-direction:column;gap:4px}
+.risk-lbl-t{font-size:10px;font-weight:500;color:#791F1F;text-align:center;line-height:1.4}
+.risk-body{flex:1;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px}
+.risk-item{background:#fff;border:1px solid #F09595;border-radius:6px;padding:6px 10px;flex:1;min-width:180px}
+.risk-title-d{font-size:10px;font-weight:600;color:#791F1F;margin-bottom:2px}
+.risk-desc-d{font-size:10px;color:#555;line-height:1.4}
+.risk-mit{font-size:9px;color:#888;margin-top:3px;font-style:italic}
+.budget-row{grid-column:1/-1;display:flex;align-items:stretch;border-top:1px solid #97C459;border-bottom:1px solid #97C459;background:#F2F8EA}
+.budget-lbl{width:160px;flex-shrink:0;background:#EAF3DE;border-right:1px solid #97C459;display:flex;align-items:center;justify-content:center;padding:10px;flex-direction:column;gap:4px}
+.budget-lbl-t{font-size:10px;font-weight:500;color:#27500A;text-align:center;line-height:1.4}
+.budget-body{flex:1;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.budget-item{background:#fff;border:1px solid #97C459;border-radius:6px;padding:6px 12px;text-align:center;min-width:150px}
+.budget-phase{font-size:9px;color:#888;margin-bottom:2px}
+.budget-amt{font-size:12px;font-weight:700;color:#27500A}
+.budget-note{font-size:9px;color:#aaa;margin-top:1px}
+.budget-total{background:#27500A;color:#fff;border:none;border-radius:6px;padding:8px 14px;text-align:center;min-width:160px}
+.budget-total .budget-phase{color:#a8d878}
+.budget-total .budget-amt{color:#fff;font-size:14px}
+.kpi-row{grid-column:1/-1;background:#f8f7f4;border-top:1px solid #d9d7ce;padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap}
+.kpi-item{background:#fff;border:1px solid #d9d7ce;border-radius:6px;padding:6px 10px;flex:1;min-width:160px}
+.kpi-phase{font-size:9px;color:#aaa;margin-bottom:2px}
+.kpi-label{font-size:10px;font-weight:600;color:#333}
+.kpi-val{font-size:10px;color:#555;margin-top:2px}
+</style>
+</head>
+<body>
+
+<!-- ── TAB BAR ── -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('bod',this)">📊 Board Overview</button>
+  <button class="tab-btn" onclick="switchTab('detail',this)">📋 Detail Roadmap (MDM Working Level)</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 1: BOD OVERVIEW — DARK WOW
+══════════════════════════════════════ -->
+<div id="tab-bod" class="tab-panel active">
+<div class="bod">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag"><div class="hero-tag-dot"></div>CONFIDENTIAL · MDM OFFICE · BOARD PRESENTATION</div>
+  <div class="hero-title">LACO IPO Roadmap<br><span>SET Main Board</span></div>
+  <div class="hero-sub">Lanna Agro Industry Co., Ltd. &nbsp;·&nbsp; Proterra Asia (PAFF3) &nbsp;·&nbsp; Edamame World Leader &nbsp;·&nbsp; ~3,000 Employees</div>
+  <div class="hero-metrics">
+    <div class="hm hm-accent">
+      <div class="hm-label">TARGET</div>
+      <div class="hm-value">SET Main</div>
+      <div class="hm-sub">Agricultural &amp; Food Industry</div>
+    </div>
+    <div class="hm">
+      <div class="hm-label">TIMELINE</div>
+      <div class="hm-value">3–5 ปี</div>
+      <div class="hm-sub">Phase 0 → First Trading Day</div>
+    </div>
+    <div class="hm">
+      <div class="hm-label">TOTAL IPO COST</div>
+      <div class="hm-value">65–128M</div>
+      <div class="hm-sub">THB · ~3–5% of proceeds</div>
+    </div>
+    <div class="hm">
+      <div class="hm-label">PHASES</div>
+      <div class="hm-value">4 + 1</div>
+      <div class="hm-sub">Phase 0–3 + Post-IPO perpetual</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASES -->
+<div class="sec-label">IPO Journey — 5 Phases to First Trading Day &amp; Beyond</div>
+<div class="phases-wrap">
+
+  <!-- PHASE 0 -->
+  <div class="pc ph0">
+    <div class="pc-header">
+      <div class="pc-num">0</div>
+      <div class="pc-phase">PHASE 0</div>
+      <div class="pc-name">Diagnostic &amp;<br>Baseline</div>
+      <div class="pc-timeline">⏱ Month 1–3</div><br>
+      <div class="pc-budget">1.5–3M</div>
+      <div class="pc-budget-label">THB</div>
+      <div class="pc-bar"><div class="pc-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-ws-label">5 WORKSTREAMS</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#378ADD"></div>Audit Legal Structure &amp; SHA</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#1D9E75"></div>Financial Health Check 3 ปี</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#7F77DD"></div>Org Chart &amp; HR Policy Audit</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#EF9F27"></div>SAP &amp; ITGC Assessment</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#D64A8A"></div>License &amp; ESG Baseline</div>
+      <div class="pc-gate">
+        <div class="pc-gate-label">QUALITY GATE 1</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(55,138,221,.2);color:#378ADD">✓</div>GAP Report Board-approved</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(55,138,221,.2);color:#378ADD">✓</div>Legal structure ชัดเจน</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(55,138,221,.2);color:#378ADD">✓</div>Pre-consult SET RM เสร็จ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="pc ph1">
+    <div class="pc-header">
+      <div class="pc-num">1</div>
+      <div class="pc-phase">PHASE 1</div>
+      <div class="pc-name">Foundation<br>Build</div>
+      <div class="pc-timeline">⏱ Month 4–12</div><br>
+      <div class="pc-budget">8–15M</div>
+      <div class="pc-budget-label">THB</div>
+      <div class="pc-bar"><div class="pc-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-ws-label">5 WORKSTREAMS</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#378ADD"></div>BOD + Sub-Committees ตั้ง</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#1D9E75"></div>Auditor Y1 + COSO IC 17</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#7F77DD"></div>Org Restructure + HR Policy</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#EF9F27"></div>SAP ITGC Remediation</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#D64A8A"></div>ESG Program Launch</div>
+      <div class="pc-gate">
+        <div class="pc-gate-label">QUALITY GATE 2</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(29,158,117,.2);color:#1D9E75">✓</div>Auditor Y1 เริ่มทำงาน</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(29,158,117,.2);color:#1D9E75">✓</div>IC 17 principles ครบ</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(29,158,117,.2);color:#1D9E75">✓</div>0 ITGC Material Weakness</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="pc ph2">
+    <div class="pc-header">
+      <div class="pc-num">2</div>
+      <div class="pc-phase">PHASE 2</div>
+      <div class="pc-name">IPO<br>Preparation</div>
+      <div class="pc-timeline">⏱ Year 2–3</div><br>
+      <div class="pc-budget">20–40M</div>
+      <div class="pc-budget-label">THB</div>
+      <div class="pc-bar"><div class="pc-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-ws-label">5 WORKSTREAMS</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#378ADD"></div>FA + Legal + Draft 56-1</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#1D9E75"></div>Audited FS 3 ปี (TFRS)</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#7F77DD"></div>Succession + Workforce</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#EF9F27"></div>Cybersecurity Audit</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#D64A8A"></div>Sustainability Report (GRI)</div>
+      <div class="pc-gate">
+        <div class="pc-gate-label">QUALITY GATE 3</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(127,119,221,.2);color:#9B8FE8">✓</div>FS 3 ปี — unqualified</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(127,119,221,.2);color:#9B8FE8">✓</div>56-1 Draft FA-endorsed</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(127,119,221,.2);color:#9B8FE8">✓</div>IC Assessment SEC pass</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="pc ph3">
+    <div class="pc-header">
+      <div class="pc-num">3</div>
+      <div class="pc-phase">PHASE 3</div>
+      <div class="pc-name">Filing &amp;<br>Listing</div>
+      <div class="pc-timeline">⏱ Year 3–5</div><br>
+      <div class="pc-budget">30–60M</div>
+      <div class="pc-budget-label">THB</div>
+      <div class="pc-bar"><div class="pc-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-ws-label">5 WORKSTREAMS</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#378ADD"></div>Submit 56-1 → SEC Approval</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#1D9E75"></div>IPO Pricing + Book Building</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#7F77DD"></div>IR Team + Roadshow (SG/TH)</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#EF9F27"></div>SETLink + FSCOMP Setup</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#D64A8A"></div>Regulatory Clearance + ESG Y1</div>
+      <div class="pc-gate">
+        <div class="pc-gate-label">QUALITY GATE 4 — MISSION</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(186,117,23,.2);color:#EF9F27">✓</div>SEC อนุมัติ 56-1</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(186,117,23,.2);color:#EF9F27">✓</div>Subscription ≥ 100%</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(186,117,23,.2);color:#EF9F27">★</div>First Trading Day — SET</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="pc ph4">
+    <div class="pc-header">
+      <div class="pc-num">4</div>
+      <div class="pc-phase">PHASE 4 · PERPETUAL</div>
+      <div class="pc-name">Post-IPO<br>Compliance</div>
+      <div class="pc-timeline">⏱ Year 5+ ongoing</div><br>
+      <div class="pc-budget">5–10M</div>
+      <div class="pc-budget-label">THB / ปี</div>
+      <div class="pc-bar"><div class="pc-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-ws-label">ANNUAL OBLIGATIONS</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#378ADD"></div>งบ Q1–Q3 ภายใน 45 วัน</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#1D9E75"></div>56-1 One Report ภายใน 3 เดือน</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#7F77DD"></div>AGM ภายใน 4 เดือน</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#EF9F27"></div>SETLink disclosure ทุกเหตุการณ์</div>
+      <div class="pc-ws-row"><div class="pc-ws-dot" style="background:#D64A8A"></div>ESG Rating ส่ง เม.ย. → ผล ธ.ค.</div>
+      <div class="pc-gate">
+        <div class="pc-gate-label">ANNUAL KPI TARGET</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(99,153,34,.2);color:#97C459">✓</div>0 late filing / 0 SEC breach</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(99,153,34,.2);color:#97C459">✓</div>ESG AAA (Year 3 หลัง list)</div>
+        <div class="pc-gate-item"><div class="pc-gate-check" style="background:rgba(99,153,34,.2);color:#97C459">✓</div>CGR (IOD) ≥ 4 ดาว</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- WORKSTREAM COVERAGE -->
+<div class="sec-label">5 Workstreams — ครอบคลุมตลอดทุก Phase</div>
+<div class="ws-section">
+  <div class="ws-grid">
+    <div class="ws-card">
+      <div class="ws-icon" style="background:rgba(55,138,221,.15)">⚖️</div>
+      <div class="ws-name" style="color:#378ADD">Governance &amp; Legal</div>
+      <div class="ws-desc">BOD / นิติกรรม / ผู้ถือหุ้น / สัญญา / ใบอนุญาต</div>
+      <div class="ws-tags">
+        <span class="ws-tag" style="background:rgba(55,138,221,.15);color:#378ADD">SHA</span>
+        <span class="ws-tag" style="background:rgba(55,138,221,.15);color:#378ADD">BOD Charter</span>
+        <span class="ws-tag" style="background:rgba(55,138,221,.15);color:#378ADD">56-1</span>
+        <span class="ws-tag" style="background:rgba(55,138,221,.15);color:#378ADD">SET CG Code</span>
+      </div>
+    </div>
+    <div class="ws-card">
+      <div class="ws-icon" style="background:rgba(29,158,117,.15)">📊</div>
+      <div class="ws-name" style="color:#1D9E75">Finance &amp; Audit</div>
+      <div class="ws-desc">งบการเงิน TFRS / IC COSO / ERM / SAP / Auditor</div>
+      <div class="ws-tags">
+        <span class="ws-tag" style="background:rgba(29,158,117,.15);color:#1D9E75">TFRS</span>
+        <span class="ws-tag" style="background:rgba(29,158,117,.15);color:#1D9E75">COSO</span>
+        <span class="ws-tag" style="background:rgba(29,158,117,.15);color:#1D9E75">ERM</span>
+        <span class="ws-tag" style="background:rgba(29,158,117,.15);color:#1D9E75">Big4 Audit</span>
+      </div>
+    </div>
+    <div class="ws-card">
+      <div class="ws-icon" style="background:rgba(127,119,221,.15)">👥</div>
+      <div class="ws-name" style="color:#9B8FE8">HR &amp; Organization</div>
+      <div class="ws-desc">โครงสร้าง 3,000 คน / KPI / Succession / IR Team</div>
+      <div class="ws-tags">
+        <span class="ws-tag" style="background:rgba(127,119,221,.15);color:#9B8FE8">Org Design</span>
+        <span class="ws-tag" style="background:rgba(127,119,221,.15);color:#9B8FE8">PDPA</span>
+        <span class="ws-tag" style="background:rgba(127,119,221,.15);color:#9B8FE8">Succession</span>
+        <span class="ws-tag" style="background:rgba(127,119,221,.15);color:#9B8FE8">IOD Training</span>
+      </div>
+    </div>
+    <div class="ws-card">
+      <div class="ws-icon" style="background:rgba(239,159,39,.15)">🖥️</div>
+      <div class="ws-name" style="color:#EF9F27">IT &amp; Digital</div>
+      <div class="ws-desc">SAP / ITGC / Cybersecurity / GenAI / SETLink</div>
+      <div class="ws-tags">
+        <span class="ws-tag" style="background:rgba(239,159,39,.15);color:#EF9F27">ITGC</span>
+        <span class="ws-tag" style="background:rgba(239,159,39,.15);color:#EF9F27">ISO 27001</span>
+        <span class="ws-tag" style="background:rgba(239,159,39,.15);color:#EF9F27">GenAI</span>
+        <span class="ws-tag" style="background:rgba(239,159,39,.15);color:#EF9F27">FSCOMP</span>
+      </div>
+    </div>
+    <div class="ws-card">
+      <div class="ws-icon" style="background:rgba(214,74,138,.15)">🌱</div>
+      <div class="ws-name" style="color:#D64A8A">Regulatory &amp; ESG</div>
+      <div class="ws-desc">ใบอนุญาต / FSSC 22000 / GRI / SET ESG Rating</div>
+      <div class="ws-tags">
+        <span class="ws-tag" style="background:rgba(214,74,138,.15);color:#D64A8A">FSSC 22000</span>
+        <span class="ws-tag" style="background:rgba(214,74,138,.15);color:#D64A8A">GRI</span>
+        <span class="ws-tag" style="background:rgba(214,74,138,.15);color:#D64A8A">SET ESG AAA</span>
+        <span class="ws-tag" style="background:rgba(214,74,138,.15);color:#D64A8A">BOI</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY RISKS -->
+<div class="sec-label">Key Risks — 6 รายการที่ Board ต้องติดตาม</div>
+<div class="risk-section">
+  <div class="risk-grid">
+    <div class="rc">
+      <div class="rc-badge" style="background:rgba(127,119,221,.2)">⚖️</div>
+      <div>
+        <div class="rc-title">Legal structure — Proterra SHA</div>
+        <div class="rc-desc">โครงสร้างผู้ถือหุ้นหลัง PAFF3 อาจมี holding layer ที่ SET ไม่ยอมรับ</div>
+        <div class="rc-level" style="background:rgba(226,75,74,.15);color:#E24B4A">HIGH · Phase 0</div>
+      </div>
+    </div>
+    <div class="rc">
+      <div class="rc-badge" style="background:rgba(226,75,74,.15)">📄</div>
+      <div>
+        <div class="rc-title">Financial restatement (TFRS)</div>
+        <div class="rc-desc">สวิตช์ NPAEs → TFRS เต็ม อาจต้อง restate งบ 6–12 เดือน</div>
+        <div class="rc-level" style="background:rgba(226,75,74,.15);color:#E24B4A">HIGH · Phase 1</div>
+      </div>
+    </div>
+    <div class="rc">
+      <div class="rc-badge" style="background:rgba(239,159,39,.15)">¥</div>
+      <div>
+        <div class="rc-title">FX risk — JPY Edamame export</div>
+        <div class="rc-desc">JPY depreciation กัด P&amp;L ที่ใช้เป็น IPO basis โดยตรง</div>
+        <div class="rc-level" style="background:rgba(239,159,39,.15);color:#EF9F27">MED · Phase 1–2</div>
+      </div>
+    </div>
+    <div class="rc">
+      <div class="rc-badge" style="background:rgba(239,159,39,.15)">⏳</div>
+      <div>
+        <div class="rc-title">PE fund exit pressure</div>
+        <div class="rc-desc">Proterra PAFF3 fund cycle อาจสั้นกว่า 3–5 ปี — กดดัน timeline</div>
+        <div class="rc-level" style="background:rgba(239,159,39,.15);color:#EF9F27">MED · Phase 0</div>
+      </div>
+    </div>
+    <div class="rc">
+      <div class="rc-badge" style="background:rgba(226,75,74,.15)">🖥️</div>
+      <div>
+        <div class="rc-title">SAP ITGC — Material Weakness</div>
+        <div class="rc-desc">SoD conflict / user access อาจทำ Auditor Y1 ออก qualified opinion</div>
+        <div class="rc-level" style="background:rgba(226,75,74,.15);color:#E24B4A">HIGH · Phase 1</div>
+      </div>
+    </div>
+    <div class="rc">
+      <div class="rc-badge" style="background:rgba(55,138,221,.15)">📉</div>
+      <div>
+        <div class="rc-title">Market window timing</div>
+        <div class="rc-desc">SET market ซบเซา / ดอกเบี้ยสูง อาจกด IPO valuation ต่ำกว่าคาด</div>
+        <div class="rc-level" style="background:rgba(55,138,221,.15);color:#378ADD">LOW · Phase 3</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET -->
+<div class="sec-label">Budget Allocation by Phase</div>
+<div class="budget-section">
+  <div class="budget-wrap">
+    <div class="budget-bars">
+      <div class="bb">
+        <div class="bb-amt" style="color:#378ADD">1.5–3M</div>
+        <div class="bb-fill" style="background:#378ADD;height:18px"></div>
+        <div class="bb-label"><strong>Phase 0</strong>Diagnostic</div>
+      </div>
+      <div class="bb">
+        <div class="bb-amt" style="color:#1D9E75">8–15M</div>
+        <div class="bb-fill" style="background:#1D9E75;height:48px"></div>
+        <div class="bb-label"><strong>Phase 1</strong>Foundation</div>
+      </div>
+      <div class="bb">
+        <div class="bb-amt" style="color:#9B8FE8">20–40M</div>
+        <div class="bb-fill" style="background:#7F77DD;height:88px"></div>
+        <div class="bb-label"><strong>Phase 2</strong>Preparation</div>
+      </div>
+      <div class="bb">
+        <div class="bb-amt" style="color:#EF9F27">30–60M</div>
+        <div class="bb-fill" style="background:#EF9F27;height:112px"></div>
+        <div class="bb-label"><strong>Phase 3</strong>Filing &amp; Listing</div>
+      </div>
+      <div class="bb">
+        <div class="bb-amt" style="color:#fff;font-size:15px">65–128M</div>
+        <div class="bb-fill" style="background:#1D9E75;height:140px"></div>
+        <div class="bb-label" style="color:rgba(255,255,255,.7)"><strong style="color:#fff">TOTAL</strong>IPO Cost</div>
+      </div>
+    </div>
+    <div class="budget-line"></div>
+    <div class="budget-note">หน่วย: ล้านบาท &nbsp;·&nbsp; ไม่รวม ongoing compliance ปีละ 5–10M THB หลัง listing &nbsp;·&nbsp; ประมาณการ ~3–5% of IPO proceeds &nbsp;·&nbsp; Source: SET Official + MDM estimate</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="bod-footer">
+  <div class="footer-left">LACO IPO Roadmap v4.0 &nbsp;·&nbsp; MDM Office &nbsp;·&nbsp; Source: SET Listed Company Journey Oct 2024 · SET Navigator eBook · COSO · SEC Internal Control Form</div>
+  <div class="footer-right">
+    <div class="footer-badge">Confidential</div>
+    <div class="footer-badge">Board Use Only</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 2: DETAIL ROADMAP (MDM Working Level)
+══════════════════════════════════════ -->
+<div id="tab-detail" class="tab-panel">
+<div class="detail-wrap">
+<h1>LACO — IPO Readiness Roadmap (SET Main Board) · Management Division Manager Perspective</h1>
+<div class="subtitle">Lanna Agro Industry Co., Ltd. | Proterra Asia (PAFF3) | Target: SET Main Board within 3–5 years | Prepared by: MDM Office</div>
+<div class="legend">
+  <span style="font-size:11px;font-weight:600;color:#555;margin-right:4px">Workstream:</span>
+  <div class="leg-item"><div class="leg-dot" style="background:#378ADD"></div>Governance &amp; Legal</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>Finance &amp; Audit</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#7F77DD"></div>HR &amp; Organization</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#BA7517"></div>IT &amp; Digital</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#D64A8A"></div>Regulatory &amp; ESG</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#CECBF6;border:1px solid #AFA9EC"></div>Quality Gate</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#FCEBEB;border:1px solid #F09595"></div>Risk Register</div>
+</div>
+<div class="grid">
+<div class="hdr-phase">Phase / SLA / Budget</div>
+<div class="hdr-party hws1"><span class="pn">Governance &amp; Legal</span><span class="pr">นิติกรรม / BOD / ผู้ถือหุ้น</span></div>
+<div class="hdr-party hws2"><span class="pn">Finance &amp; Audit</span><span class="pr">งบการเงิน / IC / ERP</span></div>
+<div class="hdr-party hws3"><span class="pn">HR &amp; Organization</span><span class="pr">โครงสร้าง / คน / นโยบาย</span></div>
+<div class="hdr-party hws4"><span class="pn">IT &amp; Digital</span><span class="pr">SAP / Cybersecurity / AI</span></div>
+<div class="hdr-party hws5"><span class="pn">Regulatory &amp; ESG</span><span class="pr">ใบอนุญาต / SET / ESG</span></div>
+<!-- PHASE 0 -->
+<div class="ph-label"><div class="ph-num">Phase 0</div><div class="ph-name">Diagnostic &amp;<br>Baseline Assessment</div><div class="sla-bar s1"></div><div class="ph-sla">⏱ Month 1–3</div><div class="ph-budget" style="color:#378ADD">💰 ~1.5–3M THB</div></div>
+<div class="lane"><div class="card cws1"><div class="ch"><div class="sb sws1">1</div><div class="ct">Audit Legal Structure</div></div><div class="cs">ตรวจโครงสร้างผู้ถือหุ้นหลัง Proterra เข้า PAFF3</div><div class="docs"><div class="dr"><div class="di"></div>Shareholder Register</div><div class="dr"><div class="di"></div>Holding Company Map</div><div class="dr"><div class="di"></div>Investment Agreement / SHA</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws1"><div class="ch"><div class="sb sws1">2</div><div class="ct">GAP Analysis vs SET Requirements</div></div><div class="cs">เทียบกับเกณฑ์ SET Main Board (รายได้ / กำไร / Free Float 25%)</div><div class="docs"><div class="dr"><div class="di"></div>SET Listing Criteria Checklist</div><div class="dr"><div class="di"></div>GAP Report</div></div></div></div>
+<div class="lane"><div class="card cws2"><div class="ch"><div class="sb sws2">1</div><div class="ct">Financial Health Check</div></div><div class="cs">ตรวจงบย้อนหลัง 3 ปี — ยังไม่มี SET-certified auditor</div><div class="docs"><div class="dr"><div class="di"></div>Management Accounts (3 ปี)</div><div class="dr"><div class="di"></div>P&amp;L / Balance Sheet / Cash Flow</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws2"><div class="ch"><div class="sb sws2">2</div><div class="ct">ERP &amp; SAP Assessment</div></div><div class="cs">ประเมิน SAP ที่มีอยู่ — ครอบคลุมแค่ไหน / gap ตรงไหน</div><div class="docs"><div class="dr"><div class="di"></div>SAP Module Inventory</div><div class="dr"><div class="di"></div>ITGC Gap Report</div></div></div></div>
+<div class="lane"><div class="card cws3"><div class="ch"><div class="sb sws3">1</div><div class="ct">Org Chart Mapping</div></div><div class="cs">รวบรวม org structure จริง 3,000 คน vs ideal IPO structure</div><div class="docs"><div class="dr"><div class="di"></div>Current Org Chart</div><div class="dr"><div class="di"></div>Job Grade / Salary Band</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws3"><div class="ch"><div class="sb sws3">2</div><div class="ct">HR Policy Audit</div></div><div class="cs">ตรวจ compliance แรงงาน / PDPA / ระเบียบภายใน</div><div class="docs"><div class="dr"><div class="di"></div>Employee Handbook</div><div class="dr"><div class="di"></div>Labor Law Compliance Checklist</div></div></div></div>
+<div class="lane"><div class="card cws4"><div class="ch"><div class="sb sws4">1</div><div class="ct">IT Infrastructure &amp; ITGC Audit</div></div><div class="cs">ประเมิน SAP + Network + Cybersecurity + ITGC 4 domains</div><div class="docs"><div class="dr"><div class="di"></div>IT Asset Register</div><div class="dr"><div class="di"></div>ITGC Gap Report (Access/Change/Ops/Dev)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws4"><div class="ch"><div class="sb sws4">2</div><div class="ct">Digital Maturity Score</div></div><div class="cs">ประเมิน GenAI / Automation readiness ทั่วองค์กร</div><div class="docs"><div class="dr"><div class="di"></div>Digital Maturity Assessment</div></div></div></div>
+<div class="lane"><div class="card cws5"><div class="ch"><div class="sb sws5">1</div><div class="ct">License &amp; Permit Inventory</div></div><div class="cs">รวบรวมใบอนุญาตทั้งหมด — วันหมดอายุ / ความเสี่ยง</div><div class="docs"><div class="dr"><div class="di"></div>License Master List</div><div class="dr"><div class="di"></div>Export Certification Register</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws5"><div class="ch"><div class="sb sws5">2</div><div class="ct">ESG Baseline Assessment</div></div><div class="cs">เก็บ baseline E/S/G — เทียบกับ SET ESG criteria</div><div class="docs"><div class="dr"><div class="di"></div>ESG Data Collection Template</div></div></div></div>
+<div class="gate-row"><div class="gate-lbl"><div class="gate-lbl-icon">⬡</div><div class="gate-lbl-t">Quality Gate 1<br>Diagnostic Sign-off</div></div><div class="gate-body"><div class="gate-title">ผ่าน Phase 0: CEO + Board อนุมัติ GAP Report และ IPO Roadmap ฉบับสมบูรณ์</div><div class="gate-rule"><div class="gate-rule-dot">1</div><span>Legal structure ชัดเจน — shareholder map ไม่มี ambiguity / SHA reviewed</span></div><div class="gate-rule"><div class="gate-rule-dot">2</div><span>Financial GAP รู้ชัด — กำหนดได้ว่าต้องใช้ auditor ระดับ Big4 หรือ SET approved list</span></div><div class="gate-rule"><div class="gate-rule-dot">3</div><span>ITGC gap scope ชัด / HR / ESG baseline ครบ — roadmap phase ต่อไปมีข้อมูลพอ estimate งบ</span></div></div></div>
+<div class="risk-row"><div class="risk-lbl"><div class="gate-lbl-icon">⚠️</div><div class="risk-lbl-t">Risk Register<br>Phase 0</div></div><div class="risk-body"><div class="risk-item"><div class="risk-title-d">R1 · Legal Structure Ambiguity</div><div class="risk-desc-d">Proterra PAFF3 fund structure อาจมี holding layer ที่ SET ไม่ยอมรับ</div><div class="risk-mit">Mitigation: จ้างทนายความ M&amp;A ตรวจก่อนสิ้น Month 2</div></div><div class="risk-item"><div class="risk-title-d">R2 · Financial Restatement</div><div class="risk-desc-d">Management accounts อาจต้อง restate ตาม TFRS — 6–12 เดือน</div><div class="risk-mit">Mitigation: engage Big4 auditor ตั้งแต่ Phase 0</div></div><div class="risk-item"><div class="risk-title-d">R3 · Key Man Risk</div><div class="risk-desc-d">ความรู้ IPO กระจุกตัวที่ CEO/MDM — ไม่มี dedicated IPO team</div><div class="risk-mit">Mitigation: สร้าง IPO Steering Committee ใน Phase 1</div></div></div></div>
+<!-- PHASE 1 -->
+<div class="ph-label"><div class="ph-num">Phase 1</div><div class="ph-name">Foundation<br>Build</div><div class="sla-bar s2"></div><div class="ph-sla">⏱ Month 4–12</div><div class="ph-budget" style="color:#1D9E75">💰 ~8–15M THB</div></div>
+<div class="lane"><div class="card cws1"><div class="ch"><div class="sb sws1">1</div><div class="ct">Restructure Legal Entity</div></div><div class="cs">แก้โครงสร้างผู้ถือหุ้นให้ตรงเกณฑ์ SET — Free Float ≥25%</div><div class="docs"><div class="dr"><div class="di"></div>Articles of Association (แก้ไข)</div><div class="dr"><div class="di"></div>Shareholder Agreement (ใหม่)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws1"><div class="ch"><div class="sb sws1">2</div><div class="ct">Establish BOD &amp; Sub-Committees</div></div><div class="cs">ตั้ง Audit / Risk / CG&amp;SD / Remuneration Committee ตาม SET CG Code</div><div class="docs"><div class="dr"><div class="di"></div>Committee Charter (ทุกคณะ)</div><div class="dr"><div class="di"></div>Independent Director Profile</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws1"><div class="ch"><div class="sb sws1">3</div><div class="ct">Document Management System</div></div><div class="cs">ระบบจัดเก็บสัญญา / MOU / ใบอนุญาต — retention policy</div><div class="docs"><div class="dr"><div class="di"></div>Document Management Policy</div><div class="dr"><div class="di"></div>Contract Registry</div></div></div></div>
+<div class="lane"><div class="card cws2"><div class="ch"><div class="sb sws2">1</div><div class="ct">Engage SEC-Approved Auditor</div></div><div class="cs">เลือก auditor ที่ SEC อนุมัติ — เริ่ม audit ปีแรก (Y1)</div><div class="docs"><div class="dr"><div class="di"></div>Auditor Engagement Letter</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws2"><div class="ch"><div class="sb sws2">2</div><div class="ct">COSO Internal Control Design</div></div><div class="cs">ออกแบบ IC framework 5 components / 17 principles ตาม SEC form</div><div class="docs"><div class="dr"><div class="di"></div>IC Manual (ทุก function)</div><div class="dr"><div class="di"></div>DOA (Delegation of Authority)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws2"><div class="ch"><div class="sb sws2">3</div><div class="ct">SAP Enhancement for IPO</div></div><div class="cs">upgrade SAP modules: FinAcc / Consolidation / Segment Reporting (TFRS)</div><div class="docs"><div class="dr"><div class="di"></div>Chart of Accounts (TFRS-aligned)</div></div></div></div>
+<div class="lane"><div class="card cws3"><div class="ch"><div class="sb sws3">1</div><div class="ct">Organization Restructuring</div></div><div class="cs">ออกแบบ org structure ใหม่รองรับ IPO — 3,000 คน / clear reporting line</div><div class="docs"><div class="dr"><div class="di"></div>New Org Chart (Board-approved)</div><div class="dr"><div class="di"></div>Job Description (ทุกตำแหน่ง)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws3"><div class="ch"><div class="sb sws3">2</div><div class="ct">HR Policy &amp; Handbook Rebuild</div></div><div class="cs">แก้ระเบียบบริษัท / PDPA compliant / Labor Law compliance</div><div class="docs"><div class="dr"><div class="di"></div>Employee Handbook</div><div class="dr"><div class="di"></div>Provident Fund Setup</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws3"><div class="ch"><div class="sb sws3">3</div><div class="ct">KPI &amp; Performance Management</div></div><div class="cs">ออกแบบ corporate KPI tree — Board → EVP → Department</div><div class="docs"><div class="dr"><div class="di"></div>KPI Framework Document</div></div></div></div>
+<div class="lane"><div class="card cws4"><div class="ch"><div class="sb sws4">1</div><div class="ct">Cybersecurity Policy Framework</div></div><div class="cs">ออกแบบ policy ตาม ISO 27001 concept — PDPA Compliance</div><div class="docs"><div class="dr"><div class="di"></div>IT Security Policy</div><div class="dr"><div class="di"></div>PDPA Compliance Framework</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws4"><div class="ch"><div class="sb sws4">2</div><div class="ct">SAP ITGC Remediation</div></div><div class="cs">แก้ SoD conflict / clean user access / change management log — ก่อน Auditor Y1 fieldwork</div><div class="docs"><div class="dr"><div class="di"></div>SoD Matrix + User Authorization</div><div class="dr"><div class="di"></div>Change Management Log</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws4"><div class="ch"><div class="sb sws4">3</div><div class="ct">GenAI Pilot Program</div></div><div class="cs">นำ AI มาใช้ใน supply chain / QA / regulatory monitoring</div><div class="docs"><div class="dr"><div class="di"></div>AI Use Case Register</div></div></div></div>
+<div class="lane"><div class="card cws5"><div class="ch"><div class="sb sws5">1</div><div class="ct">License Compliance Calendar</div></div><div class="cs">สร้าง master calendar ใบอนุญาตทั้งหมด — alert 90/60/30 วัน</div><div class="docs"><div class="dr"><div class="di"></div>License Compliance Calendar</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws5"><div class="ch"><div class="sb sws5">2</div><div class="ct">ESG Program Launch</div></div><div class="cs">เก็บ ESG data E/S/G — carbon / safety / governance ทุก dimension</div><div class="docs"><div class="dr"><div class="di"></div>ESG Data Collection System</div><div class="dr"><div class="di"></div>Sustainability Policy</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws5"><div class="ch"><div class="sb sws5">3</div><div class="ct">Food Safety Certification Maintain</div></div><div class="cs">ต่ออายุ FSSC 22000 / HACCP / ISO — critical สำหรับ Japan export</div><div class="docs"><div class="dr"><div class="di"></div>Certification Renewal Plan</div></div></div></div>
+<div class="gate-row"><div class="gate-lbl"><div class="gate-lbl-icon">⬡</div><div class="gate-lbl-t">Quality Gate 2<br>Foundation Ready</div></div><div class="gate-body"><div class="gate-title">ผ่าน Phase 1: Audit Committee ยืนยัน IC ครบ 17 principles + Auditor Y1 เริ่มทำงาน</div><div class="gate-rule"><div class="gate-rule-dot">1</div><span>Legal entity restructure เสร็จ — BOD + sub-committees ทำงานได้จริง</span></div><div class="gate-rule"><div class="gate-rule-dot">2</div><span>Auditor Y1 engaged + IC Manual อนุมัติแล้ว + DOA บังคับใช้ทั่วองค์กร</span></div><div class="gate-rule"><div class="gate-rule-dot">3</div><span>SAP ITGC remediation เสร็จ — 0 material weakness ก่อน Auditor Y1 fieldwork</span></div></div></div>
+<div class="risk-row"><div class="risk-lbl"><div class="gate-lbl-icon">⚠️</div><div class="risk-lbl-t">Risk Register<br>Phase 1</div></div><div class="risk-body"><div class="risk-item"><div class="risk-title-d">R4 · Auditor Qualified Opinion</div><div class="risk-desc-d">ถ้า auditor ออก qualified opinion ปีแรก — IPO ยืดออก 1 ปี</div><div class="risk-mit">Mitigation: pre-audit readiness review ก่อน fieldwork</div></div><div class="risk-item"><div class="risk-title-d">R5 · Culture Resistance (3,000 คน)</div><div class="risk-desc-d">พนักงานต้านการเปลี่ยน SAP / IC / policy ใหม่</div><div class="risk-mit">Mitigation: Change Management team / Communication plan รายไตรมาส</div></div><div class="risk-item"><div class="risk-title-d">R6 · PE Fund Exit Pressure</div><div class="risk-desc-d">Proterra PAFF3 fund cycle อาจสั้นกว่า 3–5 ปี</div><div class="risk-mit">Mitigation: ตกลง IPO milestones กับ board ตั้งแต่ Phase 0</div></div><div class="risk-item"><div class="risk-title-d">R7 · FX Risk (JPY export)</div><div class="risk-desc-d">JPY depreciation กัดกำไรใน P&amp;L ที่ใช้เป็น IPO basis</div><div class="risk-mit">Mitigation: Forward contract hedging / annual price adjustment</div></div></div></div>
+<!-- PHASE 2 -->
+<div class="ph-label"><div class="ph-num">Phase 2</div><div class="ph-name">IPO Preparation<br>Filing Ready</div><div class="sla-bar s3"></div><div class="ph-sla">⏱ Year 2–3</div><div class="ph-budget" style="color:#7F77DD">💰 ~20–40M THB</div></div>
+<div class="lane"><div class="card cws1"><div class="ch"><div class="sb sws1">1</div><div class="ct">Appoint FA &amp; Legal Advisor</div></div><div class="cs">เลือก Financial Advisor (FA) ที่ SEC approve + ทนาย IPO</div><div class="docs"><div class="dr"><div class="di"></div>FA Engagement Letter</div><div class="dr"><div class="di"></div>Legal Opinion (IPO eligibility)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws1"><div class="ch"><div class="sb sws1">2</div><div class="ct">BOD Governance Maturity</div></div><div class="cs">ผ่าน IOD training / CG Code compliance / BOD self-assessment</div><div class="docs"><div class="dr"><div class="di"></div>BOD Evaluation Report</div><div class="dr"><div class="di"></div>CG Policy Manual</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws1"><div class="ch"><div class="sb sws1">3</div><div class="ct">Draft Filing 56-1 One Report</div></div><div class="cs">จัดทำ 56-1 / One Report ร่วมกับ FA + Legal</div><div class="docs"><div class="dr"><div class="di"></div>Form 56-1 (Draft)</div><div class="dr"><div class="di"></div>Prospectus (Draft)</div></div></div></div>
+<div class="lane"><div class="card cws2"><div class="ch"><div class="sb sws2">1</div><div class="ct">Audited FS Year 1, 2, 3</div></div><div class="cs">งบ audited ครบ 3 ปี ก่อน SEC filing — unqualified opinion + TFRS full</div><div class="docs"><div class="dr"><div class="di"></div>Audited FS (TFRS-compliant)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws2"><div class="ch"><div class="sb sws2">2</div><div class="ct">SEC Internal Control Assessment</div></div><div class="cs">ประเมิน IC ตาม SEC Form (5 components / 17 principles)</div><div class="docs"><div class="dr"><div class="di"></div>IC Adequacy Assessment (SEC Form)</div><div class="dr"><div class="di"></div>Audit Committee Report</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws2"><div class="ch"><div class="sb sws2">3</div><div class="ct">ERM Framework (COSO)</div></div><div class="cs">Enterprise Risk Management ครบวงจร — รายงานต่อ Risk Committee</div><div class="docs"><div class="dr"><div class="di"></div>ERM Report (quarterly)</div><div class="dr"><div class="di"></div>Risk Appetite Statement</div></div></div></div>
+<div class="lane"><div class="card cws3"><div class="ch"><div class="sb sws3">1</div><div class="ct">Executive Compensation Disclosure</div></div><div class="cs">ออกแบบ compensation structure สำหรับ 56-1 / Proxy Statement</div><div class="docs"><div class="dr"><div class="di"></div>Remuneration Committee Report</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws3"><div class="ch"><div class="sb sws3">2</div><div class="ct">Succession Planning</div></div><div class="cs">วาง succession plan ระดับ C-suite ตามที่ SET / investor คาดหวัง</div><div class="docs"><div class="dr"><div class="di"></div>Succession Plan Document</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws3"><div class="ch"><div class="sb sws3">3</div><div class="ct">Workforce Capability Build</div></div><div class="cs">train middle management ให้ทำงานใน public company environment</div><div class="docs"><div class="dr"><div class="di"></div>Training Curriculum (IPO readiness)</div></div></div></div>
+<div class="lane"><div class="card cws4"><div class="ch"><div class="sb sws4">1</div><div class="ct">SAP Full Compliance Mode</div></div><div class="cs">ปรับ SAP ให้ produce financial report ตาม TFRS / SEC อัตโนมัติ</div><div class="docs"><div class="dr"><div class="di"></div>Financial Close Process SOP</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws4"><div class="ch"><div class="sb sws4">2</div><div class="ct">Cybersecurity External Audit</div></div><div class="cs">จ้าง external auditor ตรวจ — penetration test / vulnerability scan</div><div class="docs"><div class="dr"><div class="di"></div>Pentest Report + Remediation Plan</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws4"><div class="ch"><div class="sb sws4">3</div><div class="ct">Digital Strategy for Prospectus</div></div><div class="cs">AI / automation narrative ใส่ใน Prospectus เป็น growth story</div><div class="docs"><div class="dr"><div class="di"></div>Digital Strategy Paper + AI ROI</div></div></div></div>
+<div class="lane"><div class="card cws5"><div class="ch"><div class="sb sws5">1</div><div class="ct">Sustainability Report (GRI)</div></div><div class="cs">จัดทำรายงานความยั่งยืนฉบับแรก — GRI Standards / SET One Report</div><div class="docs"><div class="dr"><div class="di"></div>Sustainability Report (Draft)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws5"><div class="ch"><div class="sb sws5">2</div><div class="ct">Regulatory Pre-Filing Check</div></div><div class="cs">ตรวจ compliance ทุก regulator: SEC / BOI / FDA / Export</div><div class="docs"><div class="dr"><div class="di"></div>Regulatory Compliance Matrix</div><div class="dr"><div class="di"></div>Pre-Filing Checklist</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws5"><div class="ch"><div class="sb sws5">3</div><div class="ct">BOI &amp; Export Incentives Review</div></div><div class="cs">ตรวจ BOI privileges — impact ต่อ tax disclosure ใน Prospectus</div><div class="docs"><div class="dr"><div class="di"></div>BOI Certificate Register</div></div></div></div>
+<div class="gate-row"><div class="gate-lbl"><div class="gate-lbl-icon">⬡</div><div class="gate-lbl-t">Quality Gate 3<br>Filing Ready</div></div><div class="gate-body"><div class="gate-title">ผ่าน Phase 2: FA ยืนยัน Filing Ready + Audited FS 3 ปีครบ + Draft 56-1 Board-approved</div><div class="gate-rule"><div class="gate-rule-dot">1</div><span>Audited FS 3 ปี — unqualified opinion ทุกปี ไม่มี going concern note</span></div><div class="gate-rule"><div class="gate-rule-dot">2</div><span>IC Assessment ผ่าน SEC Form — Audit Committee sign-off</span></div><div class="gate-rule"><div class="gate-rule-dot">3</div><span>Form 56-1 Draft ผ่าน Legal review + FA endorsement</span></div></div></div>
+<div class="risk-row"><div class="risk-lbl"><div class="gate-lbl-icon">⚠️</div><div class="risk-lbl-t">Risk Register<br>Phase 2</div></div><div class="risk-body"><div class="risk-item"><div class="risk-title-d">R8 · SEC Comment Letter</div><div class="risk-desc-d">SEC อาจส่ง comment ให้แก้ 56-1 หลาย round — แต่ละรอบ 45–90 วัน</div><div class="risk-mit">Mitigation: mock SEC review กับ FA ก่อน submit</div></div><div class="risk-item"><div class="risk-title-d">R9 · Market Timing Risk</div><div class="risk-desc-d">SET market ซบเซา / ดอกเบี้ยสูง — IPO valuation ต่ำกว่าคาด</div><div class="risk-mit">Mitigation: IPO window flexible ± 6 เดือน</div></div><div class="risk-item"><div class="risk-title-d">R10 · Export Concentration</div><div class="risk-desc-d">รายได้กระจุกตัว Japan Edamame — investor ตั้งคำถาม diversification</div><div class="risk-mit">Mitigation: เพิ่ม product line ก่อน roadshow</div></div></div></div>
+<!-- PHASE 3 -->
+<div class="ph-label"><div class="ph-num">Phase 3</div><div class="ph-name">SEC Filing<br>&amp; SET Listing</div><div class="sla-bar s4"></div><div class="ph-sla">⏱ Year 3–5</div><div class="ph-budget" style="color:#BA7517">💰 ~30–60M THB</div></div>
+<div class="lane"><div class="card cws1"><div class="ch"><div class="sb sws1">1</div><div class="ct">Submit 56-1 to SEC</div></div><div class="cs">ยื่นผ่าน ELCA — FA เป็นผู้ยื่น / แปรสภาพ บมจ. ก่อน 1–2 เดือน</div><div class="docs"><div class="dr"><div class="di"></div>Form 56-1 (Final) + FS 3 ปี</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws1"><div class="ch"><div class="sb sws1">2</div><div class="ct">SEC Comment Resolution</div></div><div class="cs">ตอบ comment แต่ละรอบ (120 วัน นับจากเอกสารครบ → 45 วัน อนุมัติ)</div><div class="docs"><div class="dr"><div class="di"></div>SEC Comment Response Letter</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cok"><div class="ch"><div class="sb sok">3</div><div class="ct">SEC Approval → SET Application</div></div><div class="cs">SEC อนุมัติ → ยื่น SET listing application ทันที</div><div class="docs"><div class="dr"><div class="di"></div>SET Listing Application</div></div></div></div>
+<div class="lane"><div class="card cws2"><div class="ch"><div class="sb sws2">1</div><div class="ct">IPO Pricing &amp; Book Building</div></div><div class="cs">ร่วมกับ FA + Underwriter กำหนด offer price range</div><div class="docs"><div class="dr"><div class="di"></div>Pricing Memo / Allocation Policy</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws2"><div class="ch"><div class="sb sws2">2</div><div class="ct">Public Offering &amp; Subscription</div></div><div class="cs">ระยะเวลาจองซื้อ 3–5 วัน — Silent Period Strategic Shareholders</div><div class="docs"><div class="dr"><div class="di"></div>Prospectus (Final)</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cok"><div class="ch"><div class="sb sok">3</div><div class="ct">🏆 First Trading Day — SET</div></div><div class="cs">วันแรกซื้อขายบน SET — IPO mission complete</div></div></div>
+<div class="lane"><div class="card cws3"><div class="ch"><div class="sb sws3">1</div><div class="ct">IR Team Setup</div></div><div class="cs">ตั้ง IR function — Disclosure Policy / IR Manager hired 6 เดือนก่อน listing</div><div class="docs"><div class="dr"><div class="di"></div>IR Policy + Disclosure Policy</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws3"><div class="ch"><div class="sb sws3">2</div><div class="ct">Management Roadshow</div></div><div class="cs">CEO + CFO + MDM นำเสนอ institutional investor — TH / Singapore</div><div class="docs"><div class="dr"><div class="di"></div>Investor Presentation + Q&amp;A Script</div></div></div></div>
+<div class="lane"><div class="card cws4"><div class="ch"><div class="sb sws4">1</div><div class="ct">SET LINK / Disclosure System</div></div><div class="cs">ตั้งค่า SETLink — train IR ใช้ / ช่วงส่งข่าว: 6.30-9.00 / 12.30-13.00 / 17.00-22.30</div><div class="docs"><div class="dr"><div class="di"></div>Disclosure Workflow SOP</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws4"><div class="ch"><div class="sb sws4">2</div><div class="ct">Post-IPO Reporting System</div></div><div class="cs">SAP + FSCOMP produce quarterly report / 56-1 อัตโนมัติ</div></div></div>
+<div class="lane"><div class="card cws5"><div class="ch"><div class="sb sws5">1</div><div class="ct">Pre-Listing Regulatory Clearance</div></div><div class="cs">ยืนยัน compliance ทุก regulator ก่อน First Trade Day</div><div class="docs"><div class="dr"><div class="di"></div>Regulatory Clearance Certificate</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws5"><div class="ch"><div class="sb sws5">2</div><div class="ct">ESG Rating Y1 Submission</div></div><div class="cs">ยื่น ESG รอบแรก — target ≥ A / ส่ง เม.ย.–พ.ค. / ประกาศ ธ.ค.</div></div></div>
+<div class="gate-row"><div class="gate-lbl"><div class="gate-lbl-icon">🏆</div><div class="gate-lbl-t">Quality Gate 4<br>IPO Complete</div></div><div class="gate-body"><div class="gate-title">Mission Complete: LACO ซื้อขายบน SET Main Board — First Trading Day</div><div class="gate-rule"><div class="gate-rule-dot">1</div><span>SEC อนุมัติ 56-1 + SET อนุมัติ listing application ภายใน timeline</span></div><div class="gate-rule"><div class="gate-rule-dot">2</div><span>IPO proceeds ใช้ตาม use of proceeds ใน Prospectus ทุกบาท</span></div><div class="gate-rule"><div class="gate-rule-dot">3</div><span>Post-IPO governance Day 1: disclosure / quarterly report / IR active</span></div></div></div>
+<div class="risk-row"><div class="risk-lbl"><div class="gate-lbl-icon">⚠️</div><div class="risk-lbl-t">Risk Register<br>Phase 3</div></div><div class="risk-body"><div class="risk-item"><div class="risk-title-d">R11 · Market Window Missed</div><div class="risk-desc-d">SET market conditions เลวร้าย — ต้อง postpone offering</div><div class="risk-mit">Mitigation: pre-approve SEC แล้วรอ window ได้สูงสุด 1 ปี</div></div><div class="risk-item"><div class="risk-title-d">R12 · Post-IPO Compliance Burden</div><div class="risk-desc-d">ทีมไม่พอรับภาระ quarterly disclosure / SEC inquiry</div><div class="risk-mit">Mitigation: hire IR Manager + Company Secretary ก่อน listing 6 เดือน</div></div><div class="risk-item"><div class="risk-title-d">R13 · Undersubscription</div><div class="risk-desc-d">IPO จองซื้อต่ำกว่า 100% — กดดัน share price วันแรก</div><div class="risk-mit">Mitigation: roadshow ≥ 50 investor meetings / greenshoe option</div></div></div></div>
+<!-- PHASE 4 -->
+<div class="ph-label ph-nb"><div class="ph-num">Phase 4</div><div class="ph-name">Post-IPO<br>Ongoing Compliance</div><div class="sla-bar s6"></div><div class="ph-sla">⏱ Year 5+ (Perpetual)</div><div class="ph-budget" style="color:#639922">💰 ~5–10M THB/ปี</div></div>
+<div class="lane lane-nb"><div class="card cws1"><div class="ch"><div class="sb sws1">①</div><div class="ct">Disclosure via SETLink</div></div><div class="cs">ส่งข่าว Creator → Approver — ข่าว material รายงานทันที / ≤09.00 น.วันถัดไป</div><div class="docs"><div class="dr"><div class="di"></div>เปลี่ยนกรรมการ: ภายใน 3 วันทำการ</div><div class="dr"><div class="di"></div>รายงาน AGM: ภายใน 14 วัน</div></div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws1"><div class="ch"><div class="sb sws1">②</div><div class="ct">Free Float Report</div></div><div class="cs">ส่งภายใน 14 วัน นับจาก AGM deadline — รักษา Free Float ≥ 25% ตลอดเวลา</div></div></div>
+<div class="lane lane-nb"><div class="card cws2"><div class="ch"><div class="sb sws2">①</div><div class="ct">Quarterly Financial Reporting</div></div><div class="cs">Q1/Q2/Q3 สอบทาน: ภายใน 45 วัน / งบปีตรวจสอบ: 2–3 เดือน + F-45 + MD&amp;A</div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws2"><div class="ch"><div class="sb sws2">②</div><div class="ct">56-1 One Report (Annual)</div></div><div class="cs">จัดทำและส่งภายใน 3 เดือน นับจากสิ้นรอบบัญชี ผ่าน SETLink</div></div></div>
+<div class="lane lane-nb"><div class="card cws3"><div class="ch"><div class="sb sws3">①</div><div class="ct">AGM Annual</div></div><div class="cs">จัดภายใน 4 เดือน — บริษัทใหม่ต้อง Opportunity Day ภายใน 1 ปีหลัง First Trade</div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws3"><div class="ch"><div class="sb sws3">②</div><div class="ct">IR Activities Calendar</div></div><div class="cs">Opportunity Day / Digital Roadshow / Thailand Focus / Listed Company Snapshot 4 งวด</div></div></div>
+<div class="lane lane-nb"><div class="card cws4"><div class="ch"><div class="sb sws4">①</div><div class="ct">SETLink Daily Operations</div></div><div class="cs">ส่งข่าวเฉพาะช่วง: 6.30-9.00 / 12.30-13.00 / 17.00-22.30 — นอกช่วง = Halt:H ทันที</div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws4"><div class="ch"><div class="sb sws4">②</div><div class="ct">FSCOMP &amp; Reporting Automation</div></div><div class="cs">SAP + FSCOMP → One Report + SETSMART อัตโนมัติ / Financial Highlights ทุกปี</div></div></div>
+<div class="lane lane-nb"><div class="card cws5"><div class="ch"><div class="sb sws5">①</div><div class="ct">SET ESG Rating (Annual)</div></div><div class="cs">ส่งแบบ เม.ย.–พ.ค. / ประกาศ ธ.ค. — target AAA ภายใน Year 3 หลัง listing</div></div><div class="vc"><div class="vcl"></div><div class="vca"></div></div><div class="card cws5"><div class="ch"><div class="sb sws5">②</div><div class="ct">CGR (IOD) + SET Awards</div></div><div class="cs">IOD ประเมิน ต.ค. — เป้า ≥ 4 ดาว / SET Awards ประกาศปลายปี</div></div></div>
+
+<div class="gate-row"><div class="gate-lbl"><div class="gate-lbl-icon">📅</div><div class="gate-lbl-t">Post-IPO Calendar<br>(ปิดบัญชี ธ.ค.)</div></div><div class="gate-body"><div class="gate-title">ปฏิทิน Compliance ที่ LACO ต้องทำทุกปีหลัง Listing — SET Navigator eBook Oct 2024</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"><div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:5px;padding:5px 8px;font-size:10px;color:#0C447C"><strong>ม.ค.</strong> รายงานใช้เงิน / ส่งงบ Q4</div><div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:5px;padding:5px 8px;font-size:10px;color:#0C447C"><strong>ก.พ.–มี.ค.</strong> Opp Day / งบปี / 56-1</div><div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:5px;padding:5px 8px;font-size:10px;color:#0C447C"><strong>เม.ย.</strong> AGM / SET Awards / ESG ส่ง</div><div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:5px;padding:5px 8px;font-size:10px;color:#0C447C"><strong>พ.ค.</strong> งบ Q1 / Free Float Report</div><div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:5px;padding:5px 8px;font-size:10px;color:#0C447C"><strong>ก.ค.</strong> รายงานใช้เงิน / งบ Q2</div><div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:5px;padding:5px 8px;font-size:10px;color:#0C447C"><strong>ต.ค.</strong> งบ Q3 / SET Awards / CGR</div><div style="background:#E1F5EE;border:1px solid #5DCAA5;border-radius:5px;padding:5px 8px;font-size:10px;color:#085041"><strong>ธ.ค.</strong> ESG Rating ประกาศ (target AAA)</div></div></div></div>
+
+<div class="budget-row"><div class="budget-lbl"><div class="gate-lbl-icon">💰</div><div class="budget-lbl-t">Budget Summary</div></div><div class="budget-body"><div class="budget-item"><div class="budget-phase">Phase 0</div><div class="budget-amt">1.5–3M THB</div></div><div class="budget-item"><div class="budget-phase">Phase 1</div><div class="budget-amt">8–15M THB</div></div><div class="budget-item"><div class="budget-phase">Phase 2</div><div class="budget-amt">20–40M THB</div></div><div class="budget-item"><div class="budget-phase">Phase 3</div><div class="budget-amt">30–60M THB</div></div><div class="budget-item"><div class="budget-phase">Phase 4 (annual)</div><div class="budget-amt">5–10M THB/ปี</div></div><div class="budget-total"><div class="budget-phase">Total IPO Cost</div><div class="budget-amt">65–128M THB</div></div></div></div>
+
+<div class="kpi-row">
+  <div class="kpi-item"><div class="kpi-phase">Phase 0 KPI</div><div class="kpi-label">GAP Report Complete</div><div class="kpi-val">Legal / Finance / HR / IT / ESG baseline ครบ — Board-approved</div></div>
+  <div class="kpi-item"><div class="kpi-phase">Phase 1 KPI</div><div class="kpi-label">Audit Y1 — Clean Opinion</div><div class="kpi-val">Unqualified + IC 17 principles + 0 ITGC Material Weakness</div></div>
+  <div class="kpi-item"><div class="kpi-phase">Phase 2 KPI</div><div class="kpi-label">Filing Ready ≥ 90%</div><div class="kpi-val">Audited FS 3 ปี + 56-1 FA-endorsed + ERM รายงาน Board</div></div>
+  <div class="kpi-item"><div class="kpi-phase">Phase 3 KPI</div><div class="kpi-label">First Trading Day</div><div class="kpi-val">SEC Approval + Subscription ≥ 100% + ESG ≥ A ปีแรก</div></div>
+  <div class="kpi-item"><div class="kpi-phase">Phase 4 KPI</div><div class="kpi-label">Zero Compliance Breach</div><div class="kpi-val">0 late filing / ESG AAA Year 3 / CGR ≥ 4 ดาว</div></div>
+  <div class="kpi-item"><div class="kpi-phase">MDM Personal KPI</div><div class="kpi-label">Governance Readiness</div><div class="kpi-val">BOD minutes ทุก meeting / IC report ทุกไตรมาส / 0 breach</div></div>
+</div>
+</div>
+</div>
+<div style="padding:0 16px 16px;background:#f5f4f0"><div style="font-size:10px;color:#aaa;text-align:right">LACO IPO Roadmap v4.0 · SET Official Source Verified · MDM Office · Confidential</div></div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LACO Legal & Compliance Dashboard v2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D1117;--surface:#161B22;--surface2:#1C2128;--border:#30363D;--border2:#21262D;--text:#E6EDF3;--text2:#8B949E;--text3:#6E7681;--blue:#1F6FEB;--blue-dim:#1158C7;--blue-bg:#0D1F3C;--green:#2EA043;--green-bg:#0D2818;--amber:#E3B341;--amber-bg:#2D1F00;--red:#F85149;--red-bg:#2D0F0E;--purple:#A371F7;--teal:#39D353;--accent:#58A6FF;--font:'IBM Plex Sans Thai',sans-serif;--mono:'IBM Plex Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.logo{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:2px;white-space:nowrap}
+.logo span{color:var(--text3)}
+.topbar-title{font-size:13px;font-weight:500;color:var(--text)}
+.topbar-sub{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 49px)}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:16px 0;overflow-y:auto;position:sticky;top:49px;height:calc(100vh - 49px)}
+.sidebar-section{padding:0 12px;margin-bottom:16px}
+.sidebar-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1.5px;padding:0 8px;margin-bottom:6px}
+.tab-btn{display:flex;align-items:center;gap:8px;width:100%;padding:6px 10px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;cursor:pointer;text-align:left;transition:all .15s}
+.tab-btn:hover{background:var(--surface2);color:var(--text)}
+.tab-btn.active{background:var(--blue-bg);color:var(--accent);border:1px solid var(--blue-dim)}
+.tab-btn .tnum{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:16px}
+.tab-btn.active .tnum{color:var(--accent)}
+.filter-wrap{padding:0 12px 12px;border-bottom:1px solid var(--border2);margin-bottom:12px}
+.filter-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1.5px;margin-bottom:6px}
+.chip{display:block;width:100%;padding:5px 10px;margin-bottom:3px;border-radius:4px;border:1px solid transparent;background:transparent;color:var(--text2);font-family:var(--font);font-size:11px;cursor:pointer;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:all .12s}
+.chip:hover{background:var(--surface2);color:var(--text)}
+.chip.active-blue{background:var(--blue-bg);color:var(--accent);border-color:var(--blue-dim)}
+.chip.active-amber{background:var(--amber-bg);color:var(--amber);border-color:#5A4200}
+.chip.active-purple{background:#1E1040;color:var(--purple);border-color:#4A2FA0}
+.chip.active-green{background:var(--green-bg);color:var(--teal);border-color:#1A4D2A}
+.main{padding:20px;overflow-x:auto}
+.panel{display:none}.panel.active{display:block}
+
+/* HOME PAGE */
+.home-hero{margin-bottom:24px}
+.home-hero-title{font-size:20px;font-weight:500;color:var(--text);margin-bottom:4px}
+.home-hero-sub{font-family:var(--mono);font-size:12px;color:var(--text3)}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.kpi-n{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--accent)}
+.kpi-l{font-size:11px;color:var(--text3);margin-top:3px}
+.section-title{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1.5px;margin-bottom:10px}
+.home-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
+.home-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all .15s}
+.home-card:hover{border-color:var(--accent);background:var(--surface2)}
+.home-card-num{font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:6px}
+.home-card-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px}
+.home-card-law{font-size:10px;color:var(--text3);margin-bottom:8px;font-style:italic}
+.home-card-tags{display:flex;flex-wrap:wrap;gap:4px}
+.htag{font-size:10px;padding:2px 6px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);color:var(--text3)}
+.home-card-count{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:8px}
+.legend-row{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+
+/* MODE HEADERS */
+.mode-hdr{border-radius:8px;padding:12px 16px;margin-bottom:16px;display:none}
+.mode-hdr.show{display:block}
+.mode-hdr-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.mode-hdr-sub{font-size:11px;color:var(--text3)}
+.mh-amber{background:var(--amber-bg);border:1px solid #5A4200}.mh-amber .mode-hdr-title{color:var(--amber)}
+.mh-purple{background:#1E1040;border:1px solid #4A2FA0}.mh-purple .mode-hdr-title{color:var(--purple)}
+.mh-green{background:var(--green-bg);border:1px solid #1A4D2A}.mh-green .mode-hdr-title{color:var(--teal)}
+
+/* TABLE */
+.panel-hdr{margin-bottom:14px}
+.panel-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:4px}
+.panel-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.panel-meta span{color:var(--accent)}
+.tbl-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:6px}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{background:var(--surface2);padding:8px 10px;text-align:left;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.5px;border-bottom:1px solid var(--border);font-weight:400;white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--border2);color:var(--text);vertical-align:top;line-height:1.55;font-size:12px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+.group-row td{background:var(--surface2);color:var(--text3);font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:5px 10px;border-bottom:1px solid var(--border)}
+.agency-tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);white-space:nowrap;margin:1px 0}
+.law-tag{font-family:var(--mono);font-size:10px;color:var(--text3);line-height:1.6}
+.freq-tag{font-size:11px;color:var(--text2)}
+.warn{color:var(--amber)}.danger{color:var(--red)}
+.status{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;cursor:pointer;border:1px solid transparent;white-space:nowrap}
+.s-g{background:var(--green-bg);color:var(--teal);border-color:#1A4D2A}
+.s-a{background:var(--amber-bg);color:var(--amber);border-color:#5A4200}
+.s-r{background:var(--red-bg);color:var(--red);border-color:#5A1515}
+.freq-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;font-family:var(--mono)}
+.fb-monthly{background:#0D2818;color:#39D353;border:1px solid #1A4D2A}
+.fb-annual{background:#0D1F3C;color:#58A6FF;border:1px solid #1158C7}
+.fb-quarterly{background:#2D1F00;color:#E3B341;border:1px solid #5A4200}
+.fb-event{background:#1E1040;color:#A371F7;border:1px solid #4A2FA0}
+.fb-continuous{background:#2D0F0E;color:#F85149;border:1px solid #5A1515}
+.fb-other{background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.no-results{text-align:center;padding:40px;color:var(--text3);font-family:var(--mono);font-size:12px}
+.tab-group-hdr td{background:var(--blue-bg);color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:5px 10px;border-bottom:1px solid var(--blue-dim)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">LACO <span>//</span> LEGAL</div>
+  <div class="topbar-title">Legal & Compliance Dashboard — IPO Readiness</div>
+  <div class="topbar-sub" id="modeLabel">v2.0 · 10 หมวด · 64+ รายการ</div>
+</div>
+
+<div class="layout">
+<div class="sidebar">
+
+  <!-- NAV TABS -->
+  <div class="filter-wrap">
+    <div class="filter-label">หน้าหลัก</div>
+    <button class="tab-btn active" onclick="showHome()"><span class="tnum">⌂</span>ภาพรวม 10 หมวด</button>
+  </div>
+
+  <!-- AGENCY FILTER -->
+  <div class="filter-wrap">
+    <div class="filter-label">กรอง: หน่วยงานกำกับ</div>
+    <button class="chip active-blue" id="ag-ALL" onclick="filterAgency('ALL')">ทั้งหมด</button>
+    <button class="chip" id="ag-กลต." onclick="filterAgency('กลต.')">กลต. (SEC)</button>
+    <button class="chip" id="ag-SET" onclick="filterAgency('SET')">SET</button>
+    <button class="chip" id="ag-กรมสรรพากร" onclick="filterAgency('กรมสรรพากร')">กรมสรรพากร</button>
+    <button class="chip" id="ag-กรมโรงงานอุตสาหกรรม" onclick="filterAgency('กรมโรงงานอุตสาหกรรม')">กรมโรงงานฯ</button>
+    <button class="chip" id="ag-FDA / อย." onclick="filterAgency('FDA / อย.')">FDA / อย.</button>
+    <button class="chip" id="ag-กรมสวัสดิการฯ" onclick="filterAgency('กรมสวัสดิการฯ')">กรมสวัสดิการฯ</button>
+    <button class="chip" id="ag-สปส." onclick="filterAgency('สปส.')">สปส. (ประกันสังคม)</button>
+    <button class="chip" id="ag-กรมการจัดหางาน" onclick="filterAgency('กรมการจัดหางาน')">กรมการจัดหางาน</button>
+    <button class="chip" id="ag-กรมการค้าต่างประเทศ" onclick="filterAgency('กรมการค้าต่างประเทศ')">กรมการค้าต่างประเทศ</button>
+    <button class="chip" id="ag-กรมที่ดิน" onclick="filterAgency('กรมที่ดิน')">กรมที่ดิน / อาคาร</button>
+    <button class="chip" id="ag-SEDEX" onclick="filterAgency('SEDEX')">SEDEX / EU Buyer</button>
+    <button class="chip" id="ag-อปท." onclick="filterAgency('อปท.')">อปท. (ท้องถิ่น)</button>
+    <button class="chip" id="ag-CB" onclick="filterAgency('CB')">CB (Certification Body)</button>
+    <button class="chip" id="ag-กรมวิชาการเกษตร" onclick="filterAgency('กรมวิชาการเกษตร')">กรมวิชาการเกษตร</button>
+  </div>
+
+  <!-- OWNER FILTER -->
+  <div class="filter-wrap">
+    <div class="filter-label">กรอง: ฝ่ายที่รับผิดชอบ</div>
+    <button class="chip" id="ow-Legal" onclick="filterOwner('Legal')">Legal + Secretary</button>
+    <button class="chip" id="ow-Finance" onclick="filterOwner('Finance')">Finance + Accounting</button>
+    <button class="chip" id="ow-HR" onclick="filterOwner('HR')">HR & Admin</button>
+    <button class="chip" id="ow-QA" onclick="filterOwner('QA')">QA + Operations</button>
+    <button class="chip" id="ow-Safety" onclick="filterOwner('Safety')">Safety Officer</button>
+    <button class="chip" id="ow-Engineering" onclick="filterOwner('Engineering')">Engineering</button>
+    <button class="chip" id="ow-IT" onclick="filterOwner('IT')">IT + Digital</button>
+    <button class="chip" id="ow-MDM" onclick="filterOwner('MDM')">MDM (ตำแหน่งนี้)</button>
+  </div>
+
+  <!-- FREQUENCY FILTER -->
+  <div class="filter-wrap">
+    <div class="filter-label">กรอง: ความถี่การตรวจ</div>
+    <button class="chip" id="fq-monthly" onclick="filterFreq('monthly')">รายเดือน</button>
+    <button class="chip" id="fq-quarterly" onclick="filterFreq('quarterly')">รายไตรมาส</button>
+    <button class="chip" id="fq-annual" onclick="filterFreq('annual')">รายปี</button>
+    <button class="chip" id="fq-event" onclick="filterFreq('event')">ตามเหตุการณ์</button>
+    <button class="chip" id="fq-continuous" onclick="filterFreq('continuous')">ต่อเนื่อง/ทุก Shipment</button>
+  </div>
+
+  <!-- TAB PANELS -->
+  <div class="sidebar-section">
+    <div class="sidebar-label">ดูตามหมวดหลัก</div>
+    <button class="tab-btn" onclick="showTab(0)"><span class="tnum">01</span>Corporate Governance</button>
+    <button class="tab-btn" onclick="showTab(1)"><span class="tnum">02</span>Securities & Capital</button>
+    <button class="tab-btn" onclick="showTab(2)"><span class="tnum">03</span>Business Law</button>
+    <button class="tab-btn" onclick="showTab(3)"><span class="tnum">04</span>Regulatory & License</button>
+    <button class="tab-btn" onclick="showTab(4)"><span class="tnum">05</span>Tax & Statutory Fee</button>
+    <button class="tab-btn" onclick="showTab(5)"><span class="tnum">06</span>Factory Law</button>
+    <button class="tab-btn" onclick="showTab(6)"><span class="tnum">07</span>Labour Law & HR</button>
+    <button class="tab-btn" onclick="showTab(7)"><span class="tnum">08</span>Land & Asset</button>
+    <button class="tab-btn" onclick="showTab(8)"><span class="tnum">09</span>International Trade</button>
+    <button class="tab-btn" onclick="showTab(9)"><span class="tnum">10</span>Certification</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- HOME PANEL -->
+  <div id="pHome" class="panel active">
+    <div class="home-hero">
+      <div class="home-hero-title">Legal & Compliance — LACO IPO Readiness Framework</div>
+      <div class="home-hero-sub">Management Division Manager · 10 หมวดหลัก · 64+ หมวดย่อย · 15+ หน่วยงานกำกับ · 9 มาตรฐานสากล</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-n">10</div><div class="kpi-l">หมวดหลัก</div></div>
+      <div class="kpi"><div class="kpi-n">64+</div><div class="kpi-l">หมวดย่อย</div></div>
+      <div class="kpi"><div class="kpi-n">15+</div><div class="kpi-l">หน่วยงานกำกับ</div></div>
+      <div class="kpi"><div class="kpi-n">9</div><div class="kpi-l">มาตรฐานสากล</div></div>
+    </div>
+    <div class="legend-row">
+      <div class="leg"><div class="leg-dot" style="background:#2EA043"></div>Green = ปฏิบัติได้</div>
+      <div class="leg"><div class="leg-dot" style="background:#E3B341"></div>Amber = ต้องตรวจสอบ</div>
+      <div class="leg"><div class="leg-dot" style="background:#F85149"></div>Red = Action Required</div>
+    </div>
+    <div class="section-title">10 หมวดหลัก — คลิกเพื่อดูรายละเอียด</div>
+    <div class="home-grid" id="homeGrid"></div>
+  </div>
+
+  <!-- FILTER VIEW -->
+  <div id="pFilter" class="panel">
+    <div id="mhAgency" class="mode-hdr mh-amber"><div class="mode-hdr-title" id="mhAgencyTitle"></div><div class="mode-hdr-sub" id="mhAgencySub"></div></div>
+    <div id="mhOwner" class="mode-hdr mh-purple"><div class="mode-hdr-title" id="mhOwnerTitle"></div><div class="mode-hdr-sub" id="mhOwnerSub"></div></div>
+    <div id="mhFreq" class="mode-hdr mh-green"><div class="mode-hdr-title" id="mhFreqTitle"></div><div class="mode-hdr-sub" id="mhFreqSub"></div></div>
+    <div class="tbl-wrap" id="filterTableWrap">
+      <table>
+        <colgroup><col style="width:13%"><col style="width:13%"><col style="width:11%"><col style="width:21%"><col style="width:12%"><col style="width:15%"><col style="width:7%"><col style="width:8%"></colgroup>
+        <tr><th>งาน / Task</th><th>ผู้กำกับภายนอก</th><th>ฝ่ายรับผิดชอบ</th><th>Critical Point</th><th>ความถี่ตรวจ</th><th>รายงานที่ต้องส่ง</th><th>Status</th><th>กฎหมายอ้างอิง</th></tr>
+        <tbody id="filterBody"></tbody>
+      </table>
+    </div>
+    <div id="filterNoResult" class="no-results" style="display:none">ไม่พบรายการที่ตรงกัน</div>
+  </div>
+
+  <!-- TAB PANELS -->
+  <div id="pTabs" class="panel">
+    <div id="tabContent"></div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const TABS=[
+  {id:0,num:'01',title:'Corporate Governance & Secretariat',law:'พ.ร.บ.บริษัทมหาชน 2535 · ประกาศ กลต. · SET Listing Rules',color:'#58A6FF',
+   desc:'งานแกนกลางของ IPO Readiness — BOD, Shareholder Register, AGM, DOA, RPT',
+   tags:['กลต.','SET','กรมพัฒนาธุรกิจการค้า'],
+   groups:[{title:'',rows:[
+    {task:'BOD / Shareholder Register',agencies:['กลต.','SET'],owner:'Secretary + Legal',ownerKeys:['Legal'],critical:'ต้องอัปเดตทุกครั้งที่มีการเปลี่ยนแปลงผู้ถือหุ้น <span class="danger">ภายใน 14 วัน</span>',freq:'ต่อเนื่อง / ทุกครั้งที่เปลี่ยน',freqKey:'continuous',report:'แบบ บอจ.5 / SET LINK',law:'พ.ร.บ.บริษัทมหาชน ม.54',status:'g'},
+    {task:'Board Meeting & AGM',agencies:['กลต.','SET'],owner:'Secretary + Legal',ownerKeys:['Legal'],critical:'AGM ต้องจัดภายใน <span class="danger">4 เดือน</span>หลังสิ้นปีบัญชี — รายงานมติ SET LINK ภายใน 9.00 น.',freq:'AGM ปีละ 1 ครั้ง / Board ทุกไตรมาส',freqKey:'annual',report:'รายงานมติ SET LINK',law:'พ.ร.บ.บริษัทมหาชน ม.100',status:'g'},
+    {task:'Articles of Association',agencies:['กลต.','กรมพัฒนาธุรกิจการค้า'],owner:'Legal + Secretary',ownerKeys:['Legal'],critical:'ต้องปรับให้สอดคล้อง SET/SEC ก่อน Filing — <span class="danger">ห้ามมีข้อบังคับที่ขัดกับ พ.ร.บ.บริษัทมหาชน</span>',freq:'ตรวจทุกปี / เมื่อมีการแก้ไข',freqKey:'annual',report:'ยื่น กรมพัฒนาธุรกิจฯ เมื่อแก้ไข',law:'พ.ร.บ.บริษัทมหาชน ม.28',status:'a'},
+    {task:'Delegation of Authority (DOA)',agencies:['กลต.'],owner:'MDM + Legal + CEO',ownerKeys:['MDM','Legal'],critical:'DOA ต้องครอบคลุมทุก Function <span class="warn">อนุมัติซ้อนกันไม่ได้</span>',freq:'ทบทวนทุกปี',freqKey:'annual',report:'รายงานต่อ Audit Committee',law:'COSO Internal Control',status:'a'},
+    {task:'Corporate Structure & Subsidiary',agencies:['กลต.','SET'],owner:'Legal + Finance',ownerKeys:['Legal','Finance'],critical:'ต้องเปิดเผย Subsidiary ทั้งหมด รวม Indirect Holdings <span class="danger">ใน Prospectus</span>',freq:'ทบทวนทุกปี',freqKey:'annual',report:'แบบ 56-1 / One Report',law:'ประกาศ กลต. ทจ.28',status:'g'},
+    {task:'Related Party Transaction (RPT)',agencies:['กลต.','SET'],owner:'Legal + Finance + Secretary',ownerKeys:['Legal','Finance'],critical:'RPT ทุกรายการต้องผ่าน <span class="danger">Audit Committee ก่อน</span>',freq:'ทุก Quarter',freqKey:'quarterly',report:'รายงาน Audit Cmte + 56-1',law:'ประกาศ กลต. กจ.21/2551',status:'a'},
+  ]}]},
+  {id:1,num:'02',title:'Securities & Capital Market Compliance',law:'พ.ร.บ.หลักทรัพย์ฯ 2535 · ประกาศ กลต. ทจ.28/2551 · SET Listing Manual',color:'#58A6FF',
+   desc:'SEC Filing, Prospectus, SET Listing Requirements, Silent Period, Investor Relations',
+   tags:['กลต.','SET','FA/Underwriter'],
+   groups:[{title:'',rows:[
+    {task:'SEC Filing Form 69-1 / 35-D',agencies:['กลต.'],owner:'Legal + Finance + Secretary',ownerKeys:['Legal','Finance'],critical:'Filing ต้องครบถ้วน <span class="danger">ข้อมูลเท็จมีโทษอาญา</span> — ตรวจ 3 รอบก่อนยื่น',freq:'ก่อน IPO 1 ครั้ง',freqKey:'event',report:'แบบ 69-1 ผ่านระบบ EDGAR กลต.',law:'พ.ร.บ.หลักทรัพย์ฯ ม.69',status:'a'},
+    {task:'Prospectus (หนังสือชี้ชวน)',agencies:['กลต.'],owner:'Legal + Finance + MDM',ownerKeys:['Legal','Finance','MDM'],critical:'ทุกข้อความต้องพิสูจน์ได้ — <span class="danger">Risk Factor ต้องครบ ห้ามโอ้อวด</span>',freq:'ร่างและแก้ไขหลายรอบ',freqKey:'event',report:'ยื่น กลต. พร้อม Filing',law:'ประกาศ กลต. ทจ.28',status:'a'},
+    {task:'SET Listing Requirements',agencies:['SET'],owner:'Legal + Finance + Secretary',ownerKeys:['Legal','Finance'],critical:'ตรวจ Eligibility: <span class="warn">กำไร 3 ปีติด / Shareholders ≥300 / Free Float ≥15%</span>',freq:'ตรวจก่อนยื่น + Post-IPO',freqKey:'event',report:'รายงานต่อ SET ตามกำหนด',law:'SET Listing Manual Ch.7',status:'a'},
+    {task:'Silent Period / Blackout Policy',agencies:['กลต.'],owner:'Legal + HR + Secretary',ownerKeys:['Legal','HR'],critical:'<span class="danger">ห้ามซื้อขายหุ้นก่อนประกาศผล 30 วัน</span>',freq:'ต่อเนื่อง / ทุกรอบประกาศผล',freqKey:'continuous',report:'รายงานการซื้อขายหลักทรัพย์ผู้บริหาร',law:'พ.ร.บ.หลักทรัพย์ฯ ม.241',status:'g'},
+    {task:'Investor Relations Legal',agencies:['กลต.','SET'],owner:'IR + Legal',ownerKeys:['Legal'],critical:'<span class="danger">ห้าม Selective Disclosure</span> ข้อมูลต้องเท่ากันทุกราย',freq:'ต่อเนื่อง',freqKey:'continuous',report:'MD&A / Analyst Briefing Minutes',law:'ประกาศ กลต.',status:'g'},
+    {task:'Underwriter / FA Liaison',agencies:['กลต.','SET'],owner:'Legal + Finance + CEO',ownerKeys:['Legal','Finance'],critical:'FA ต้องได้รับ <span class="warn">ใบอนุญาต กลต.</span>',freq:'ตลอดช่วง IPO Process',freqKey:'event',report:'รายงานตาม FA Agreement',law:'พ.ร.บ.หลักทรัพย์ฯ ม.96',status:'g'},
+  ]}]},
+  {id:2,num:'03',title:'Business Law & Contract Management',law:'ประมวลกฎหมายแพ่งและพาณิชย์ · พ.ร.บ.ว่าด้วยสัญญาที่ไม่เป็นธรรม 2540',color:'#58A6FF',
+   desc:'Contract Template, MOU/NDA, Export Contract, Contract Renewal, Dispute/Litigation',
+   tags:['ศาลแพ่ง','ICC','Legal'],
+   groups:[{title:'',rows:[
+    {task:'Contract Template Standardization',agencies:['ศาลแพ่ง'],owner:'Legal + Sales + Ops',ownerKeys:['Legal'],critical:'Template ต้องผ่าน Legal Review — <span class="warn">สัญญา OEM ต้องระบุ IP Ownership</span>',freq:'ทบทวน Template ทุกปี',freqKey:'annual',report:'Contract Register รายไตรมาส',law:'ปพพ. ม.149–153',status:'g'},
+    {task:'MOU / NDA Review & Repository',agencies:['ศาลแพ่ง'],owner:'Legal + MDM',ownerKeys:['Legal','MDM'],critical:'NDA ต้องระบุ Duration, Scope, Penalty ชัดเจน <span class="warn">Repository ต้องค้นหาได้ทันที</span>',freq:'ทบทวนทุก 6 เดือน',freqKey:'other',report:'MOU Register ต่อ CEO รายไตรมาส',law:'ปพพ. ม.353',status:'g'},
+    {task:'Export Contract — Incoterms / L/C',agencies:['ICC','ศาลพาณิชย์'],owner:'Legal + Sales + Finance',ownerKeys:['Legal','Finance'],critical:'<span class="danger">L/C Discrepancy ทำให้รับเงินไม่ได้</span>',freq:'ตรวจทุกสัญญา',freqKey:'event',report:'Export Contract Report รายเดือน',law:'UCP 600 / ICC Incoterms 2020',status:'g'},
+    {task:'Contract Renewal Tracking',agencies:['-'],owner:'Legal + Admin',ownerKeys:['Legal','HR'],critical:'แจ้งเตือนล่วงหน้า <span class="danger">90 วัน</span>ก่อนหมดอายุ',freq:'Monthly Alert',freqKey:'monthly',report:'Renewal Calendar ต่อ MDM รายเดือน',law:'ปพพ. ม.149',status:'a'},
+    {task:'Dispute Resolution & Litigation',agencies:['ศาลแพ่ง','ศาลพาณิชย์'],owner:'Legal + MDM + CEO',ownerKeys:['Legal','MDM'],critical:'คดีค้างทุกคดีต้อง <span class="danger">Disclose ใน Prospectus</span>',freq:'Update ทุกเดือน',freqKey:'monthly',report:'Litigation Register ต่อ Audit Cmte',law:'ปพพ. / พ.ร.บ.อนุญาโตตุลาการ',status:'a'},
+  ]}]},
+  {id:3,num:'04',title:'Regulatory & License Compliance',law:'พ.ร.บ.อาหาร 2522 · พ.ร.บ.มาตรฐานสินค้าเกษตร 2551 · ระเบียบกรมการค้าต่างประเทศ',color:'#39D353',
+   desc:'FDA/อย., Export License, Phytosanitary, Environmental Permit, HALAL/Organic',
+   tags:['FDA / อย.','กรมการค้าต่างประเทศ','กรมวิชาการเกษตร'],
+   groups:[{title:'',rows:[
+    {task:'FDA / อย. ใบอนุญาตผลิต',agencies:['FDA / อย.'],owner:'QA + Legal + Admin',ownerKeys:['QA','Legal','HR'],critical:'<span class="danger">หมดอายุแม้วันเดียว = ผิดกฎหมาย ปิดโรงงานได้</span>',freq:'ตรวจทุกเดือน ต่ออายุล่วงหน้า 90 วัน',freqKey:'monthly',report:'รายงานต่อ อย. / แจ้งเมื่อเปลี่ยนกระบวนการ',law:'พ.ร.บ.อาหาร 2522 ม.36',status:'g'},
+    {task:'Export License กรมการค้าต่างประเทศ',agencies:['กรมการค้าต่างประเทศ'],owner:'Legal + Sales + Logistics',ownerKeys:['Legal'],critical:'<span class="danger">ต้องมีใบอนุญาตก่อนส่งออกทุกครั้ง</span>',freq:'ตรวจทุก Shipment',freqKey:'continuous',report:'ใบอนุญาตส่งออกแนบ Shipping Doc',law:'พ.ร.บ.การส่งออกฯ',status:'g'},
+    {task:'Phytosanitary Certificate',agencies:['กรมวิชาการเกษตร'],owner:'QA + Logistics',ownerKeys:['QA'],critical:'ต้องออกก่อนส่งออกทุกครั้ง — <span class="warn">แต่ละประเทศระบุรูปแบบเฉพาะ</span>',freq:'ทุก Shipment',freqKey:'continuous',report:'Phytosanitary Cert แนบทุก Shipment',law:'พ.ร.บ.กักพืช 2507',status:'g'},
+    {task:'Environmental Permit',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Safety + Legal + Ops',ownerKeys:['Safety','Legal'],critical:'<span class="warn">ขยายโรงงานต้องขออนุญาตใหม่</span>',freq:'ทบทวนทุกปี',freqKey:'annual',report:'รายงานมลพิษ ต่อกรมควบคุมมลพิษ ทุก 6 เดือน',law:'พ.ร.บ.โรงงาน 2535 ม.40',status:'a'},
+    {task:'HALAL / Organic Certification',agencies:['CICOT','มกอช.'],owner:'QA + Legal',ownerKeys:['QA','Legal'],critical:'<span class="danger">ใช้สัญลักษณ์ HALAL โดยไม่ได้รับอนุญาต = โทษปรับ/จำคุก</span>',freq:'ตรวจสถานะทุกปี',freqKey:'annual',report:'รายงานต่อ CICOT / มกอช. ตาม Audit Cycle',law:'พ.ร.บ.มาตรฐานสินค้าเกษตร',status:'g'},
+    {task:'Food Safety Cert Legal Binding',agencies:['CB','กลต.'],owner:'QA + Legal',ownerKeys:['QA','Legal'],critical:'<span class="danger">Cert หมดอายุระหว่าง IPO = Red Flag ใน Due Diligence ทันที</span>',freq:'ตรวจ Cert Calendar ทุกเดือน',freqKey:'monthly',report:'แจ้ง SET เมื่อมีการเปลี่ยนแปลง Cert สำคัญ',law:'SET Listing Manual',status:'g'},
+  ]}]},
+  {id:4,num:'05',title:'Tax & Statutory Fee Compliance',law:'ประมวลรัษฎากร · พ.ร.บ.ภาษีที่ดินและสิ่งปลูกสร้าง 2562 · พ.ร.บ.ภาษีป้าย 2510',color:'#F85149',
+   desc:'ภาษีเงินได้นิติบุคคล, WHT, VAT/Refund, ภาษีที่ดิน, ภาษีป้าย, ค่าธรรมเนียมโรงงาน',
+   tags:['กรมสรรพากร','กรมสรรพสามิต','อปท.'],
+   groups:[
+    {title:'ภาษีทางตรง',rows:[
+      {task:'ภาษีเงินได้นิติบุคคล',agencies:['กรมสรรพากร'],owner:'Finance + Legal',ownerKeys:['Finance','Legal'],critical:'ยื่น ภ.ง.ด.50 ภายใน <span class="danger">150 วัน</span>หลังสิ้นรอบบัญชี เบี้ยปรับ 100%',freq:'ปีละ 2 ครั้ง',freqKey:'annual',report:'ภ.ง.ด.51 (ครึ่งปี) / ภ.ง.ด.50 (สิ้นปี)',law:'ประมวลรัษฎากร ม.67',status:'g'},
+      {task:'ภาษีหัก ณ ที่จ่าย (WHT)',agencies:['กรมสรรพากร'],owner:'Finance / Payroll',ownerKeys:['Finance','HR'],critical:'นำส่งภายใน <span class="danger">วันที่ 7 ของเดือนถัดไป</span>',freq:'ทุกเดือน',freqKey:'monthly',report:'ภ.ง.ด.1, 3, 53 ทุกเดือน',law:'ประมวลรัษฎากร ม.3 เตรส',status:'g'},
+      {task:'Transfer Pricing',agencies:['กรมสรรพากร'],owner:'Finance + Legal',ownerKeys:['Finance','Legal'],critical:'รายได้ >200 ล้านบาท <span class="warn">ต้องทำ TP Documentation ปรับ 400,000 บาท</span>',freq:'ทบทวนทุกปีก่อนยื่นภาษี',freqKey:'annual',report:'แบบ TP Disclosure Form ต่อกรมสรรพากร',law:'ประมวลรัษฎากร ม.71 ทวิ',status:'a'},
+    ]},
+    {title:'ภาษีทางอ้อม',rows:[
+      {task:'VAT 7% + VAT Refund Exporter',agencies:['กรมสรรพากร'],owner:'Finance + Accounting',ownerKeys:['Finance'],critical:'ส่งออก 100% = สิทธิขอคืน Input VAT — <span class="warn">ต้องมี Invoice และ Shipping Doc ครบ</span>',freq:'ยื่น ภ.พ.30 ทุกเดือน',freqKey:'monthly',report:'ภ.พ.30 + แบบขอคืนภาษีมูลค่าเพิ่ม',law:'ประมวลรัษฎากร ม.77',status:'g'},
+      {task:'ภาษีสรรพสามิต',agencies:['กรมสรรพสามิต'],owner:'Finance + QA',ownerKeys:['Finance','QA'],critical:'<span class="warn">ผลิตภัณฑ์ที่มีน้ำตาล/เครื่องดื่มอาจเข้าข่าย</span>',freq:'ตรวจทุกครั้งที่เพิ่ม Product Line ใหม่',freqKey:'event',report:'ยื่นแบบ ภษ. ตามรอบถ้าเข้าข่าย',law:'พ.ร.บ.ภาษีสรรพสามิต 2560',status:'a'},
+    ]},
+    {title:'ภาษีท้องถิ่น',rows:[
+      {task:'ภาษีที่ดินและสิ่งปลูกสร้าง',agencies:['อปท.'],owner:'Finance + Admin',ownerKeys:['Finance','HR'],critical:'โรงงาน = อัตราเชิงพาณิชย์ ยื่นชำระ <span class="danger">ภายใน เม.ย. ทุกปี</span>',freq:'ทุกปี (ม.ค.–เม.ย.)',freqKey:'annual',report:'แบบ ภ.ด.ส.1 ต่อ อปท. ทุกปี',law:'พ.ร.บ.ภาษีที่ดินฯ 2562 ม.44',status:'g'},
+      {task:'ภาษีป้าย',agencies:['อปท.'],owner:'Admin + Finance',ownerKeys:['HR','Finance'],critical:'ยื่นภายใน <span class="danger">มี.ค. ทุกปี</span> ค้างยื่น = เบี้ยปรับ 10%/ปี',freq:'ทุกปี (ม.ค.–มี.ค.)',freqKey:'annual',report:'แบบ ภ.ป.1 ต่อ อปท. ทุกปี',law:'พ.ร.บ.ภาษีป้าย 2510 ม.10',status:'g'},
+      {task:'ค่าธรรมเนียมใบอนุญาตโรงงาน',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Admin + Legal',ownerKeys:['HR','Legal'],critical:'<span class="danger">ค้างชำระ = ใบอนุญาตถูกพักได้ กระทบการผลิตทันที</span>',freq:'ทุกปี',freqKey:'annual',report:'ยื่นต่อกรมโรงงานฯ พร้อมหลักฐาน',law:'พ.ร.บ.โรงงาน 2535 ม.12',status:'a'},
+    ]},
+  ]},
+  {id:5,num:'06',title:'Factory Law & Industrial Compliance',law:'พ.ร.บ.โรงงาน 2535 (แก้ไข 2562) · พ.ร.บ.ควบคุมอาคาร 2522 · พ.ร.บ.วัตถุอันตราย 2535',color:'#E3B341',
+   desc:'ใบอนุญาตโรงงาน รง.4, เครื่องจักร, EIA, น้ำเสีย, ของเสีย, อาคาร, หม้อไอน้ำ',
+   tags:['กรมโรงงานอุตสาหกรรม','อปท.','สผ.'],
+   groups:[
+    {title:'ใบอนุญาตโรงงาน',rows:[
+      {task:'ใบอนุญาตโรงงาน รง.4',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Legal + Admin + Ops',ownerKeys:['Legal','HR'],critical:'<span class="danger">ขยายโรงงานโดยไม่ขออนุญาต = ปิดโรงงานทันที</span>',freq:'ตรวจทุกเดือน ต่ออายุล่วงหน้า 60 วัน',freqKey:'monthly',report:'รายงานประจำปีต่อกรมโรงงานฯ',law:'พ.ร.บ.โรงงาน 2535 ม.12',status:'g'},
+      {task:'การขยายโรงงาน / เพิ่มเครื่องจักร',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Engineering + Legal',ownerKeys:['Engineering','Legal'],critical:'<span class="danger">ทำโดยไม่ขออนุญาต = โทษอาญา + รื้อถอน</span>',freq:'ทุกครั้งก่อนติดตั้ง',freqKey:'event',report:'แบบ รง.4 (ขอเพิ่ม) ต่อกรมโรงงานฯ',law:'พ.ร.บ.โรงงาน 2535 ม.19',status:'g'},
+      {task:'ทะเบียนเครื่องจักร',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Engineering + Admin',ownerKeys:['Engineering','HR'],critical:'<span class="warn">ตรวจ Spot-check โดยไม่แจ้งล่วงหน้า</span>',freq:'Update ทุกครั้งที่เปลี่ยนแปลง',freqKey:'event',report:'แบบ รจ.1 ต่อกรมโรงงานฯ',law:'พ.ร.บ.โรงงาน 2535 ม.22',status:'a'},
+    ]},
+    {title:'สิ่งแวดล้อมและของเสีย',rows:[
+      {task:'EIA / IEE',agencies:['สผ.'],owner:'Legal + Ops + Engineering',ownerKeys:['Legal','Engineering'],critical:'กำลังผลิต >50 ตัน/วัน <span class="warn">อาจต้องทำ EIA ใช้เวลา 6–18 เดือน</span>',freq:'ก่อนขยายโรงงาน',freqKey:'event',report:'รายงาน EIA / IEE ต่อ สผ.',law:'พ.ร.บ.สิ่งแวดล้อม 2535 ม.46',status:'a'},
+      {task:'ระบบบำบัดน้ำเสีย',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Safety + Ops',ownerKeys:['Safety'],critical:'<span class="danger">ตรวจค่า BOD, SS, pH ทุกเดือน</span>',freq:'ตรวจค่าน้ำทิ้งทุกเดือน',freqKey:'monthly',report:'รายงานค่าน้ำทิ้ง ต่อกรมโรงงานฯ ทุก 6 เดือน',law:'ประกาศกรมโรงงานฯ 2548',status:'g'},
+      {task:'การจัดการของเสียอุตสาหกรรม',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Safety + Ops',ownerKeys:['Safety'],critical:'<span class="danger">ต้องใช้ Manifest System ห้ามทิ้งเอง</span>',freq:'ทุกครั้งที่กำจัดของเสีย',freqKey:'event',report:'Manifest Form + รายงานของเสีย รายปี',law:'พ.ร.บ.โรงงาน 2535 ม.40',status:'g'},
+      {task:'วัตถุอันตราย (Hazardous)',agencies:['กรมโรงงานอุตสาหกรรม','FDA / อย.'],owner:'Safety + QA',ownerKeys:['Safety','QA'],critical:'<span class="warn">ต้องขึ้นทะเบียนและเก็บตาม GHS Standard</span>',freq:'ตรวจ Inventory ทุกเดือน',freqKey:'monthly',report:'รายงานการครอบครองวัตถุอันตราย ทุกปี',law:'พ.ร.บ.วัตถุอันตราย 2535 ม.36',status:'a'},
+    ]},
+    {title:'อาคารและสาธารณูปโภค',rows:[
+      {task:'ใบอนุญาตก่อสร้าง / ดัดแปลงอาคาร',agencies:['อปท.'],owner:'Engineering + Legal + Admin',ownerKeys:['Engineering','Legal','HR'],critical:'<span class="danger">สร้างโดยไม่มีใบอนุญาต = รื้อถอน</span>',freq:'ทุกครั้งก่อนก่อสร้าง',freqKey:'event',report:'ใบ อ.1 ต่อ อปท.',law:'พ.ร.บ.ควบคุมอาคาร 2522 ม.21',status:'g'},
+      {task:'ใบอนุญาตใช้อาคาร (ใบ อ.6)',agencies:['อปท.'],owner:'Engineering + Admin',ownerKeys:['Engineering','HR'],critical:'<span class="danger">ต้องได้รับ อ.6 ก่อนเปิดใช้อาคารใหม่</span>',freq:'ทุกครั้งก่อนเปิดใช้อาคารใหม่',freqKey:'event',report:'ใบ อ.6 ต่อ อปท.',law:'พ.ร.บ.ควบคุมอาคาร 2522 ม.32',status:'g'},
+      {task:'ระบบไฟฟ้าและหม้อไอน้ำ',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Engineering + Safety',ownerKeys:['Engineering','Safety'],critical:'<span class="danger">หม้อไอน้ำต้องตรวจสภาพโดยวิศวกรทุกปี</span>',freq:'ตรวจหม้อไอน้ำทุกปี',freqKey:'annual',report:'รายงานตรวจสภาพหม้อไอน้ำ ต่อกรมโรงงานฯ',law:'พ.ร.บ.โรงงาน 2535 กฎกระทรวง',status:'g'},
+    ]},
+  ]},
+  {id:6,num:'07',title:'Labour Law & HR Compliance',law:'พ.ร.บ.คุ้มครองแรงงาน 2541 (แก้ไข 2562) · พ.ร.บ.ประกันสังคม 2533 · พ.ร.บ.แรงงานสัมพันธ์ 2518',color:'#E3B341',
+   desc:'สัญญาจ้าง, ค่าจ้าง/OT, ประกันสังคม, แรงงานต่างด้าว, Safety, Labour Relations',
+   tags:['กรมสวัสดิการฯ','สปส.','กรมการจัดหางาน'],
+   groups:[
+    {title:'7.1 Employment Contract',rows:[
+      {task:'สัญญาจ้างพนักงานประจำ',agencies:['กรมสวัสดิการฯ'],owner:'HR & Admin + Legal',ownerKeys:['HR','Legal'],critical:'<span class="danger">ขาดไม่ได้แม้แต่ข้อเดียว</span> ตาม ม.10',freq:'ตรวจ Template ทุกปี',freqKey:'annual',report:'ยื่นต่อกรมสวัสดิการฯ เมื่อมีคำร้อง',law:'พ.ร.บ.คุ้มครองแรงงาน ม.10',status:'g'},
+      {task:'สัญญาจ้างชั่วคราว / Seasonal',agencies:['กรมสวัสดิการฯ'],owner:'HR & Admin + Legal',ownerKeys:['HR','Legal'],critical:'ห้ามต่อสัญญาเกิน <span class="danger">2 ปีติด</span> = Severance Liability',freq:'ตรวจ Renewal ทุก Season',freqKey:'event',report:'–',law:'พ.ร.บ.คุ้มครองแรงงาน ม.118',status:'a'},
+      {task:'สัญญาจ้างเหมา Outsource',agencies:['กรมสวัสดิการฯ'],owner:'HR + Legal + Procurement',ownerKeys:['HR','Legal'],critical:'<span class="warn">Co-employment Risk ถ้าควบคุมงานโดยตรง</span>',freq:'ตรวจ Contractor License ทุกปี',freqKey:'annual',report:'–',law:'พ.ร.บ.คุ้มครองแรงงาน ม.11/1',status:'a'},
+    ]},
+    {title:'7.2 Wages & Compensation',rows:[
+      {task:'ค่าจ้างขั้นต่ำ',agencies:['กรมสวัสดิการฯ'],owner:'HR & Admin / Payroll',ownerKeys:['HR'],critical:'เชียงใหม่ <span class="warn">363 บาท/วัน (2025)</span> ต้องอัปเดต Payroll ทันทีที่ประกาศ',freq:'ตรวจ Payroll ทุกเดือน',freqKey:'monthly',report:'รายงานต่อกรมฯ เมื่อมีคำร้อง',law:'พ.ร.บ.คุ้มครองแรงงาน ม.87',status:'g'},
+      {task:'OT Compliance',agencies:['กรมสวัสดิการฯ'],owner:'HR & Admin / Payroll',ownerKeys:['HR'],critical:'OT Record ต้องมีลายเซ็น — วันหยุด 3x <span class="danger">เรียกคืนย้อนหลัง 10 ปี</span>',freq:'ตรวจ OT Record ทุกเดือน',freqKey:'monthly',report:'รายงานต่อกรมฯ เมื่อมีการตรวจสอบ',law:'พ.ร.บ.คุ้มครองแรงงาน ม.61',status:'a'},
+    ]},
+    {title:'7.3 Social Security & Funds',rows:[
+      {task:'ประกันสังคม ม.33',agencies:['สปส.'],owner:'HR & Admin / Finance',ownerKeys:['HR','Finance'],critical:'ส่งสมทบภายใน <span class="danger">15 ของเดือนถัดไป</span> ดอกเบี้ย 2%/เดือน ทบต้น',freq:'ทุกเดือน',freqKey:'monthly',report:'แบบ สปส.1-10 ทุกเดือน',law:'พ.ร.บ.ประกันสังคม 2533 ม.47',status:'g'},
+      {task:'กองทุนเงินทดแทน',agencies:['สปส.'],owner:'HR & Admin / Safety',ownerKeys:['HR','Safety'],critical:'ต้องแจ้งอุบัติเหตุภายใน <span class="danger">15 วัน</span>',freq:'ทุกครั้งที่เกิดอุบัติเหตุ',freqKey:'event',report:'แบบ กท.16 ต่อ สปส. ภายใน 15 วัน',law:'พ.ร.บ.เงินทดแทน 2537 ม.18',status:'g'},
+      {task:'กองทุนพัฒนาฝีมือแรงงาน',agencies:['กรมการจัดหางาน'],owner:'HR & Admin / Training',ownerKeys:['HR'],critical:'จ้าง 100+ คน ต้องฝึก <span class="warn">50 ชม./คน/ปี</span> ตรวจย้อนหลัง 5 ปี',freq:'ตรวจ Training Record ทุกปี',freqKey:'annual',report:'รายงานฝึกอบรม ต่อกรมพัฒนาฝีมือแรงงาน',law:'พ.ร.บ.ส่งเสริมพัฒนาฝีมือแรงงาน 2545',status:'a'},
+    ]},
+    {title:'7.4 Foreign Worker',rows:[
+      {task:'Work Permit',agencies:['กรมการจัดหางาน'],owner:'HR & Admin',ownerKeys:['HR'],critical:'ล่าช้า 1 วัน = <span class="danger">ผิดกฎหมาย ปรับ 100,000 บาท/คน</span>',freq:'ตรวจสถานะ Work Permit ทุกเดือน',freqKey:'monthly',report:'แจ้งกรมการจัดหางาน เมื่อจ้าง/ปลดแรงงาน',law:'พ.ร.บ.การทำงานของคนต่างด้าว 2560 ม.8',status:'g'},
+      {task:'Living Conditions / SEDEX',agencies:['SEDEX'],owner:'HR & Admin + Ops',ownerKeys:['HR'],critical:'ห้ามยึด Passport — <span class="danger">ถ้า Auditor พบ = Contract ถูก Terminate ทันที</span>',freq:'Self-Assessment ทุกปี / Audit ตามรอบ',freqKey:'annual',report:'SMETA Report Upload ใน SEDEX Platform',law:'EU CSDDD 2026 / ILO Conventions',status:'a'},
+    ]},
+    {title:'7.5 Occupational Health & Safety',rows:[
+      {task:'จป.วิชาชีพ',agencies:['กรมสวัสดิการฯ'],owner:'Safety Officer + HR',ownerKeys:['Safety','HR'],critical:'บังคับถ้า >100 คน <span class="warn">ต้องทำรายงานประจำปี</span>',freq:'รายงานประจำปี / ตรวจ Random',freqKey:'annual',report:'รายงาน จป. ต่อกรมสวัสดิการฯ ทุกปี',law:'พ.ร.บ.ความปลอดภัยฯ 2554 ม.13',status:'g'},
+      {task:'คณะกรรมการความปลอดภัย คปอ.',agencies:['กรมสวัสดิการฯ'],owner:'Safety Officer + HR',ownerKeys:['Safety','HR'],critical:'บังคับถ้า >50 คน ต้องประชุมทุกเดือน — <span class="danger">ขาดประชุม = ผิดกฎหมาย</span>',freq:'ทุกเดือน',freqKey:'monthly',report:'รายงานการประชุม คปอ. เก็บไว้ให้กรมตรวจ',law:'กฎกระทรวง ปี 2549 ข้อ 11',status:'g'},
+      {task:'การรายงานอุบัติเหตุ',agencies:['สปส.'],owner:'Safety Officer + HR',ownerKeys:['Safety','HR'],critical:'อุบัติเหตุหยุดงานเกิน 3 วัน <span class="danger">ต้องรายงาน สปส. ภายใน 15 วัน</span>',freq:'ทุกครั้งที่เกิดอุบัติเหตุ',freqKey:'event',report:'แบบ กท.16 ต่อ สปส.',law:'พ.ร.บ.เงินทดแทน 2537 ม.18',status:'g'},
+      {task:'Cold Storage Hazard',agencies:['กรมโรงงานอุตสาหกรรม'],owner:'Safety Officer + Ops',ownerKeys:['Safety'],critical:'ต้องมี <span class="warn">Emergency Plan / Lock-out Tag-out SOP / PPE</span> สำหรับ Freezing Zone',freq:'ตรวจ SOP ทุก 6 เดือน / ซ้อม Emergency ทุกปี',freqKey:'other',report:'รายงานซ้อมแผนฉุกเฉิน เก็บไว้ให้ตรวจ',law:'พ.ร.บ.ความปลอดภัยฯ 2554 ม.16',status:'a'},
+      {task:'Chemical Safety / MSDS',agencies:['กรมโรงงานอุตสาหกรรม','FDA / อย.'],owner:'QA + Safety Officer',ownerKeys:['QA','Safety'],critical:'ทุก Chemical ต้องมี MSDS ภาษาไทย <span class="warn">พนักงานต้องผ่านการอบรมก่อนใช้</span>',freq:'ตรวจ MSDS Register ทุก 6 เดือน',freqKey:'other',report:'รายงานการครอบครองสารเคมี ต่อกรมโรงงานฯ ทุกปี',law:'พ.ร.บ.วัตถุอันตราย 2535 ม.36',status:'g'},
+      {task:'สวัสดิการโรงงาน',agencies:['กรมสวัสดิการฯ'],owner:'HR & Admin',ownerKeys:['HR'],critical:'ห้องน้ำ/น้ำดื่ม/พื้นที่พักต้องตามมาตรฐานกฎกระทรวง — <span class="warn">ตรวจ Random</span>',freq:'ตรวจ Random / เมื่อมีคำร้อง',freqKey:'event',report:'–',law:'กฎกระทรวงฉบับที่ 2 (2541)',status:'g'},
+    ]},
+    {title:'7.6 Labour Relations',rows:[
+      {task:'ข้อบังคับการทำงาน',agencies:['กรมสวัสดิการฯ'],owner:'HR & Admin + Legal',ownerKeys:['HR','Legal'],critical:'<span class="danger">ถ้าไม่จดทะเบียน = ไล่ออกไม่ได้โดยไม่จ่ายค่าชดเชย</span>',freq:'ทบทวนทุกปี',freqKey:'annual',report:'ยื่นจดทะเบียน / แจ้งเมื่อแก้ไข',law:'พ.ร.บ.คุ้มครองแรงงาน ม.108',status:'g'},
+      {task:'คณะกรรมการสวัสดิการ',agencies:['กรมสวัสดิการฯ'],owner:'HR & Admin',ownerKeys:['HR'],critical:'บังคับถ้า >50 คน <span class="warn">ประชุมทุก 3 เดือน</span>',freq:'ทุก 3 เดือน',freqKey:'quarterly',report:'รายงานการประชุม เก็บไว้ให้ตรวจ',law:'พ.ร.บ.คุ้มครองแรงงาน ม.98',status:'g'},
+      {task:'การเลิกจ้างและค่าชดเชย',agencies:['กรมสวัสดิการฯ','ศาลแรงงาน'],owner:'HR & Admin + Legal',ownerKeys:['HR','Legal'],critical:'อายุงาน 20+ ปี = <span class="danger">400 วัน</span>',freq:'ทุกครั้งที่มีการเลิกจ้าง',freqKey:'event',report:'แจ้งกรมสวัสดิการฯ กรณีเลิกจ้าง 10+ คนพร้อมกัน',law:'พ.ร.บ.คุ้มครองแรงงาน ม.118',status:'g'},
+      {task:'คดีแรงงานค้าง / Whistleblower',agencies:['กลต.','ศาลแรงงาน'],owner:'Legal + HR + MDM',ownerKeys:['Legal','HR','MDM'],critical:'คดีค้างต้อง <span class="danger">Disclose ใน Prospectus</span>',freq:'Update ทุกเดือน',freqKey:'monthly',report:'Litigation Register ต่อ Audit Cmte ทุกไตรมาส',law:'พ.ร.บ.หลักทรัพย์ฯ / พ.ร.บ.คุ้มครองแรงงาน',status:'a'},
+    ]},
+  ]},
+  {id:7,num:'08',title:'Land, Property & Asset Legal',law:'ประมวลกฎหมายที่ดิน · TFRS 16 · พ.ร.บ.เครื่องหมายการค้า 2534 · พ.ร.บ.ทรัพยากรน้ำ 2561',color:'#8B949E',
+   desc:'Land Title Due Diligence, Contract Farming, Trademark, Water Rights, TFRS 16',
+   tags:['กรมที่ดิน','กรมทรัพย์สินทางปัญญา','กรมชลประทาน'],
+   groups:[{title:'',rows:[
+    {task:'Land Title Due Diligence',agencies:['กรมที่ดิน'],owner:'Legal + Finance',ownerKeys:['Legal','Finance'],critical:'<span class="danger">ภาระจำยอม/การจำนองต้องเปิดเผยใน Prospectus</span>',freq:'ก่อน IPO 1 ครั้ง / ทบทวนทุกปี',freqKey:'annual',report:'รายงาน Due Diligence ต่อ FA และ Auditor',law:'ประมวลกฎหมายที่ดิน ม.1',status:'a'},
+    {task:'Factory License & Building Permit',agencies:['อปท.'],owner:'Engineering + Legal',ownerKeys:['Engineering','Legal'],critical:'<span class="danger">อาคารที่ไม่มีใบอนุญาต = Asset ใน Balance Sheet มีปัญหา</span>',freq:'ตรวจสถานะทุกปี',freqKey:'annual',report:'แจ้ง อปท. เมื่อมีการเปลี่ยนแปลง',law:'พ.ร.บ.ควบคุมอาคาร 2522',status:'a'},
+    {task:'Contract Farming Agreement',agencies:['กรมส่งเสริมการเกษตร'],owner:'Legal + Ops',ownerKeys:['Legal'],critical:'<span class="warn">SEC ตรวจ Revenue Certainty จาก Contract Farming</span>',freq:'ทบทวนทุกฤดูกาล',freqKey:'event',report:'รายงานต่อ FA เรื่อง Revenue Concentration Risk',law:'พ.ร.บ.ส่งเสริมและพัฒนาระบบเกษตรพันธสัญญา 2560',status:'a'},
+    {task:'Lease vs. Own (TFRS 16)',agencies:['ผู้สอบบัญชี','กลต.'],owner:'Finance + Legal',ownerKeys:['Finance','Legal'],critical:'สัญญาเช่า >1 ปี ต้องบันทึกเป็น <span class="warn">Right-of-Use Asset</span>',freq:'ทบทวนทุกปี',freqKey:'annual',report:'หมายเหตุประกอบงบการเงิน (TFRS 16 Disclosure)',law:'TFRS 16 / TAS 40',status:'g'},
+    {task:'IP / Trademark (LACO, Minnamame)',agencies:['กรมทรัพย์สินทางปัญญา'],owner:'Legal + Marketing',ownerKeys:['Legal'],critical:'<span class="danger">ถ้าไม่จด = ลูกค้าปลายทางอาจจดแทน</span>',freq:'ตรวจสถานะทุกปี / ต่ออายุทุก 10 ปี',freqKey:'annual',report:'รายงานต่อกรมทรัพย์สินทางปัญญา',law:'พ.ร.บ.เครื่องหมายการค้า 2534',status:'a'},
+    {task:'Water Rights & Irrigation License',agencies:['กรมชลประทาน'],owner:'Legal + Ops',ownerKeys:['Legal'],critical:'<span class="warn">การใช้น้ำเพื่ออุตสาหกรรมต้องมีใบอนุญาต</span>',freq:'ตรวจสถานะทุกปี',freqKey:'annual',report:'รายงานการใช้น้ำต่อกรมชลประทาน ทุกปี',law:'พ.ร.บ.ทรัพยากรน้ำ 2561',status:'g'},
+  ]}]},
+  {id:8,num:'09',title:'International Trade & Cross-border Compliance',law:'พ.ร.บ.ศุลกากร 2560 · EU CSDDD 2026 · GDPR · พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล 2562',color:'#F0997B',
+   desc:'Sanctions, Country Food Regulations, ABAC, PDPA/GDPR, FTA Certificate of Origin',
+   tags:['กรมการค้าต่างประเทศ','ป.ป.ช.','PDPC (ไทย)'],
+   groups:[{title:'',rows:[
+    {task:'Export Compliance — Sanctions',agencies:['กรมการค้าต่างประเทศ'],owner:'Legal + Sales + Logistics',ownerKeys:['Legal'],critical:'<span class="danger">ส่งออกไปประเทศ Sanctioned = โทษอาญาสหรัฐ</span>',freq:'ตรวจทุก Shipment',freqKey:'continuous',report:'รายงาน Compliance ต่อ FA / Underwriter',law:'OFAC / EU Sanctions List',status:'g'},
+    {task:'Country-specific Food Regulations',agencies:['FDA / อย.'],owner:'QA + Legal + Sales',ownerKeys:['QA','Legal'],critical:'<span class="danger">Japan เข้มข้นที่สุด ตรวจ MRL ทุก Lot</span>',freq:'ตรวจ MRL ทุก Production Lot',freqKey:'continuous',report:'Test Report แนบทุก Shipment',law:'EU Regulation 396/2005 / Japan Positive List',status:'g'},
+    {task:'ABAC Policy',agencies:['ป.ป.ช.'],owner:'Legal + MDM + CEO',ownerKeys:['Legal','MDM'],critical:'<span class="warn">ต้องมี Anti-Bribery Policy + อบรมพนักงานทุกปี</span>',freq:'อบรมทุกปี / ตรวจ Policy ทุก 2 ปี',freqKey:'annual',report:'รายงาน ABAC Compliance ต่อ Audit Cmte',law:'พ.ร.บ.ป้องกันและปราบปรามการทุจริต 2561',status:'g'},
+    {task:'PDPA + GDPR Compliance',agencies:['PDPC (ไทย)'],owner:'Legal + IT + MDM',ownerKeys:['Legal','IT','MDM'],critical:'<span class="danger">ละเมิด GDPR ปรับสูงสุด 4% ของ Global Revenue</span>',freq:'ตรวจ Data Map ทุกปี',freqKey:'annual',report:'แจ้ง PDPC เมื่อ Data Breach',law:'พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล 2562 / GDPR',status:'a'},
+    {task:'FTA Certificate of Origin',agencies:['กรมการค้าต่างประเทศ'],owner:'Legal + Logistics + Sales',ownerKeys:['Legal'],critical:'<span class="danger">ออก Form D/AK/JTEPA ผิด = สูญสิทธิ FTA</span>',freq:'ทุก Shipment ที่ใช้สิทธิ FTA',freqKey:'continuous',report:'Form D/AK/JTEPA แนบ Shipping Documents',law:'AFTA / JTEPA / AKFTA',status:'g'},
+    {task:'Transfer Pricing (Cross-border)',agencies:['กรมสรรพากร'],owner:'Finance + Legal',ownerKeys:['Finance','Legal'],critical:'ธุรกรรมกับ Proterra Asia <span class="warn">ต้องมี Arm\'s Length Pricing</span>',freq:'ทบทวนทุกปีก่อนยื่นภาษี',freqKey:'annual',report:'TP Disclosure Form ต่อกรมสรรพากร',law:'ประมวลรัษฎากร ม.71 ทวิ',status:'a'},
+  ]}]},
+  {id:9,num:'10',title:'Certification & Standards Compliance',law:'ISO Standards · BRC Global Standards · FSSC 22000 Scheme · SEDEX SMETA Protocol',color:'#A371F7',
+   desc:'HACCP, FSSC 22000, BRC, ISO 14001, ISO 45001, SEDEX/SMETA, ISO 27001, ISO 17025',
+   tags:['CB','SEDEX','FDA / อย.'],
+   groups:[
+    {title:'10A · Food Safety',rows:[
+      {task:'HACCP',agencies:['CB','FDA / อย.'],owner:'QA + Operations',ownerKeys:['QA'],critical:'CCP Monitor ทุก Batch — <span class="danger">ถ้า Deviation ไม่มี Corrective Action = ระงับ Cert</span>',freq:'Internal Audit ทุก 6 เดือน / External ทุกปี',freqKey:'other',report:'HACCP Audit Report ต่อลูกค้าและ CB',law:'Codex Alimentarius / FDA 2522',status:'g'},
+      {task:'FSSC 22000',agencies:['CB'],owner:'QA + Operations',ownerKeys:['QA'],critical:'Surveillance Audit ปีละ 1 ครั้ง — <span class="danger">ห้ามมี Major NC ค้าง</span>',freq:'Surveillance ทุกปี / Recert ทุก 3 ปี',freqKey:'annual',report:'Certificate + Audit Report ต่อลูกค้า',law:'ISO 22000 / PAS 220',status:'g'},
+      {task:'BRC (BRCGS)',agencies:['CB','SEDEX'],owner:'QA + Operations',ownerKeys:['QA'],critical:'<span class="danger">Grade B ลูกค้า UK บางรายยกเลิก Contract ทันที</span>',freq:'Unannounced Audit ปีละ 1 ครั้ง',freqKey:'annual',report:'BRC Certificate + Grade Report ต่อลูกค้า',law:'BRCGS Food Safety Standard Issue 9',status:'g'},
+      {task:'FDA (อย.) ทะเบียนผลิตภัณฑ์',agencies:['FDA / อย.'],owner:'QA + Legal + Admin',ownerKeys:['QA','Legal','HR'],critical:'<span class="danger">ขาย SKU ที่ไม่มีทะเบียน = ผิดกฎหมาย</span>',freq:'ตรวจ Product Register ทุก 6 เดือน',freqKey:'other',report:'แจ้ง อย. เมื่อเพิ่ม/เปลี่ยนแปลง Product',law:'พ.ร.บ.อาหาร 2522 ม.14',status:'a'},
+    ]},
+    {title:'10B · Environmental & Safety',rows:[
+      {task:'ISO 14001',agencies:['CB'],owner:'Safety + Ops + HR',ownerKeys:['Safety','QA'],critical:'<span class="warn">ต้องมี Environmental Objective ที่วัดได้</span>',freq:'Internal Audit ทุก 6 เดือน / External ทุกปี',freqKey:'other',report:'ISO 14001 Certificate + Environmental Report',law:'ISO 14001:2015',status:'g'},
+      {task:'ISO 45001',agencies:['CB','กรมสวัสดิการฯ'],owner:'Safety Officer + HR',ownerKeys:['Safety','HR'],critical:'<span class="warn">Cold Storage และ Freezing Line เป็น Priority</span>',freq:'Internal Audit ทุก 6 เดือน / External ทุกปี',freqKey:'other',report:'ISO 45001 Certificate + Safety KPI Report',law:'ISO 45001:2018',status:'g'},
+    ]},
+    {title:'10C · Social & Ethical',rows:[
+      {task:'SEDEX / SMETA Audit',agencies:['SEDEX'],owner:'HR + Ops + Legal',ownerKeys:['HR','Legal'],critical:'SMETA 4 Pillar — <span class="danger">ผล Failed = สูญ Contract</span>',freq:'Audit ตามรอบลูกค้า (1–3 ปี)',freqKey:'event',report:'SMETA Report Upload ใน SEDEX Platform',law:'ILO Conventions / EU CSDDD 2026',status:'a'},
+    ]},
+    {title:'10D · Technology & Lab',rows:[
+      {task:'ISO 27001',agencies:['CB'],owner:'IT + Legal + MDM',ownerKeys:['IT','Legal','MDM'],critical:'<span class="warn">Proterra Asia จะตั้งคำถามถ้าไม่มี Cert</span>',freq:'Internal Audit ทุกปี / Cert ทุก 3 ปี',freqKey:'annual',report:'ISO 27001 Certificate + ISMS Report ต่อ Board',law:'ISO/IEC 27001:2022',status:'a'},
+      {task:'ISO 17025',agencies:['CB','กรมวิชาการเกษตร'],owner:'QA + Lab',ownerKeys:['QA'],critical:'<span class="danger">Test Report จาก Lab ที่ไม่รับรอง = ลูกค้าไม่ยอมรับ</span>',freq:'Surveillance ทุกปี / Recert ทุก 2 ปี',freqKey:'annual',report:'ISO 17025 Certificate + Test Report ต่อลูกค้า',law:'ISO/IEC 17025:2017',status:'a'},
+    ]},
+  ]},
+];
+
+const AGENCY_MATCH={
+  'กลต.':['กลต.'],'SET':['SET'],'กรมสรรพากร':['กรมสรรพากร','กรมสรรพสามิต'],
+  'กรมโรงงานอุตสาหกรรม':['กรมโรงงานอุตสาหกรรม','กรมควบคุมมลพิษ','สผ.'],
+  'FDA / อย.':['FDA / อย.'],'กรมสวัสดิการฯ':['กรมสวัสดิการฯ'],
+  'สปส.':['สปส.'],'กรมการจัดหางาน':['กรมการจัดหางาน','กรมพัฒนาฝีมือแรงงาน'],
+  'กรมการค้าต่างประเทศ':['กรมการค้าต่างประเทศ'],
+  'กรมที่ดิน':['กรมที่ดิน','กรมชลประทาน','กรมทรัพย์สินทางปัญญา','กรมส่งเสริมการเกษตร'],
+  'SEDEX':['SEDEX'],'อปท.':['อปท.'],'CB':['CB'],'กรมวิชาการเกษตร':['กรมวิชาการเกษตร'],
+};
+const OWNER_MATCH={
+  'Legal':['Legal'],'Finance':['Finance'],'HR':['HR'],
+  'QA':['QA'],'Safety':['Safety'],'Engineering':['Engineering'],
+  'IT':['IT'],'MDM':['MDM'],
+};
+const FREQ_MATCH={
+  'monthly':['monthly'],'quarterly':['quarterly'],'annual':['annual'],
+  'event':['event'],'continuous':['continuous'],
+};
+const FREQ_LABELS={monthly:'รายเดือน',quarterly:'รายไตรมาส',annual:'รายปี',event:'ตามเหตุการณ์',continuous:'ต่อเนื่อง/ทุก Shipment',other:'อื่นๆ'};
+const FREQ_CLASS={monthly:'fb-monthly',quarterly:'fb-quarterly',annual:'fb-annual',event:'fb-event',continuous:'fb-continuous',other:'fb-other'};
+const STATUS_MAP={g:'🟢 ปกติ',a:'🟡 ตรวจสอบ',r:'🔴 Action'};
+const STATUS_CLASS={g:'s-g',a:'s-a',r:'s-r'};
+
+function allRows(){
+  let out=[];
+  TABS.forEach(t=>t.groups.forEach(g=>g.rows.forEach(r=>out.push({row:r,tab:t}))));
+  return out;
+}
+
+function buildRow(r,tab){
+  const ags=r.agencies.map(a=>`<span class="agency-tag">${a}</span>`).join(' ');
+  const fc=FREQ_CLASS[r.freqKey]||'fb-other';
+  const fl=FREQ_LABELS[r.freqKey]||r.freq;
+  const sc=STATUS_CLASS[r.status];const sl=STATUS_MAP[r.status];
+  return `<tr>
+    <td>${r.task}</td>
+    <td>${ags}</td>
+    <td style="color:var(--text2);font-size:11px">${r.owner}</td>
+    <td><span style="font-size:12px;line-height:1.55">${r.critical}</span></td>
+    <td><span class="freq-badge ${fc}">${fl}</span><div style="font-size:10px;color:var(--text3);margin-top:3px">${r.freq}</div></td>
+    <td style="font-size:11px;color:var(--text2)">${r.report}</td>
+    <td><button class="status ${sc}" onclick="cycleStatus(this)" data-i="${['g','a','r'].indexOf(r.status)}">${sl}</button></td>
+    <td><span class="law-tag">${r.law}</span></td>
+  </tr>`;
+}
+
+function showFilterView(rows,modeEl,title,sub){
+  document.getElementById('pHome').classList.remove('active');
+  document.getElementById('pFilter').classList.add('active');
+  document.getElementById('pTabs').classList.remove('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  ['mhAgency','mhOwner','mhFreq'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  document.getElementById(modeEl).classList.add('show');
+  document.getElementById(modeEl+'Title').textContent=title;
+  document.getElementById(modeEl+'Sub').textContent=sub;
+  document.getElementById('modeLabel').textContent=`${title} · ${rows.length} รายการ`;
+  const body=document.getElementById('filterBody');
+  const noRes=document.getElementById('filterNoResult');
+  const tbl=document.getElementById('filterTableWrap');
+  if(!rows.length){tbl.style.display='none';noRes.style.display='block';}
+  else{
+    tbl.style.display='block';noRes.style.display='none';
+    let prev='';
+    body.innerHTML=rows.map(({row,tab})=>{
+      let grp='';
+      if(tab.title!==prev){prev=tab.title;grp=`<tr class="tab-group-hdr"><td colspan="8">${tab.num} · ${tab.title}</td></tr>`;}
+      return grp+buildRow(row,tab);
+    }).join('');
+  }
+}
+
+function clearAllChips(){
+  document.querySelectorAll('.chip').forEach(c=>{c.classList.remove('active-blue','active-amber','active-purple','active-green');});
+}
+
+function filterAgency(key){
+  clearAllChips();
+  if(key==='ALL'){document.getElementById('ag-ALL').classList.add('active-blue');showHome();return;}
+  document.getElementById('ag-'+key)?.classList.add('active-amber');
+  const matches=AGENCY_MATCH[key]||[key];
+  const rows=allRows().filter(({row})=>row.agencies.some(a=>matches.some(m=>a.includes(m))));
+  showFilterView(rows,'mhAgency',`หน่วยงานกำกับ: ${key}`,`พบ ${rows.length} รายการ ใน ${[...new Set(rows.map(r=>r.tab.num))].length} หมวดหลัก`);
+}
+
+function filterOwner(key){
+  clearAllChips();
+  document.getElementById('ow-'+key)?.classList.add('active-purple');
+  const rows=allRows().filter(({row})=>row.ownerKeys&&row.ownerKeys.some(ok=>ok===key));
+  const ownerNames={'Legal':'Legal + Secretary','Finance':'Finance + Accounting','HR':'HR & Admin','QA':'QA + Operations','Safety':'Safety Officer','Engineering':'Engineering','IT':'IT + Digital','MDM':'MDM (ตำแหน่งนี้)'};
+  showFilterView(rows,'mhOwner',`ฝ่ายรับผิดชอบ: ${ownerNames[key]||key}`,`พบ ${rows.length} รายการ ใน ${[...new Set(rows.map(r=>r.tab.num))].length} หมวดหลัก`);
+}
+
+function filterFreq(key){
+  clearAllChips();
+  document.getElementById('fq-'+key)?.classList.add('active-green');
+  const rows=allRows().filter(({row})=>row.freqKey===key);
+  const freqNames={'monthly':'รายเดือน','quarterly':'รายไตรมาส','annual':'รายปี','event':'ตามเหตุการณ์','continuous':'ต่อเนื่อง/ทุก Shipment'};
+  showFilterView(rows,'mhFreq',`ความถี่: ${freqNames[key]||key}`,`พบ ${rows.length} รายการ ใน ${[...new Set(rows.map(r=>r.tab.num))].length} หมวดหลัก`);
+}
+
+function showHome(){
+  clearAllChips();
+  document.getElementById('ag-ALL').classList.add('active-blue');
+  document.getElementById('pHome').classList.add('active');
+  document.getElementById('pFilter').classList.remove('active');
+  document.getElementById('pTabs').classList.remove('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('modeLabel').textContent='v2.0 · 10 หมวด · 64+ รายการ';
+}
+
+function showTab(i){
+  clearAllChips();
+  document.getElementById('pHome').classList.remove('active');
+  document.getElementById('pFilter').classList.remove('active');
+  document.getElementById('pTabs').classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+  const t=TABS[i];
+  document.getElementById('modeLabel').textContent=`${t.num} · ${t.title}`;
+  let html=`<div class="panel-hdr"><div class="panel-title">${t.num} · ${t.title}</div><div class="panel-meta"><span>${t.groups.reduce((a,g)=>a+g.rows.length,0)}</span> หมวดย่อย · ${t.law}</div></div>`;
+  html+=`<div class="tbl-wrap"><table><colgroup><col style="width:13%"><col style="width:13%"><col style="width:11%"><col style="width:21%"><col style="width:12%"><col style="width:15%"><col style="width:7%"><col style="width:8%"></colgroup>`;
+  html+=`<tr><th>งาน / Task</th><th>ผู้กำกับภายนอก</th><th>ฝ่ายรับผิดชอบ</th><th>Critical Point</th><th>ความถี่ตรวจ</th><th>รายงานที่ต้องส่ง</th><th>Status</th><th>กฎหมายอ้างอิง</th></tr>`;
+  t.groups.forEach(g=>{
+    if(g.title)html+=`<tr class="group-row"><td colspan="8">${g.title}</td></tr>`;
+    g.rows.forEach(r=>{html+=buildRow(r,t);});
+  });
+  html+=`</table></div>`;
+  document.getElementById('tabContent').innerHTML=html;
+}
+
+function buildHomeGrid(){
+  const grid=document.getElementById('homeGrid');
+  grid.innerHTML=TABS.map(t=>{
+    const count=t.groups.reduce((a,g)=>a+g.rows.length,0);
+    const tags=t.tags.map(tg=>`<span class="htag">${tg}</span>`).join('');
+    return `<div class="home-card" onclick="showTab(${t.id})">
+      <div class="home-card-num">${t.num}</div>
+      <div class="home-card-title" style="border-left:2px solid ${t.color};padding-left:8px">${t.title}</div>
+      <div class="home-card-law">${t.law.split('·')[0].trim()}</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;line-height:1.5">${t.desc}</div>
+      <div class="home-card-tags">${tags}</div>
+      <div class="home-card-count">${count} หมวดย่อย · คลิกเพื่อดูรายละเอียด →</div>
+    </div>`;
+  }).join('');
+}
+
+function cycleStatus(btn){
+  const s=['g','a','r'];let i=parseInt(btn.dataset.i);i=(i+1)%3;
+  btn.dataset.i=i;btn.className='status '+STATUS_CLASS[s[i]];btn.textContent=STATUS_MAP[s[i]];
+}
+
+buildHomeGrid();
+</script>
+</body>
+</html>

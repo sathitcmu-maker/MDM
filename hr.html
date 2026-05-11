@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LACO HR Master Structure — Management Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-400: #1D9E75; --teal-600: #0F6E56; --teal-800: #085041;
+  --amber-50: #FAEEDA; --amber-100: #FAC775; --amber-400: #EF9F27; --amber-600: #854F0B; --amber-800: #633806;
+  --gray-50: #F1EFE8; --gray-100: #D3D1C7; --gray-200: #B4B2A9; --gray-400: #888780; --gray-600: #5F5E5A; --gray-800: #2C2C2A;
+  --purple-50: #EEEDFE; --purple-400: #7F77DD; --purple-600: #534AB7; --purple-800: #26215C;
+  --coral-50: #FAECE7; --coral-400: #D85A30; --coral-600: #993C1D; --coral-800: #4A1B0C;
+  --bg: #F7F6F2;
+  --surface: #FFFFFF;
+  --font: 'IBM Plex Sans Thai', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--gray-800); min-height: 100vh; }
+
+/* HEADER */
+.header { background: var(--teal-800); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--teal-400); }
+.header-left h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.03em; }
+.header-left p { font-size: 0.72rem; color: var(--teal-100); margin-top: 2px; font-family: var(--mono); }
+.header-badge { background: var(--amber-400); color: var(--amber-800); font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; font-family: var(--mono); }
+
+/* NAV TABS */
+.nav { background: var(--surface); border-bottom: 1px solid var(--gray-100); padding: 0 2rem; display: flex; gap: 0; overflow-x: auto; }
+.nav-tab { padding: 0.85rem 1.4rem; font-size: 0.8rem; font-weight: 600; color: var(--gray-400); border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; font-family: var(--font); letter-spacing: 0.02em; }
+.nav-tab:hover { color: var(--teal-600); }
+.nav-tab.active { color: var(--teal-600); border-bottom-color: var(--teal-400); }
+
+/* PAGES */
+.page { display: none; padding: 1.5rem 2rem 3rem; }
+.page.active { display: block; }
+
+/* OVERVIEW PAGE */
+.overview-title { font-size: 0.7rem; font-family: var(--mono); color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+
+/* ORG CHART */
+.org-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.org-connector { width: 2px; height: 20px; background: var(--gray-200); }
+.org-connector-h { display: flex; justify-content: center; position: relative; width: 100%; }
+.org-connector-h::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 70%; height: 2px; background: var(--gray-200); }
+.org-branches { display: flex; justify-content: center; gap: 12px; width: 100%; }
+.org-branch { display: flex; flex-direction: column; align-items: center; gap: 0; flex: 1; max-width: 210px; }
+.org-branch-line { width: 2px; height: 20px; background: var(--gray-200); }
+
+.box-ceo { background: var(--teal-50); border: 1.5px solid var(--teal-400); border-radius: 10px; padding: 12px 24px; text-align: center; min-width: 280px; }
+.box-ceo h3 { font-size: 0.95rem; font-weight: 700; color: var(--teal-800); }
+.box-ceo p { font-size: 0.7rem; color: var(--teal-600); margin-top: 2px; }
+
+.box-strategic { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 9px 20px; text-align: center; font-size: 0.72rem; color: var(--gray-600); max-width: 520px; width: 100%; }
+
+.box-section { background: var(--teal-50); border: 1.5px solid var(--teal-400); border-radius: 10px; padding: 10px 14px; text-align: center; cursor: pointer; width: 100%; transition: all 0.2s; }
+.box-section:hover { background: var(--teal-400); border-color: var(--teal-600); }
+.box-section:hover h4, .box-section:hover p { color: #fff; }
+.box-section h4 { font-size: 0.82rem; font-weight: 700; color: var(--teal-800); }
+.box-section p { font-size: 0.67rem; color: var(--teal-600); margin-top: 2px; }
+
+.detail-box { background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 8px; padding: 10px 12px; width: 100%; margin-top: 0; }
+.detail-box ul { list-style: none; }
+.detail-box ul li { font-size: 0.67rem; color: var(--gray-600); padding: 2px 0; display: flex; align-items: flex-start; gap: 5px; }
+.detail-box ul li::before { content: '·'; color: var(--teal-400); font-weight: 700; flex-shrink: 0; }
+
+.ipo-layer { background: var(--amber-50); border: 1.5px solid var(--amber-400); border-radius: 10px; padding: 10px 24px; text-align: center; max-width: 560px; width: 100%; }
+.ipo-layer h4 { font-size: 0.78rem; font-weight: 700; color: var(--amber-800); }
+.ipo-layer p { font-size: 0.67rem; color: var(--amber-600); }
+.ipo-boxes { display: flex; gap: 10px; justify-content: center; width: 100%; max-width: 560px; flex-wrap: wrap; }
+.ipo-box { background: var(--amber-50); border: 1px solid var(--amber-400); border-radius: 8px; padding: 10px 14px; flex: 1; min-width: 140px; }
+.ipo-box h5 { font-size: 0.75rem; font-weight: 700; color: var(--amber-800); }
+.ipo-box p { font-size: 0.65rem; color: var(--amber-600); margin-top: 3px; line-height: 1.55; }
+
+.kpi-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 560px; width: 100%; }
+.kpi-card { background: var(--surface); border: 1px solid var(--gray-100); border-radius: 8px; padding: 10px 18px; text-align: center; flex: 1; min-width: 110px; }
+.kpi-card .k-label { font-size: 0.65rem; color: var(--gray-400); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.05em; }
+.kpi-card .k-val { font-size: 1rem; font-weight: 700; color: var(--teal-600); margin-top: 3px; }
+
+/* SECTION PAGES */
+.section-header { margin-bottom: 1.2rem; }
+.section-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--teal-800); }
+.section-header p { font-size: 0.75rem; color: var(--gray-400); margin-top: 3px; font-family: var(--mono); }
+
+.subsec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+
+.subsec-card { background: var(--surface); border: 1px solid var(--gray-100); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.2s; }
+.subsec-card:hover { border-color: var(--teal-400); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+.subsec-card.expanded { border-color: var(--teal-400); box-shadow: 0 4px 16px rgba(29,158,117,0.15); }
+.subsec-card-head { padding: 14px 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.subsec-card-head-left { flex: 1; }
+.subsec-card-head-left h3 { font-size: 0.88rem; font-weight: 700; color: var(--teal-800); }
+.subsec-card-head-left p { font-size: 0.68rem; color: var(--gray-400); margin-top: 3px; }
+.subsec-tag { font-size: 0.62rem; font-weight: 700; padding: 3px 8px; border-radius: 12px; white-space: nowrap; font-family: var(--mono); }
+.tag-must { background: var(--coral-50); color: var(--coral-600); }
+.tag-ipo { background: var(--amber-50); color: var(--amber-800); }
+.tag-tech { background: var(--teal-50); color: var(--teal-600); }
+.tag-lead { background: var(--purple-50); color: var(--purple-600); }
+
+.subsec-toggle { width: 22px; height: 22px; border-radius: 50%; background: var(--gray-50); border: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--gray-400); flex-shrink: 0; transition: all 0.2s; }
+.subsec-card.expanded .subsec-toggle { background: var(--teal-400); color: #fff; border-color: var(--teal-400); transform: rotate(45deg); }
+
+.subsec-detail { display: none; padding: 0 16px 16px; border-top: 1px solid var(--gray-50); }
+.subsec-card.expanded .subsec-detail { display: block; }
+
+.detail-section { margin-top: 12px; }
+.detail-section-title { font-size: 0.65rem; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); margin-bottom: 6px; }
+.detail-items { display: flex; flex-direction: column; gap: 5px; }
+.detail-item { background: var(--gray-50); border-radius: 6px; padding: 8px 10px; }
+.detail-item h5 { font-size: 0.75rem; font-weight: 600; color: var(--gray-800); }
+.detail-item p { font-size: 0.68rem; color: var(--gray-600); margin-top: 2px; line-height: 1.55; }
+.detail-kpi { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.detail-kpi span { font-size: 0.62rem; background: var(--teal-50); color: var(--teal-800); padding: 2px 8px; border-radius: 10px; font-family: var(--mono); border: 1px solid var(--teal-100); }
+.detail-kpi span.amber { background: var(--amber-50); color: var(--amber-800); border-color: var(--amber-100); }
+.detail-kpi span.coral { background: var(--coral-50); color: var(--coral-800); border-color: #f5c4b3; }
+
+.principle-box { background: linear-gradient(135deg, var(--teal-50) 0%, #fff 100%); border-left: 3px solid var(--teal-400); border-radius: 0 8px 8px 0; padding: 10px 12px; margin-top: 8px; }
+.principle-box p { font-size: 0.7rem; color: var(--teal-800); line-height: 1.6; font-style: italic; }
+
+.warning-box { background: var(--coral-50); border-left: 3px solid var(--coral-400); border-radius: 0 8px 8px 0; padding: 8px 12px; margin-top: 8px; }
+.warning-box p { font-size: 0.68rem; color: var(--coral-800); line-height: 1.55; }
+.warning-box strong { font-weight: 700; }
+
+/* FOOTER */
+.footer-note { text-align: center; font-size: 0.65rem; color: var(--gray-400); font-family: var(--mono); margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--gray-100); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>LACO HR Master Structure — Management Dashboard</h1>
+    <p>Lanna Agro Industry Co., Ltd. · Pre-IPO · Saraphi, Chiang Mai · Governed by MDM Manager</p>
+  </div>
+  <span class="header-badge">PRE-IPO</span>
+</div>
+
+<nav class="nav">
+  <button class="nav-tab active" onclick="showPage('overview')">ภาพรวม HR Structure</button>
+  <button class="nav-tab" onclick="showPage('ta')">Talent Acquisition</button>
+  <button class="nav-tab" onclick="showPage('ops')">HR Operations</button>
+  <button class="nav-tab" onclick="showPage('ld')">Learning &amp; Development</button>
+  <button class="nav-tab" onclick="showPage('sc')">Safety &amp; Compliance</button>
+</nav>
+
+<!-- PAGE: OVERVIEW -->
+<div class="page active" id="page-overview">
+  <p class="overview-title">LACO HR Organizational Structure — Master View</p>
+  <div class="org-wrap">
+
+    <div class="box-ceo">
+      <h3>HR Manager</h3>
+      <p>Report to: MDM Manager / CEO</p>
+    </div>
+    <div class="org-connector"></div>
+    <div class="box-strategic">Strategic HR — aligned to IPO readiness, SET compliance, organizational capability</div>
+    <div class="org-connector"></div>
+    <div class="org-connector-h" style="height:20px; max-width:700px; width:100%;"></div>
+
+    <div class="org-branches" style="max-width:860px;">
+      <div class="org-branch">
+        <div class="org-branch-line"></div>
+        <div class="box-section" onclick="showPage('ta')">
+          <h4>Talent Acquisition</h4>
+          <p>Recruitment &amp; workforce plan</p>
+        </div>
+        <div class="org-connector"></div>
+        <div class="detail-box">
+          <ul>
+            <li>Seasonal worker pool</li>
+            <li>Manpower forecasting</li>
+            <li>Selection &amp; onboarding</li>
+            <li>Employer branding</li>
+            <li>Contract management</li>
+          </ul>
+        </div>
+      </div>
+      <div class="org-branch">
+        <div class="org-branch-line"></div>
+        <div class="box-section" onclick="showPage('ops')">
+          <h4>HR Operations</h4>
+          <p>Payroll, benefits, HRIS</p>
+        </div>
+        <div class="org-connector"></div>
+        <div class="detail-box">
+          <ul>
+            <li>Payroll &amp; PVD</li>
+            <li>HRIS (cloud-based)</li>
+            <li>Benefits admin</li>
+            <li>Performance mgmt</li>
+            <li>Compensation structure</li>
+          </ul>
+        </div>
+      </div>
+      <div class="org-branch">
+        <div class="org-branch-line"></div>
+        <div class="box-section" onclick="showPage('ld')">
+          <h4>Learning &amp; Development</h4>
+          <p>Training, capability building</p>
+        </div>
+        <div class="org-connector"></div>
+        <div class="detail-box">
+          <ul>
+            <li>Food safety training</li>
+            <li>HACCP / FSSC 22000</li>
+            <li>GMP / GHP refresher</li>
+            <li>Leadership pipeline</li>
+            <li>Skills matrix / IDP</li>
+          </ul>
+        </div>
+      </div>
+      <div class="org-branch">
+        <div class="org-branch-line"></div>
+        <div class="box-section" onclick="showPage('sc')">
+          <h4>Safety &amp; Compliance</h4>
+          <p>ISO 45001, labor law</p>
+        </div>
+        <div class="org-connector"></div>
+        <div class="detail-box">
+          <ul>
+            <li>ISO 45001 system</li>
+            <li>Labor law audit</li>
+            <li>PDPA compliance</li>
+            <li>Incident reporting</li>
+            <li>ER &amp; welfare</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="org-connector" style="height:24px;"></div>
+    <div class="ipo-layer">
+      <h4>IPO Readiness Layer — cross-cutting, governed by HR Manager + MDM Manager</h4>
+    </div>
+    <div class="org-connector"></div>
+
+    <div class="ipo-boxes">
+      <div class="ipo-box">
+        <h5>Policy &amp; manual</h5>
+        <p>HR policy manual<br>DOA, org structure<br>Approved by Board</p>
+      </div>
+      <div class="ipo-box">
+        <h5>Comp &amp; grading</h5>
+        <p>Job grading system<br>Salary band structure<br>Benchmark to market</p>
+      </div>
+      <div class="ipo-box">
+        <h5>HRIS &amp; data</h5>
+        <p>Digital HR records<br>Headcount reporting<br>Audit-ready data</p>
+      </div>
+    </div>
+
+    <div class="org-connector" style="height:24px;"></div>
+    <p style="font-size:0.7rem;color:var(--gray-400);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.08em;">ตัวชี้วัด HR สำคัญสำหรับ agro-processing</p>
+    <div class="org-connector" style="height:10px;"></div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="k-label">Turnover</div><div class="k-val" style="color:var(--teal-600);">≤15%</div><div style="font-size:0.6rem;color:var(--gray-400);">per year</div></div>
+      <div class="kpi-card"><div class="k-label">Time to hire</div><div class="k-val">≤30</div><div style="font-size:0.6rem;color:var(--gray-400);">days</div></div>
+      <div class="kpi-card"><div class="k-label">Training hrs</div><div class="k-val">≥20</div><div style="font-size:0.6rem;color:var(--gray-400);">hrs/person</div></div>
+      <div class="kpi-card"><div class="k-label">LTIR</div><div class="k-val" style="color:var(--coral-600);">= 0</div><div style="font-size:0.6rem;color:var(--gray-400);">target</div></div>
+    </div>
+  </div>
+  <div class="footer-note">LACO HR Master Dashboard · Pre-IPO Edition · Governed by MDM Manager · v1.0</div>
+</div>
+
+<!-- PAGE: TALENT ACQUISITION -->
+<div class="page" id="page-ta">
+  <div class="section-header">
+    <h2>Talent Acquisition</h2>
+    <p>Recruitment &amp; Workforce Planning — คลิกที่แต่ละกล่องเพื่อดูรายละเอียดและหลักการปฏิบัติ</p>
+  </div>
+  <div class="subsec-grid">
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left">
+          <h3>Workforce Planning</h3>
+          <p>วางแผนกำลังคนประจำปี</p>
+        </div>
+        <span class="subsec-tag tag-ipo">IPO Critical</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: วางแผนกำลังคนล่วงหน้า 12 เดือน — ต้องเชื่อมกับ production plan และ harvest calendar ของ Edamame ไม่ใช่รอให้สายการผลิตขาดคนก่อนแล้วค่อยจ้าง</p></div>
+        <div class="detail-section">
+          <div class="detail-section-title">งานปฏิบัติหลัก</div>
+          <div class="detail-items">
+            <div class="detail-item"><h5>Annual headcount plan</h5><p>จัดทำทุก Q4 สำหรับปีถัดไป แยกตาม department และ contract type (permanent / seasonal / contract) ต้องผ่านการ approve จาก MDM Manager และ CEO</p></div>
+            <div class="detail-item"><h5>Seasonal demand forecast</h5><p>map harvest peak ของ Edamame (มักอยู่ในช่วง Q3) กับ manpower requirement สายการผลิต — ต้องมี pre-approved seasonal worker pool พร้อม deploy ภายใน 72 ชั่วโมง</p></div>
+            <div class="detail-item"><h5>Attrition modeling</h5><p>คำนวณ expected turnover รายไตรมาส เพื่อวางแผนการสรรหาล่วงหน้า ไม่ให้สายการผลิตขาดคนในช่วง critical season</p></div>
+            <div class="detail-item"><h5>Skills matrix vs. gap analysis</h5><p>ทำ skills inventory ทุกปี เปรียบเทียบกับ competency ที่บริษัทต้องการ ระบุ gap และวางแผน hire หรือ develop จากภายใน</p></div>
+          </div>
+        </div>
+        <div class="detail-kpi">
+          <span>Headcount accuracy ≥ 95%</span><span class="amber">Board-approved annually</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left">
+          <h3>Seasonal Worker Pool</h3>
+          <p>ระบบแรงงานชั่วคราวพร้อม deploy</p>
+        </div>
+        <span class="subsec-tag tag-must">LACO-Specific</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Pre-screened, pre-trained pool ที่ผ่าน GMP induction และ health screening แล้ว — เรียกใช้ได้ทันทีโดยไม่ต้องเริ่ม onboarding จากศูนย์ทุกฤดูกาล</p></div>
+        <div class="detail-section">
+          <div class="detail-section-title">งานปฏิบัติหลัก</div>
+          <div class="detail-items">
+            <div class="detail-item"><h5>Pool registration system</h5><p>ลงทะเบียนแรงงาน seasonal ที่ผ่าน screening แล้วไว้ใน database — maintain ตลอดปี อัปเดตทุกไตรมาสว่ายังพร้อมรับงานไหม</p></div>
+            <div class="detail-item"><h5>Flexible contract management</h5><p>ออกแบบ contract type ให้ถูกต้องตาม พรบ.คุ้มครองแรงงาน — จ้างรายวัน รายสัปดาห์ หรือตามโครงการ ต้องระวัง employee status เพื่อหลีกเลี่ยงคดีแรงงาน</p></div>
+            <div class="detail-item"><h5>SSO + welfare สำหรับ seasonal</h5><p>seasonal worker ที่จ้างเกิน 90 วันต้องขึ้น SSO — track deadline และ compliance ให้ครบถ้วนเพื่อหลีกเลี่ยง fine</p></div>
+          </div>
+        </div>
+        <div class="detail-kpi">
+          <span>Deploy ≤ 72 hrs</span><span class="coral">SSO compliance 100%</span>
+        </div>
+        <div class="warning-box"><p><strong>ความเสี่ยง IPO:</strong> ถ้าพบว่า seasonal worker ถูกจ้างซ้ำ ๆ เกิน 2 ปีโดยไม่มี proper status — labor court อาจตัดสินว่าเป็น permanent employee ซึ่งกระทบ liability ใน IPO prospectus</p></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left">
+          <h3>Sourcing Channels</h3>
+          <p>ช่องทางสรรหาตามประเภทพนักงาน</p>
+        </div>
+        <span class="subsec-tag tag-tech">Operational</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: แต่ละ tier ของพนักงานต้องใช้ channel ที่เหมาะสม — ไม่มี one-size-fits-all ค่าใช้จ่ายต่อ hire ต้องถูก track และ report ต่อ MDM Manager</p></div>
+        <div class="detail-section">
+          <div class="detail-section-title">แยกตาม tier</div>
+          <div class="detail-items">
+            <div class="detail-item"><h5>Production floor (operator)</h5><p>จัดหางาน จ.เชียงใหม่, บอร์ดประกาศหน้าโรงงาน, referral program (พนักงานแนะนำ = ถูกและ reliable ที่สุด), อาชีวศึกษาในพื้นที่</p></div>
+            <div class="detail-item"><h5>Technical / supervisor</h5><p>CMU / RMUTL pipeline, JobsDB, LinkedIn, internal promotion จาก operator ที่มี high performance — ควรเน้น internal ≥ 70%</p></div>
+            <div class="detail-item"><h5>Management level</h5><p>PERSOL Thailand (channel ปัจจุบันของ Boss), headhunter เฉพาะทาง food industry, LinkedIn Executive, referral จาก Board network</p></div>
+          </div>
+        </div>
+        <div class="detail-kpi">
+          <span>Referral rate ≥ 30%</span><span class="amber">Internal promo ≥ 70%</span><span>Cost/hire tracked</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left">
+          <h3>Selection Process</h3>
+          <p>กระบวนการคัดเลือกและประเมิน</p>
+        </div>
+        <span class="subsec-tag tag-must">Food Safety Critical</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Selection ใน food processing ต้องมี food safety awareness assessment เป็นด่านบังคับ — คนที่ไม่เข้าใจ GMP culture จะเป็น risk ต่อ FSSC 22000 ทันที</p></div>
+        <div class="detail-section">
+          <div class="detail-section-title">ขั้นตอนมาตรฐาน</div>
+          <div class="detail-items">
+            <div class="detail-item"><h5>JD + Competency mapping</h5><p>ทุก position ต้องมี JD ที่ review แล้ว และ competency framework ที่ชัดเจนก่อนเปิดรับสมัคร — สำหรับ IPO ทุก JD ต้องผ่าน approve จาก HR Manager</p></div>
+            <div class="detail-item"><h5>Structured interview</h5><p>ใช้ STAR method — ห้ามถามคำถาม unstructured ที่วัดผลไม่ได้ ต้องมี scoring sheet เพื่อ document การตัดสินใจและป้องกัน discrimination claim</p></div>
+            <div class="detail-item"><h5>Food safety awareness test</h5><p>test พื้นฐาน GMP/personal hygiene สำหรับทุก position ที่ต้องเข้าพื้นที่ผลิต — ถ้า fail ต้อง retrain ก่อน confirm จ้าง</p></div>
+            <div class="detail-item"><h5>Health screening + background check</h5><p>ตรวจสุขภาพก่อนจ้าง (โดยเฉพาะโรคติดต่อ) และ background verify สำหรับ management level — บันทึกใน HRIS ทุกกรณี</p></div>
+          </div>
+        </div>
+        <div class="detail-kpi">
+          <span>Time to hire ≤ 30 days</span><span class="coral">Health screen: บังคับ 100%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left">
+          <h3>Onboarding Program</h3>
+          <p>Day 1 → Day 90 structured</p>
+        </div>
+        <span class="subsec-tag tag-must">Food Safety Critical</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: วันแรกต้องทำ GMP/GHP induction ก่อนเข้าพื้นที่ผลิต — ไม่มีข้อยกเว้น ถ้า FSSC 22000 auditor พบว่ามีพนักงานเข้าพื้นที่โดยไม่ผ่าน food safety induction = major non-conformance ทันที</p></div>
+        <div class="detail-section">
+          <div class="detail-section-title">3 ระยะ</div>
+          <div class="detail-items">
+            <div class="detail-item"><h5>Day 1–7: Orientation</h5><p>GMP/GHP training (บังคับ), Safety induction (ISO 45001), Company culture &amp; values, PDPA awareness, Policy briefing, System access setup</p></div>
+            <div class="detail-item"><h5>Day 8–30: Integration</h5><p>Buddy / mentor assign, On-the-job training ตาม SOP, KPI และ expectation setting, 30-day check-in กับ HR และ supervisor</p></div>
+            <div class="detail-item"><h5>Day 31–90: Probation review</h5><p>Competency assessment, Manager structured feedback, Confirm / extend / terminate decision พร้อม documentation, IDP (Individual Development Plan) drafted</p></div>
+          </div>
+        </div>
+        <div class="detail-kpi">
+          <span>GMP induction: Day 1 บังคับ</span><span class="amber">90-day retention rate ≥ 90%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left">
+          <h3>Employer Branding</h3>
+          <p>สร้างภาพลักษณ์นายจ้างที่แข็งแกร่ง</p>
+        </div>
+        <span class="subsec-tag tag-lead">Strategic</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: LACO มี story ที่ powerful กว่าโรงงานทั่วไปในสารภี — 30 ปีของ agro-excellence + Proterra Asia backing + IPO journey = narrative ที่ดึงดูด talent ระดับ top ได้</p></div>
+        <div class="detail-section">
+          <div class="detail-items">
+            <div class="detail-item"><h5>IPO Story</h5><p>สื่อสาร growth trajectory ให้พนักงานเห็นว่า "เข้ามาตอนนี้ = ได้เติบโตไปกับ listed company" ซึ่งเป็น differentiator ชัดเจนในตลาดแรงงานเชียงใหม่</p></div>
+            <div class="detail-item"><h5>Happy 8 Welfare Story</h5><p>สื่อสาร Happy Body (สวัสดิการสุขภาพ), Happy Money (PVD + bonus), Happy Family (นโยบายวันลาครอบครัว), Happy Brain (training &amp; development) — ผ่านทุก touchpoint ของการสรรหา</p></div>
+            <div class="detail-item"><h5>Global Food Manufacturer Identity</h5><p>เน้นว่า LACO ส่งออก Edamame ไปทั่วโลก — พนักงานโรงงานในสารภีมีส่วนในการ feed ลูกค้าระดับโลก ซึ่งสร้าง pride และ retention</p></div>
+          </div>
+        </div>
+        <div class="detail-kpi">
+          <span>Offer acceptance rate ≥ 85%</span><span class="amber">Glassdoor / Jobsdb rating track</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">Talent Acquisition · LACO HR Master Dashboard · คลิกกล่องเพื่อดูรายละเอียด</div>
+</div>
+
+<!-- PAGE: HR OPERATIONS -->
+<div class="page" id="page-ops">
+  <div class="section-header">
+    <h2>HR Operations</h2>
+    <p>Backbone ของ HR ทั้งหมด — 6 functions ที่ต้องทำงานร่วมกัน</p>
+  </div>
+  <div class="subsec-grid">
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Payroll System</h3><p>ระบบเงินเดือนและค่าจ้าง</p></div>
+        <span class="subsec-tag tag-must">Core — ห้าม error</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Payroll accuracy = 99.9% — error ใน OT หรือ shift differential ของสายการผลิตแม้เพียงครั้งเดียวอาจนำไปสู่ labor complaint ที่ขึ้น public record และกระทบ IPO</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Multi-rate payroll engine</h5><p>รองรับทั้งรายเดือน (management) และรายวัน (production) พร้อมคำนวณ OT x1.5 (ทั่วไป), x2 (วันหยุดนักขัตฤกษ์), x3 (วันหยุดที่ทำงาน) ตาม พรบ.คุ้มครองแรงงานโดยอัตโนมัติ</p></div>
+          <div class="detail-item"><h5>Shift differential &amp; allowances</h5><p>ค่า shift night (ถ้ามี), ค่า risk allowance สำหรับงาน cold chain, ค่า meal allowance — ทุก component ต้อง document ชัดเจนใน employment contract</p></div>
+          <div class="detail-item"><h5>SSO + Tax compliance</h5><p>ส่ง SSO ทุกเดือนตรงเวลา, หัก ณ ที่จ่ายถูกต้อง, ออก ภงด.1 ปีละครั้ง — audit trail ต้องครบสำหรับ SEC due diligence</p></div>
+          <div class="detail-item"><h5>Digital payslip</h5><p>พนักงานทุกคนต้องเข้าถึง payslip ออนไลน์ได้ — ลด paper, เพิ่ม transparency, และ support PDPA compliance</p></div>
+        </div>
+        <div class="detail-kpi"><span>Accuracy ≥ 99.9%</span><span class="coral">Zero late payment</span><span class="amber">Full audit trail</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Benefits &amp; PVD</h3><p>สวัสดิการและกองทุนสำรองเลี้ยงชีพ</p></div>
+        <span class="subsec-tag tag-ipo">IPO Critical</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Benefits package ใน agro-processing ต้องแข่งขันได้กับโรงงานอื่นในเชียงใหม่ และต้อง document ทุก component เพราะ auditor จะ check cost allocation ใน IPO prospectus</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Provident Fund (PVD)</h5><p>ออกแบบ fund structure ที่ดึงดูด — recommend นายจ้าง match ≥ 3% ของเงินเดือน บริหารผ่าน licensed fund manager สื่อสารให้พนักงานเข้าใจ long-term benefit ตาม Happy Money principle</p></div>
+          <div class="detail-item"><h5>OPD / IPD medical</h5><p>OPD allowance รายปีต่อคน + IPD ประกันกลุ่ม — ตรวจสอบว่า coverage ครอบคลุม work-related illness ด้วย ตาม Happy Body principle</p></div>
+          <div class="detail-item"><h5>Agro-specific benefits</h5><p>ชุดฟอร์ม + PPE (cost ของบริษัททั้งหมด), อาหารกลางวัน/เที่ยง, ที่พักพนักงาน (สำหรับแรงงานต่างจังหวัด) — document ทุกรายการใน employment contract และ HRIS</p></div>
+          <div class="detail-item"><h5>Annual benefits review</h5><p>ทำ benefits benchmark กับโรงงาน food processing ในเชียงใหม่ทุกปี — present ต่อ MDM Manager และ CEO เพื่อ maintain competitiveness</p></div>
+        </div>
+        <div class="detail-kpi"><span>PVD participation ≥ 90%</span><span class="amber">Market benchmark annually</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>HRIS — Cloud System</h3><p>ระบบข้อมูล HR ดิจิทัล</p></div>
+        <span class="subsec-tag tag-ipo">IPO Non-negotiable</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: ถ้าข้อมูลพนักงานยังอยู่ใน Excel ตอน auditor เข้า due diligence — จะ fail credibility test ทันที SEC ต้องการ headcount data ย้อนหลัง 3 ปี ที่มี audit trail และ tamper-proof</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Core modules (must-have)</h5><p>Employee database + position history, Payroll integration, Leave management, Time &amp; attendance (biometric), Performance management, Training record tracking</p></div>
+          <div class="detail-item"><h5>Food-specific modules</h5><p>Health screening record ต่อคน, Certification expiry alert (GMP, HACCP, health cert), Shift rotation schedule, Seasonal worker tracking แยก pool</p></div>
+          <div class="detail-item"><h5>IPO audit-ready reports</h5><p>Headcount trend 3 ปี, Turnover analysis by dept/grade, Labor cost as % of revenue, Headcount by contract type — ต้อง generate ได้ภายใน 30 นาทีเมื่อ auditor ขอ</p></div>
+          <div class="detail-item"><h5>PDPA compliance</h5><p>ระบบต้องมี consent log ต่อพนักงานทุกคน, role-based access control, audit trail ว่าใคร access ข้อมูลอะไรเมื่อไหร่</p></div>
+        </div>
+        <div class="detail-kpi"><span>3-year data ready</span><span class="coral">Biometric = PDPA sensitive</span><span class="amber">Report ≤ 30 min</span></div>
+        <div class="warning-box"><p><strong>คำแนะนำระบบ:</strong> สำหรับ LACO scale (1,000+ คน) — Tiger Soft หรือ B-PLUS HRD (Thai system ที่ integrate กับกรมสรรพากร + ประกันสังคม) หรือ SuccessFactors ถ้า budget อนุญาต</p></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Performance Management</h3><p>ระบบ KPI และประเมินผล</p></div>
+        <span class="subsec-tag tag-ipo">IPO Critical</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: KPI ต้อง cascade จาก company strategic goal ลงถึง operator ทุกคน — ถ้า CEO ต้องการ export volume +20% KPI ของสายการผลิตต้องสะท้อนเป้านั้น ไม่ใช่ตั้ง KPI แยกกันใน each department</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>KPI by tier</h5><p><strong>Operator:</strong> GMP compliance 100%, defect rate, output/hr | <strong>Supervisor:</strong> OEE ≥ 85%, team turnover, cost control | <strong>Manager:</strong> IPO milestone, strategic delivery, people capability</p></div>
+          <div class="detail-item"><h5>Review cycle</h5><p>Mid-year review (มิ.ย.) + Annual review (ธ.ค.) — ห้ามทำ KPI แล้วลืมไปจนสิ้นปี ต้อง quarterly check-in อย่างน้อย ให้พนักงานรู้ทิศทางและแก้ไขได้ทัน</p></div>
+          <div class="detail-item"><h5>Calibration session</h5><p>HR จัด calibration session ร่วมกับ managers ทุกไตรมาส เพื่อ normalize การประเมินและป้องกัน bias — documentation ทุก session เก็บใน HRIS</p></div>
+          <div class="detail-item"><h5>Link to merit increase</h5><p>ผลประเมิน → merit increase matrix ต้องชัดเจนและ communicate ล่วงหน้า: เช่น rating A = +8%, B = +5%, C = +2%, D = 0% — สร้าง fairness และ motivation</p></div>
+        </div>
+        <div class="detail-kpi"><span>Completion rate 100%</span><span class="amber">Calibration 2x/year</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Compensation Structure</h3><p>Job grading + salary band</p></div>
+        <span class="subsec-tag tag-ipo">SET Listing Required</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Job grading system คือ infrastructure ที่ SET ต้องการเห็นก่อน listing — บริษัทที่จ่ายเงินเดือน "ตามดุลยพินิจ" โดยไม่มี structure จะถูก flag ทันทีในขั้น due diligence</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Job analysis + JD ทุก position</h5><p>ทำ job analysis ทุก role — scope of work, accountability level, decision-making authority — เป็น input ของ job grading และ DOA (Delegation of Authority)</p></div>
+          <div class="detail-item"><h5>Job grading system</h5><p>แนะนำ Hay Group methodology หรือ simplified point-factor system สำหรับ LACO scale — grade 1-15 ตาม accountability, knowledge, problem-solving — approve โดย Board</p></div>
+          <div class="detail-item"><h5>Salary band per grade</h5><p>แต่ละ grade มี Min / Midpoint / Max — ทุกปีต้อง benchmark กับ survey ตลาด (AON, Mercer, หรือ PMAT Thailand) เพื่อ maintain competitiveness</p></div>
+          <div class="detail-item"><h5>Incentive + bonus structure</h5><p>Annual bonus formula ที่โยงกับ company profit และ individual performance — transparent และ communicate ก่อนปีงบประมาณ</p></div>
+        </div>
+        <div class="detail-kpi"><span>Board-approved structure</span><span class="amber">Annual market benchmark</span><span class="coral">Documented per role</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Employee Relations</h3><p>แรงงานสัมพันธ์และวินัย</p></div>
+        <span class="subsec-tag tag-must">Legal Risk</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Labor court case ที่ขึ้น public record = underwriter flag ทันทีตอน IPO due diligence — ทุก disciplinary action ต้องมี due process ที่ document ครบถ้วน</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>ข้อบังคับการทำงาน</h5><p>ต้อง register กับกรมสวัสดิการและคุ้มครองแรงงาน — review ทุกปีให้สอดคล้องกับ พรบ.คุ้มครองแรงงาน ล่าสุด พร้อม translate เป็นภาษาที่แรงงาน CLMV อ่านได้ถ้ามี</p></div>
+          <div class="detail-item"><h5>Disciplinary tier system</h5><p><strong>Level 1:</strong> Verbal warning → <strong>Level 2:</strong> Written warning → <strong>Level 3:</strong> Final warning → <strong>Level 4:</strong> Suspension → <strong>Level 5:</strong> Termination | GMP violation มี fast-track ถึง Level 3 ได้ทันทีขึ้นกับ severity</p></div>
+          <div class="detail-item"><h5>Grievance process</h5><p>พนักงานต้องมีช่องทาง raise concern โดยไม่กลัวถูกแก้แค้น — anonymous hotline หรือ suggestion box ที่ HR Manager รับโดยตรง review ทุกเดือน</p></div>
+          <div class="detail-item"><h5>Termination due process</h5><p>ทุก termination ต้องผ่าน HR review — check severance calculation, hearing process, documentation — ก่อน CEO approve เพื่อป้องกัน unfair dismissal claim</p></div>
+        </div>
+        <div class="detail-kpi"><span>Zero labor court cases</span><span class="coral">Due process: 100%</span><span class="amber">Register compliance</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">HR Operations · LACO HR Master Dashboard · คลิกกล่องเพื่อดูรายละเอียด</div>
+</div>
+
+<!-- PAGE: L&D -->
+<div class="page" id="page-ld">
+  <div class="section-header">
+    <h2>Learning &amp; Development</h2>
+    <p>3 Tracks ที่ต้องทำพร้อมกัน — Training ที่นี่ = regulatory requirement + competitive advantage</p>
+  </div>
+  <div class="subsec-grid">
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Mandatory Compliance Training</h3><p>Track 1 — ขาดไม่ได้</p></div>
+        <span class="subsec-tag tag-must">FSSC 22000 Required</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Mandatory training ไม่ใช่ HR program — เป็น regulatory requirement ที่ถ้าขาดจะกระทบ FSSC 22000 certification ทั้งโรงงาน ซึ่งหมายถึงหยุด export ได้ทันที</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>GMP / GHP — Day 1 บังคับ</h5><p>ทุกคนที่เข้าพื้นที่ผลิตต้องผ่านก่อน — personal hygiene, dress code, restricted area rules, allergen awareness Record ใน HRIS ทุกครั้ง</p></div>
+          <div class="detail-item"><h5>HACCP awareness</h5><p>ทุกพนักงานต้องเข้าใจ Critical Control Points (CCPs) ที่เกี่ยวข้องกับ work area ของตน — refresher ทุก 12 เดือน พร้อม test ผ่าน/ไม่ผ่าน</p></div>
+          <div class="detail-item"><h5>ISO 45001 Safety induction</h5><p>Hazard awareness, PPE usage, emergency procedure, incident reporting — ทุกพนักงานใหม่และ refresher ทุก 6 เดือน</p></div>
+          <div class="detail-item"><h5>PDPA พื้นฐาน</h5><p>ทุกคนที่ handle ข้อมูลส่วนบุคคล (HR, admin, sales) ต้องผ่าน PDPA awareness training — บันทึก completion ใน HRIS สำหรับ SEC audit</p></div>
+        </div>
+        <div class="detail-kpi"><span>Completion: 100% mandatory</span><span class="coral">FSSC audit-ready</span><span class="amber">Record in HRIS</span></div>
+        <div class="warning-box"><p><strong>ถ้า fail:</strong> FSSC 22000 major NC → export hold → revenue กระทบ → IPO timeline เลื่อน Consequence chain นี้ต้องสื่อสารให้ management ทุกระดับเข้าใจ</p></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Technical Capability</h3><p>Track 2 — สร้าง competitive advantage</p></div>
+        <span class="subsec-tag tag-tech">LACO-Specific</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Technical knowledge ที่ LACO-specific เช่น Edamame grading standard และ cold chain management ไม่มีในหลักสูตรอื่น ต้องสร้าง in-house training program เอง</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Edamame grading standard</h5><p>ทุก QC และ production operator ต้องรู้ Grade A/B/C criteria, moisture content acceptable range, size specification, defect classification — in-house program พัฒนาโดย QA Manager</p></div>
+          <div class="detail-item"><h5>Cold chain management</h5><p>Temperature control ตลอด supply chain (-18°C for frozen), break-in-chain procedure, logging และ documentation สำหรับ export compliance</p></div>
+          <div class="detail-item"><h5>Machine operation + SOP</h5><p>ทุก operator ต้องผ่าน machine-specific training และ sign off SOP ก่อน operate — training record link กับ work permit ใน HRIS</p></div>
+          <div class="detail-item"><h5>Gen AI tools (Management scope)</h5><p>MDM Manager และ HR Manager ควร champion การนำ Gen AI tools มาใช้ใน HR analytics, training content creation, regulatory monitoring — เริ่มจาก pilot 2-3 use cases</p></div>
+          <div class="detail-item"><h5>ERP / HRIS system training</h5><p>ทุก user ของระบบต้องผ่าน certified training — ลด error, เพิ่ม data quality, และ audit trail ที่ clean</p></div>
+        </div>
+        <div class="detail-kpi"><span>Skills matrix updated quarterly</span><span class="amber">In-house program documented</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Leadership Pipeline</h3><p>Track 3 — IPO readiness + succession</p></div>
+        <span class="subsec-tag tag-lead">Pre-IPO Strategic</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Proterra Asia และ SET จะดูว่า LACO มี management bench depth ไหม — ถ้า key manager ออกไป 1 คนแล้วองค์กรสั่นคลอน นั่นคือ risk flag ที่กระทบ IPO valuation</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Succession planning</h5><p>ระบุ critical roles (CEO, MDM Manager, Production Manager, QA Manager) และ successor candidates อย่างน้อย 2 คนต่อ role — IDP ที่ชัดเจนพร้อม timeline และ development action</p></div>
+          <div class="detail-item"><h5>Management essentials program</h5><p>สำหรับ first-time manager และ high-potential operator ที่ถูก identify ว่า จะ promote — ครอบคลุม: people management, financial literacy, project management, communication</p></div>
+          <div class="detail-item"><h5>Corporate governance awareness</h5><p>SET/SEC framework, Board structure, CG principles, ESG fundamentals — สำหรับ management team ทุกคน เพื่อเตรียม culture ก่อน listing day</p></div>
+          <div class="detail-item"><h5>English for business</h5><p>เป้าหมาย: management team ที่ communicate กับ Proterra Asia (Singapore) ได้ — focus on written report และ meeting participation ไม่ใช่ academic English</p></div>
+        </div>
+        <div class="detail-kpi"><span>Succession coverage ≥ 80%</span><span class="amber">Internal promotion ≥ 70%</span><span class="lead">IDP: 100% critical roles</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Training Calendar Management</h3><p>วางแผน training ให้ไม่กระทบ production</p></div>
+        <span class="subsec-tag tag-tech">Operational</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Training calendar ต้อง sync กับ production plan — ห้ามดึงคนออกจาก production line ช่วง Q3 harvest peak ใช้ micro-learning และ on-the-job format แทน</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Q1 — Annual mandatory reset</h5><p>จัด GMP/HACCP/Safety refresher ประจำปีทั้งองค์กร, ทำ annual training needs assessment, update training plan ปีใหม่</p></div>
+          <div class="detail-item"><h5>Q2 — Technical + certification</h5><p>FSSC 22000 internal audit prep, machine operation SOP refresh, technical skill upgrade — ก่อน external surveillance audit ที่มักจัดใน Q2-Q3</p></div>
+          <div class="detail-item"><h5>Q3 Peak — Micro-learning only</h5><p>ช่วง harvest peak ไม่จัด classroom training — ใช้ 10-minute pre-shift safety brief, e-learning บนมือถือ, on-the-job coaching โดย supervisor แทน</p></div>
+          <div class="detail-item"><h5>Q4 — Leadership + governance prep</h5><p>Management program, governance awareness, English for business, succession review — ช่วงที่ production เบาลงหลัง peak season</p></div>
+        </div>
+        <div class="detail-kpi"><span>Training hrs ≥ 20/person/yr</span><span class="amber">SET ESG S-metric</span><span>Mandatory 100%</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Happy 8 Integration</h3><p>เชื่อม L&amp;D กับ employee wellbeing</p></div>
+        <span class="subsec-tag tag-lead">Culture &amp; Retention</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: L&D เป็น primary implementer ของ Happy Brain (หาความรู้) และ Happy Body (สุขภาพดีผ่าน safety training) — ถ้าสื่อสาร connection นี้ให้พนักงานเห็น จะเพิ่ม engagement และลด turnover</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Happy Brain — L&D โดยตรง</h5><p>พนักงานที่เรียนรู้ต่อเนื่อง = มั่นคงในงาน + เติบโตกับองค์กร + salary growth ผ่าน grade advancement สื่อสารให้ชัดว่า "เรียน → grade ขึ้น → เงินเดือนขึ้น"</p></div>
+          <div class="detail-item"><h5>Happy Body — ผ่าน safety training</h5><p>ISO 45001 training ลด accident = พนักงานกลับบ้านปลอดภัย สุขภาพดี — เชื่อมข้อมูล LTIR กับ training completion rate เพื่อแสดง ROI</p></div>
+          <div class="detail-item"><h5>Happy Money — skill = income</h5><p>Technical certification → higher grade → higher salary band — สร้าง visible career path ให้พนักงานเห็นว่า "invest time in learning = invest in own income"</p></div>
+          <div class="detail-item"><h5>Happy Soul + Happy Society</h5><p>Leadership program ที่ embed จริยธรรมและ CSR awareness — เชื่อม community engagement ของ LACO กับ employee volunteer program</p></div>
+        </div>
+        <div class="detail-kpi"><span>Engagement score track</span><span class="amber">Turnover ≤ 15%</span><span>Internal promo rate</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">Learning &amp; Development · LACO HR Master Dashboard · คลิกกล่องเพื่อดูรายละเอียด</div>
+</div>
+
+<!-- PAGE: SAFETY & COMPLIANCE -->
+<div class="page" id="page-sc">
+  <div class="section-header">
+    <h2>Safety &amp; Compliance</h2>
+    <p>4 Pillars — Fail ใน pillar ใดก็กระทบ certification / export license / IPO timeline</p>
+  </div>
+  <div class="subsec-grid">
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Occupational Safety</h3><p>ISO 45001 — ความปลอดภัยในการทำงาน</p></div>
+        <span class="subsec-tag tag-must">ISO 45001</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ Heinrich's Triangle: ทุก 1 LTI มี near-miss ซ่อนอยู่ 300 ครั้ง — บริษัทที่ LTIR = 0 ไม่ใช่โชคดี แต่เพราะ near-miss reporting system แข็งแกร่ง พนักงานกล้ารายงานโดยไม่กลัวถูกลงโทษ</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Hazard Identification + Risk Assessment</h5><p>ทำ JSA (Job Safety Analysis) ทุก work station — agro-processing specific risks: มีดตัด, เครื่องจักรแช่แข็ง, พื้นเปียกลื่น, ยกของหนัก, fatigue จาก 3-shift Update ทุกปีและเมื่อ process เปลี่ยน</p></div>
+          <div class="detail-item"><h5>Near-miss reporting system</h5><p>ระบบรายงาน near-miss ที่ no-blame — พนักงานรายงานได้โดยไม่กลัวถูกตำหนิ Target: ≥ 1 near-miss report ต่อคนต่อเดือน (เป็น positive indicator ว่า culture ดี)</p></div>
+          <div class="detail-item"><h5>LTIR / TRIR calculation</h5><p>LTIR = (LTI incidents × 200,000) ÷ total hours worked | คำนวณรายเดือน รายงานต่อ CEO และ MDM Manager | เก็บ 3-year trend สำหรับ SET ESG S-pillar disclosure</p></div>
+          <div class="detail-item"><h5>Incident investigation + RCA</h5><p>ทุก incident (ไม่ว่าจะ LTI หรือ first aid) ต้องทำ Root Cause Analysis ภายใน 24 ชั่วโมง ห้าม conclude ว่า "พนักงานประมาท" โดยไม่ขุดถึง systemic cause</p></div>
+          <div class="detail-item"><h5>Emergency response plan</h5><p>Fire drill อย่างน้อยปีละ 2 ครั้ง, chemical spill procedure (ถ้ามี), medical emergency protocol ที่ทุกคนรู้ — document และ test ทุกปี</p></div>
+        </div>
+        <div class="detail-kpi"><span>LTIR Target = 0</span><span class="coral">Near-miss ≥ 1/person/mo</span><span class="amber">3-year trend for ESG</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Food Safety Compliance</h3><p>GMP / FSSC 22000 / HACCP</p></div>
+        <span class="subsec-tag tag-must">Export License Critical</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Food safety compliance ใน HR context หมายถึง ทุก "คน" ที่เข้าพื้นที่ผลิตต้องผ่าน system ที่ HR บริหาร — ไม่ใช่แค่เรื่องของ QA team</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Health screening management</h5><p>ตรวจสุขภาพก่อนจ้างและ annual checkup — โดยเฉพาะโรคติดต่อ (เช่น salmonella carrier, hepatitis) และบาดแผลเปิด HR ต้องมีระบบ track expiry และ alert อัตโนมัติ</p></div>
+          <div class="detail-item"><h5>Hygiene disciplinary process</h5><p>GMP violation tier: Level 1 (ลืมล้างมือ, ไม่สวม hair net) = warn + retrain | Level 2 (ซ้ำ หรือ allergen cross-contact) = written warning | Level 3 (เจตนา หรือ food safety risk) = suspend/terminate ทันที</p></div>
+          <div class="detail-item"><h5>Visitor + contractor control</h5><p>ทุก visitor และ contractor ที่เข้าพื้นที่ผลิตต้องผ่าน GMP briefing และ sign declaration — HR ออกแบบ system, Security enforce, QA audit</p></div>
+          <div class="detail-item"><h5>CAPA management (HR scope)</h5><p>เมื่อ internal audit พบ NC ที่เกี่ยวกับ people / training / behavior — HR ต้องรับผิดชอบ Corrective Action และ Preventive Action ส่งภายใน 30 วัน</p></div>
+          <div class="detail-item"><h5>Certification renewal tracking</h5><p>HRIS ต้อง alert ล่วงหน้า 3 เดือนก่อน FSSC 22000, ISO 45001, และ individual cert หมดอายุ — ไม่มีข้อยกเว้นสำหรับ lapse ใน certification</p></div>
+        </div>
+        <div class="detail-kpi"><span>Zero major NC</span><span class="coral">Health screen: 100% annual</span><span class="amber">CAPA: ≤ 30 days</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Labor Law Compliance</h3><p>พรบ.คุ้มครองแรงงานและกฎหมายแรงงาน</p></div>
+        <span class="subsec-tag tag-must">IPO Legal Risk</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Labor court case ที่ขึ้น public record = underwriter flag ทันทีใน IPO prospectus review — การป้องกันถูกกว่าการแก้ไขหลังจากถูกฟ้อง 100 เท่า</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>ข้อบังคับการทำงาน</h5><p>ต้อง register กับกรมสวัสดิการฯ — ทบทวนทุกปี อัปเดตให้สอดคล้องกับกฎหมายล่าสุด ถ้ามีแรงงาน CLMV ต้อง translate เป็นภาษาที่พวกเขาอ่านได้ (พม่า/เมียนมาร์)</p></div>
+          <div class="detail-item"><h5>OT compliance</h5><p>OT ต้องไม่เกิน 36 ชั่วโมงต่อสัปดาห์ตาม พรบ. — HRIS ต้อง alert อัตโนมัติเมื่อพนักงานใกล้ limit ช่วง harvest peak ที่ OT สูงต้อง monitor รายวัน</p></div>
+          <div class="detail-item"><h5>Minimum wage + statutory benefits</h5><p>Track minimum wage ของ จ.เชียงใหม่ ทุกปี — ต้อง update payroll ทันทีที่มีการประกาศปรับ วันหยุดนักขัตฤกษ์ 13 วัน + วันหยุดพักร้อนตามอายุงาน</p></div>
+          <div class="detail-item"><h5>Foreign worker management</h5><p>Work permit + visa ครบถ้วนสำหรับแรงงาน CLMV — HR ต้องมีระบบ track expiry ล่วงหน้า 60 วัน ทำงานร่วมกับ agent ที่เชื่อถือได้</p></div>
+          <div class="detail-item"><h5>Annual labor law audit</h5><p>จ้าง external labor law specialist ทำ audit ปีละครั้ง ก่อน IPO submission — ระบุ gap และ remediate ทั้งหมดก่อน SET due diligence</p></div>
+        </div>
+        <div class="detail-kpi"><span>Zero labor court cases</span><span class="coral">OT compliance daily monitor</span><span class="amber">Annual legal audit</span></div>
+        <div class="warning-box"><p><strong>IPO consequence:</strong> Labor dispute ที่อยู่ระหว่างการพิจารณาของศาลต้อง disclose ใน prospectus — กระทบ investor confidence และ valuation โดยตรง</p></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>PDPA Compliance</h3><p>Personal Data Protection Act</p></div>
+        <span class="subsec-tag tag-ipo">SET Listing Required</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: LACO มี sensitive personal data หลายประเภทที่ PDPA regulate — biometric (fingerprint attendance), health data (screening results), CCTV ทั้งหมดต้องมี explicit consent และ proper governance</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Data mapping</h5><p>ทำ inventory ของ personal data ทั้งหมดที่ LACO collect — พนักงาน, ผู้สมัครงาน, supplier/contractor — ระบุ lawful basis, retention period, และ processor ที่เกี่ยวข้อง</p></div>
+          <div class="detail-item"><h5>Consent management</h5><p>ทุก data collection ต้องมี consent form ที่ถูกต้อง — โดยเฉพาะ health data (sensitive category) และ biometric ที่ต้องมี explicit consent แยกต่างหาก</p></div>
+          <div class="detail-item"><h5>DPO (Data Protection Officer)</h5><p>LACO ขนาดนี้ควร designate DPO อย่างเป็นทางการ — อาจเป็น HR Manager หรือ Legal counsel ที่ผ่าน PDPA training — แจ้ง PDPC ถ้าต้องการ</p></div>
+          <div class="detail-item"><h5>Breach response procedure</h5><p>ถ้าเกิด data breach ต้องแจ้ง PDPC ภายใน 72 ชั่วโมง และแจ้ง data subject ถ้า high risk — HR ต้องซ้อม procedure ปีละครั้ง</p></div>
+          <div class="detail-item"><h5>SEC disclosure readiness</h5><p>PDPA compliance status ต้อง document ชัดเจน — SEC อาจถามใน IPO due diligence ว่าบริษัทมี data governance framework ไหม</p></div>
+        </div>
+        <div class="detail-kpi"><span>Zero PDPA breach</span><span class="coral">Biometric: explicit consent</span><span class="amber">DPO designated</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>ESG — S Pillar Metrics</h3><p>Social metrics สำหรับ SET disclosure</p></div>
+        <span class="subsec-tag tag-ipo">SET ESG Rating</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Proterra Asia ในฐานะ PE fund จะ require ESG compliance สำหรับ LP reporting และ exit readiness — Safety &amp; Compliance เป็น primary owner ของ S pillar metrics ทั้งหมด</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Safety metrics</h5><p>LTIR, TRIR (Total Recordable Injury Rate), Lost Days Rate — collect รายเดือน รายงาน SET ประจำปีใน One Report ต้องมี 3-year trend สำหรับ ESG rating assessment</p></div>
+          <div class="detail-item"><h5>Workforce metrics</h5><p>Total headcount, % permanent vs. seasonal, % female management, turnover rate, average training hours — ทั้งหมดมาจาก HRIS ต้องมี audit trail</p></div>
+          <div class="detail-item"><h5>Community impact</h5><p>Contract farming ที่ guarantee ราคาให้เกษตรกร = direct S pillar contribution — HR ช่วย document และ quantify impact (จำนวน farmer families, total income generated)</p></div>
+          <div class="detail-item"><h5>Happy 8 as ESG framework</h5><p>Happy 8 program ที่ LACO implement = S pillar evidence ที่ concrete — document ทุก initiative (Happy Body = safety program, Happy Brain = training hours, Happy Family = leave policy)</p></div>
+        </div>
+        <div class="detail-kpi"><span>SET ESG S-pillar target</span><span class="amber">3-year data required</span><span>Annual disclosure</span></div>
+      </div>
+    </div>
+
+    <div class="subsec-card" onclick="toggleCard(this)">
+      <div class="subsec-card-head">
+        <div class="subsec-card-head-left"><h3>Employee Relations &amp; Welfare</h3><p>ER + Happy 8 implementation</p></div>
+        <span class="subsec-tag tag-lead">Culture &amp; Retention</span>
+        <div class="subsec-toggle">+</div>
+      </div>
+      <div class="subsec-detail">
+        <div class="principle-box"><p>หลักการ: Employee Relations ที่ดีสร้าง psychological safety — พนักงานที่รู้สึกปลอดภัยจะรายงาน near-miss, รายงาน GMP violation, และอยู่กับองค์กรนานขึ้น ซึ่ง direct link กับ LTIR และ turnover</p></div>
+        <div class="detail-items">
+          <div class="detail-item"><h5>Grievance channel</h5><p>Anonymous suggestion box หรือ hotline ที่ HR Manager รับโดยตรง — review ทุกเดือน respond ทุก complaint ภายใน 14 วัน document resolution ทุกกรณี</p></div>
+          <div class="detail-item"><h5>Happy 8 program implementation</h5><p>แต่ละ Happy ต้องมี program ที่ concrete: Happy Body = annual health checkup + gym area, Happy Heart = volunteer day, Happy Relax = outing ประจำปี, Happy Family = family day event</p></div>
+          <div class="detail-item"><h5>Employee engagement survey</h5><p>ทำ annual engagement survey — ใช้ 5-question pulse survey ต่อ quarterly เพื่อ early warning ก่อน turnover spike คะแนน engagement เป็น KPI ที่รายงานต่อ CEO</p></div>
+          <div class="detail-item"><h5>Recognition program</h5><p>Employee of the month, long service award, safety champion award — เชื่อม recognition กับ behavior ที่ต้องการส่งเสริม (food safety compliance, near-miss reporting, continuous learning)</p></div>
+        </div>
+        <div class="detail-kpi"><span>Engagement score ≥ 70%</span><span class="amber">Grievance response ≤ 14 days</span><span>Recognition: monthly</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">Safety &amp; Compliance · LACO HR Master Dashboard · คลิกกล่องเพื่อดูรายละเอียด</div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const map = { overview: 0, ta: 1, ops: 2, ld: 3, sc: 4 };
+  if (map[id] !== undefined) tabs[map[id]].classList.add('active');
+}
+
+function toggleCard(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  card.closest('.subsec-grid').querySelectorAll('.subsec-card').forEach(c => c.classList.remove('expanded'));
+  if (!wasExpanded) card.classList.add('expanded');
+}
+</script>
+</body>
+</html>
