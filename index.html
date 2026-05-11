@@ -1,25 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-    <title>Management Division Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Division Dashboard | LACO</title>
     <style>
-        body { font-family: sans-serif; padding: 40px; background: #F2F0EB; color: #1E3932; }
-        h1 { border-bottom: 2px solid #CBA258; padding-bottom: 10px; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 15px 0; }
-        a { text-decoration: none; color: #00422B; font-weight: bold; font-size: 1.2em; }
-        a:hover { color: #7B4F3A; text-decoration: underline; }
+        :root {
+            --green-dark: #00422B;
+            --gold: #CBA258;
+            --cream: #F2F0EB;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--cream);
+            color: var(--green-dark);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 3rem; /* ตัวหนังสือหัวข้อใหญ่พิเศษ */
+            border-bottom: 4px solid var(--gold);
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+        }
+        a {
+            display: block;
+            background: white;
+            padding: 25px 35px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--green-dark);
+            font-size: 1.8rem; /* ตัวหนังสือลิงก์ขนาดใหญ่ */
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 10px solid var(--gold);
+        }
+        a:hover {
+            transform: translateX(15px);
+            background: var(--green-dark);
+            color: white;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            display: block;
+            margin-top: 5px;
+            font-weight: normal;
+        }
     </style>
 </head>
 <body>
-    <h1>Management Division Dashboard</h1>
+
+<div class="container">
+    <h1>Management Dashboard</h1>
+    
     <ul>
-        <li><a href="jdwbs.html">1. Job Description WBS</a></li>
-        <li><a href="orgstructure.html">2. Organization Structure</a></li>
-        <li><a href="compliance.html">3. Compliance</a></li>
-        <li><a href="hr.html">4. HR & Admin</a></li>
-        <li><a href="it.html">5. IT System</a></li>
-        <li><a href="ipo.html">6. IPO Readiness</a></li>
+        <li>
+            <a href="jdwbs.html" target="_blank">
+                1. Job Description WBS
+                <span class="subtitle">โครงสร้างรายละเอียดงานทั้งหมด</span>
+            </a>
+        </li>
+        <li>
+            <a href="orgstructure.html" target="_blank">
+                2. Organization Structure
+                <span class="subtitle">โครงสร้างองค์กรและการบริหาร</span>
+            </a>
+        </li>
+        <li>
+            <a href="compliance.html" target="_blank">
+                3. Compliance
+                <span class="subtitle">การกำกับดูแลและระเบียบปฏิบัติ</span>
+            </a>
+        </li>
+        <li>
+            <a href="hr.html" target="_blank">
+                4. HR & Admin
+                <span class="subtitle">การบริหารทรัพยากรบุคคลและธุรการ</span>
+            </a>
+        </li>
+        <li>
+            <a href="it.html" target="_blank">
+                5. IT System
+                <span class="subtitle">ระบบสารสนเทศและเทคโนโลยี</span>
+            </a>
+        </li>
+        <li>
+            <a href="ipo.html" target="_blank">
+                6. IPO Readiness
+                <span class="subtitle">การเตรียมความพร้อมเข้าจดทะเบียนในตลาดหลักทรัพย์</span>
+            </a>
+        </li>
     </ul>
+</div>
+
 </body>
 </html>
