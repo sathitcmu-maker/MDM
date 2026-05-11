@@ -9,6 +9,8 @@
             --green-dark: #00422B;
             --gold: #CBA258;
             --cream: #F2F0EB;
+            --white: #FFFFFF;
+            --text-gray: #666666;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,47 +22,56 @@
             justify-content: center;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
         }
         h1 {
-            font-size: 3rem; /* ตัวหนังสือหัวข้อใหญ่พิเศษ */
-            border-bottom: 4px solid var(--gold);
-            padding-bottom: 15px;
-            margin-bottom: 40px;
+            font-size: 3.2rem;
+            border-bottom: 5px solid var(--gold);
+            padding-bottom: 20px;
+            margin-bottom: 50px;
             text-align: center;
+            font-weight: 800;
         }
         ul {
             list-style: none;
             padding: 0;
         }
         li {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         a {
             display: block;
-            background: white;
-            padding: 25px 35px;
-            border-radius: 15px;
+            background: var(--white);
+            padding: 30px 40px;
+            border-radius: 20px;
             text-decoration: none;
             color: var(--green-dark);
-            font-size: 1.8rem; /* ตัวหนังสือลิงก์ขนาดใหญ่ */
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border-left: 10px solid var(--gold);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border-left: 15px solid var(--gold);
         }
         a:hover {
-            transform: translateX(15px);
+            transform: scale(1.02) translateX(15px);
             background: var(--green-dark);
-            color: white;
+            color: var(--white);
+        }
+        .title-text {
+            display: block;
+            font-size: 2.2rem; /* หัวข้อหลักใหญ่ชัดเจน */
+            font-weight: bold;
+            line-height: 1.2;
         }
         .subtitle {
-            font-size: 1rem;
-            color: #666;
             display: block;
-            margin-top: 5px;
+            font-size: 1.1rem; /* คำอธิบายประกอบ */
             font-weight: normal;
+            margin-top: 8px;
+            color: var(--text-gray);
+            transition: color 0.3s ease;
+        }
+        a:hover .subtitle {
+            color: rgba(255, 255, 255, 0.8); /* เปลี่ยนสี subtitle เมื่อ hover */
         }
     </style>
 </head>
@@ -72,38 +83,38 @@
     <ul>
         <li>
             <a href="jdwbs.html" target="_blank">
-                1. Job Description WBS
-                <span class="subtitle">โครงสร้างรายละเอียดงานทั้งหมด</span>
-            </a>
-        </li>
-        <li>
-            <a href="orgstructure.html" target="_blank">
-                2. Organization Structure
-                <span class="subtitle">โครงสร้างองค์กรและการบริหาร</span>
-            </a>
-        </li>
-        <li>
-            <a href="compliance.html" target="_blank">
-                3. Compliance
-                <span class="subtitle">การกำกับดูแลและระเบียบปฏิบัติ</span>
-            </a>
-        </li>
-        <li>
-            <a href="hr.html" target="_blank">
-                4. HR & Admin
-                <span class="subtitle">การบริหารทรัพยากรบุคคลและธุรการ</span>
+                <span class="title-text">1. MDM Work Breakdown Structure</span>
+                <span class="subtitle">รายละเอียดโครงสร้างการทำงานและขอบเขตหน้าที่ความรับผิดชอบ</span>
             </a>
         </li>
         <li>
             <a href="it.html" target="_blank">
-                5. IT System
-                <span class="subtitle">ระบบสารสนเทศและเทคโนโลยี</span>
+                <span class="title-text">2. IT Management</span>
+                <span class="subtitle">กลยุทธ์การบริหารจัดการระบบสารสนเทศและเทคโนโลยี</span>
+            </a>
+        </li>
+        <li>
+            <a href="hr.html" target="_blank">
+                <span class="title-text">3. HR Management</span>
+                <span class="subtitle">นโยบายการบริหารทรัพยากรบุคคลและงานธุรการองค์กร</span>
+            </a>
+        </li>
+        <li>
+            <a href="orgstructure.html" target="_blank">
+                <span class="title-text">4. Organisation Structure</span>
+                <span class="subtitle">แผนผังโครงสร้างองค์กรและการจัดลำดับสายบังคับบัญชา</span>
             </a>
         </li>
         <li>
             <a href="ipo.html" target="_blank">
-                6. IPO Readiness
-                <span class="subtitle">การเตรียมความพร้อมเข้าจดทะเบียนในตลาดหลักทรัพย์</span>
+                <span class="title-text">5. IPO Roadmap</span>
+                <span class="subtitle">ขั้นตอนการเตรียมความพร้อมและแผนดำเนินงานสู่การเป็นบริษัทจดทะเบียน</span>
+            </a>
+        </li>
+        <li>
+            <a href="compliance.html" target="_blank">
+                <span class="title-text">6. Compliance Management</span>
+                <span class="subtitle">การกำกับดูแลการปฏิบัติงานให้เป็นไปตามระเบียบและมาตรฐาน</span>
             </a>
         </li>
     </ul>
