@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LACO Corporate Structure — IPO Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-50:#E1F5EE;--green-100:#9FE1CB;--green-400:#1D9E75;--green-600:#0F6E56;--green-800:#085041;--green-900:#042E26;
+  --amber-50:#FAEEDA;--amber-100:#FAC775;--amber-400:#EF9F27;--amber-600:#854F0B;--amber-800:#633806;
+  --blue-50:#E6F1FB;--blue-100:#B5D4F4;--blue-400:#378ADD;--blue-600:#185FA5;--blue-800:#0C447C;--blue-900:#042C53;
+  --purple-50:#EEEDFE;--purple-100:#CECBF6;--purple-400:#7F77DD;--purple-600:#534AB7;--purple-800:#26215C;
+  --coral-50:#FAECE7;--coral-100:#F5C4B3;--coral-400:#D85A30;--coral-600:#993C1D;--coral-800:#4A1B0C;
+  --gray-50:#F4F3EE;--gray-100:#D3D1C7;--gray-200:#B4B2A9;--gray-400:#888780;--gray-600:#5F5E5A;--gray-800:#2C2C2A;
+  --teal-50:#E0F4FA;--teal-400:#1A9FBB;--teal-600:#0D6E82;--teal-800:#084957;
+  --bg:#F5F4F0;--surface:#FFFFFF;
+  --font:'IBM Plex Sans Thai',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--gray-800);min-height:100vh;}
+
+/* HEADER */
+.header{background:var(--green-900);color:#fff;padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--green-400);}
+.header-left h1{font-size:1rem;font-weight:700;}
+.header-left p{font-size:.68rem;color:var(--green-100);margin-top:2px;font-family:var(--mono);}
+.badges{display:flex;gap:5px;}
+.badge{font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:20px;font-family:var(--mono);}
+.b-ipo{background:var(--amber-400);color:var(--amber-800);}
+.b-set{background:var(--green-400);color:#fff;}
+.b-pe{background:var(--blue-400);color:#fff;}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--gray-100);padding:0 1.5rem;display:flex;gap:0;overflow-x:auto;}
+.nav-tab{padding:.75rem 1rem;font-size:.72rem;font-weight:600;color:var(--gray-400);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;font-family:var(--font);}
+.nav-tab:hover{color:var(--green-600);}
+.nav-tab.active{color:var(--green-600);border-bottom-color:var(--green-400);}
+
+/* PAGES */
+.page{display:none;padding:1.2rem 1.5rem 3rem;}
+.page.active{display:block;}
+
+/* ORG CHART */
+.oc{display:flex;flex-direction:column;align-items:center;gap:0;}
+.vc{width:2px;background:var(--gray-200);}
+.vc-s{height:16px;}
+.vc-m{height:22px;}
+.hline{position:relative;height:16px;}
+.hline::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);height:2px;background:var(--gray-200);}
+
+/* BOX STYLES */
+.bx{border-radius:9px;padding:10px 16px;text-align:center;cursor:pointer;border-width:2px;border-style:solid;transition:all .18s;position:relative;}
+.bx:hover{opacity:.88;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.1);}
+.bx h3{font-size:.85rem;font-weight:700;}
+.bx h4{font-size:.78rem;font-weight:700;}
+.bx p{font-size:.63rem;margin-top:2px;}
+
+.bx-shareholders{background:var(--amber-400);border-color:var(--amber-600);min-width:200px;}
+.bx-shareholders h3{color:#fff;}
+.bx-shareholders p{color:var(--amber-50);}
+
+.bx-board{background:var(--green-800);border-color:var(--green-600);min-width:220px;}
+.bx-board h3{color:#fff;}
+.bx-board p{color:var(--green-100);}
+
+.bx-committee{background:var(--blue-800);border-color:var(--blue-600);min-width:140px;}
+.bx-committee h4{color:#fff;font-size:.7rem;}
+.bx-committee p{color:var(--blue-100);font-size:.6rem;}
+
+.bx-ceo{background:var(--green-600);border-color:var(--green-400);min-width:220px;}
+.bx-ceo h3{color:#fff;}
+.bx-ceo p{color:var(--green-50);}
+
+.bx-support{background:var(--coral-50);border-color:var(--coral-400);min-width:140px;}
+.bx-support h4{color:var(--coral-800);font-size:.72rem;}
+.bx-support p{color:var(--coral-600);font-size:.62rem;}
+
+.bx-division{background:var(--surface);border-color:var(--green-400);border-width:1.5px;min-width:150px;cursor:pointer;}
+.bx-division h4{color:var(--green-800);font-size:.75rem;}
+.bx-division p{color:var(--green-600);font-size:.62rem;}
+.bx-division:hover{background:var(--green-50);}
+
+.bx-mdm{background:var(--amber-50);border-color:var(--amber-400);border-width:2px;min-width:180px;}
+.bx-mdm h4{color:var(--amber-800);font-size:.78rem;}
+.bx-mdm p{color:var(--amber-600);font-size:.63rem;}
+
+.bx-external{background:var(--gray-50);border-color:var(--gray-200);border-style:dashed;min-width:130px;}
+.bx-external h4{color:var(--gray-600);font-size:.7rem;}
+.bx-external p{color:var(--gray-400);font-size:.6rem;}
+
+/* DASHED LINE */
+.dashed{border-top:2px dashed var(--gray-300);width:100%;}
+
+/* BRANCHES */
+.branches{display:flex;justify-content:center;gap:10px;}
+.branch{display:flex;flex-direction:column;align-items:center;}
+.bl{width:2px;background:var(--gray-200);}
+.bl-s{height:16px;}
+
+/* SECTION HEADER */
+.sec-h{margin-bottom:1rem;}
+.sec-h h2{font-size:1rem;font-weight:700;color:var(--green-800);}
+.sec-h p{font-size:.72rem;color:var(--gray-400);margin-top:2px;font-family:var(--mono);}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;}
+
+/* DETAIL CARDS */
+.card{background:var(--surface);border:1px solid var(--gray-100);border-radius:11px;overflow:hidden;cursor:pointer;transition:all .18s;}
+.card:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,0,0,.08);}
+.card.open{border-color:var(--green-400);box-shadow:0 4px 14px rgba(29,158,117,.13);}
+.card-head{padding:13px 14px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.card-hl{flex:1;}
+.card-hl h3{font-size:.84rem;font-weight:700;color:var(--gray-800);}
+.card-hl p{font-size:.65rem;color:var(--gray-400);margin-top:2px;}
+.tag{font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;font-family:var(--mono);}
+.t-set{background:var(--green-50);color:var(--green-800);}
+.t-ipo{background:var(--amber-50);color:var(--amber-800);}
+.t-pe{background:var(--blue-50);color:var(--blue-800);}
+.t-cg{background:var(--purple-50);color:var(--purple-800);}
+.t-ops{background:var(--teal-50);color:var(--teal-800);}
+.tog{width:20px;height:20px;border-radius:50%;background:var(--gray-50);border:1px solid var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--gray-400);flex-shrink:0;transition:all .18s;}
+.card.open .tog{background:var(--green-400);border-color:var(--green-400);color:#fff;transform:rotate(45deg);}
+.card-body{display:none;padding:0 14px 14px;border-top:1px solid var(--gray-50);}
+.card.open .card-body{display:block;}
+.pb{border-radius:0 7px 7px 0;padding:9px 11px;margin-top:9px;border-left:3px solid var(--green-400);background:var(--green-50);}
+.pb p{font-size:.68rem;color:var(--green-800);line-height:1.58;font-style:italic;}
+.pb-amber{border-left-color:var(--amber-400);background:var(--amber-50);}
+.pb-amber p{color:var(--amber-800);}
+.pb-blue{border-left-color:var(--blue-400);background:var(--blue-50);}
+.pb-blue p{color:var(--blue-800);}
+.pb-purple{border-left-color:var(--purple-400);background:var(--purple-50);}
+.pb-purple p{color:var(--purple-800);}
+.pb-coral{border-left-color:var(--coral-400);background:var(--coral-50);}
+.pb-coral p{color:var(--coral-800);}
+.dtitle{font-size:.6rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);margin:10px 0 5px;}
+.items{display:flex;flex-direction:column;gap:5px;}
+.item{background:var(--gray-50);border-radius:5px;padding:7px 9px;}
+.item h5{font-size:.72rem;font-weight:600;color:var(--gray-800);}
+.item p{font-size:.66rem;color:var(--gray-600);margin-top:2px;line-height:1.56;}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.chip{font-size:.59rem;padding:2px 7px;border-radius:9px;font-family:var(--mono);border:1px solid;}
+.ch-g{background:var(--green-50);color:var(--green-800);border-color:var(--green-100);}
+.ch-a{background:var(--amber-50);color:var(--amber-800);border-color:var(--amber-100);}
+.ch-b{background:var(--blue-50);color:var(--blue-800);border-color:var(--blue-100);}
+.ch-c{background:var(--coral-50);color:var(--coral-800);border-color:var(--coral-100);}
+.ch-p{background:var(--purple-50);color:var(--purple-800);border-color:var(--purple-100);}
+.warn{background:var(--coral-50);border-left:3px solid var(--coral-400);border-radius:0 7px 7px 0;padding:7px 11px;margin-top:7px;}
+.warn p{font-size:.66rem;color:var(--coral-800);line-height:1.54;}
+
+/* CG FLOW DIAGRAM */
+.cg-wrap{background:var(--surface);border:1px solid var(--gray-100);border-radius:12px;padding:1.2rem;margin-bottom:1rem;}
+.cg-title{font-size:.68rem;font-family:var(--mono);color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem;}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.flow-box{padding:7px 14px;border-radius:7px;text-align:center;font-size:.7rem;font-weight:600;}
+.fb-shareholders{background:var(--amber-400);color:#fff;}
+.fb-board{background:var(--green-800);color:#fff;}
+.fb-ceo{background:var(--green-600);color:#fff;}
+.fb-mgmt{background:var(--blue-800);color:#fff;}
+.fb-audit{background:var(--coral-50);color:var(--coral-800);border:1px solid var(--coral-400);}
+.fb-risk{background:var(--purple-50);color:var(--purple-800);border:1px solid var(--purple-400);}
+.flow-arrow{font-size:1rem;color:var(--gray-400);}
+.flow-label{font-size:.58rem;color:var(--gray-400);font-family:var(--mono);text-align:center;margin-top:2px;}
+
+/* MEMBER CARDS */
+.member-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;}
+.member-card{background:var(--surface);border:1px solid var(--gray-100);border-radius:9px;padding:12px 14px;}
+.member-card .role{font-size:.58rem;font-family:var(--mono);color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.member-card .name{font-size:.82rem;font-weight:700;color:var(--gray-800);}
+.member-card .org{font-size:.65rem;color:var(--gray-400);margin-top:2px;}
+.member-card .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+.member-card .m-tag{font-size:.56rem;padding:2px 6px;border-radius:8px;font-weight:600;font-family:var(--mono);}
+.mt-exec{background:var(--green-50);color:var(--green-800);}
+.mt-ind{background:var(--blue-50);color:var(--blue-800);}
+.mt-pe{background:var(--purple-50);color:var(--purple-800);}
+.mt-thai{background:var(--amber-50);color:var(--amber-800);}
+.mt-sg{background:var(--teal-50);color:var(--teal-800);}
+
+/* DIVISION STRUCTURE */
+.div-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:10px;}
+.div-card{background:var(--surface);border:1.5px solid var(--green-400);border-radius:9px;padding:10px 12px;cursor:pointer;transition:all .18s;}
+.div-card:hover{background:var(--green-50);transform:translateY(-1px);}
+.div-card h5{font-size:.75rem;font-weight:700;color:var(--green-800);}
+.div-card p{font-size:.62rem;color:var(--green-600);margin-top:2px;}
+.div-card .div-icon{font-size:1.2rem;margin-bottom:4px;}
+
+/* CG principles table */
+.cg-table{width:100%;border-collapse:collapse;font-size:.67rem;margin-top:8px;}
+.cg-table th{background:var(--green-800);color:#fff;padding:6px 8px;text-align:left;font-weight:600;}
+.cg-table td{padding:6px 8px;border-bottom:1px solid var(--gray-100);vertical-align:top;line-height:1.5;}
+.cg-table tr:nth-child(even) td{background:var(--gray-50);}
+.cg-table .principle{font-weight:600;color:var(--green-800);}
+.badge-ready{background:var(--green-50);color:var(--green-800);padding:1px 6px;border-radius:8px;font-size:.58rem;font-weight:700;}
+.badge-prep{background:var(--amber-50);color:var(--amber-800);padding:1px 6px;border-radius:8px;font-size:.58rem;font-weight:700;}
+.badge-gap{background:var(--coral-50);color:var(--coral-800);padding:1px 6px;border-radius:8px;font-size:.58rem;font-weight:700;}
+
+.footer-note{text-align:center;font-size:.63rem;color:var(--gray-400);font-family:var(--mono);margin-top:2rem;padding-top:.8rem;border-top:1px solid var(--gray-100);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>LACO Corporate Structure — IPO Edition</h1>
+    <p>Lanna Agro Industry Co., Ltd. · SET CG Code · Proterra Asia (PAFF3) · v3.0 — MDM Dual Line · Innovation → CEO · SVG Org Chart</p>
+  </div>
+  <div class="badges">
+    <span class="badge b-set">SET CG</span>
+    <span class="badge b-pe">Proterra Asia</span>
+    <span class="badge b-ipo">PRE-IPO</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-tab active" onclick="go('overview')">ภาพรวมโครงสร้าง</button>
+  <button class="nav-tab" onclick="go('board')">Board of Directors</button>
+  <button class="nav-tab" onclick="go('committees')">Board Committees</button>
+  <button class="nav-tab" onclick="go('management')">Management Structure</button>
+  <button class="nav-tab" onclick="go('cg')">CG &amp; SET Compliance</button>
+  <button class="nav-tab" onclick="go('ipo')">IPO Readiness</button>
+</nav>
+
+<!-- ============ OVERVIEW ============ -->
+<div class="page active" id="page-overview">
+  <p style="font-size:.68rem;font-family:var(--mono);color:var(--gray-400);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">LACO Corporate Structure — Master View · SET IPO Edition v3.0</p>
+
+  <!-- SVG ORG CHART — full structure with dual reporting lines -->
+  <div style="background:var(--surface);border:1px solid var(--gray-100);border-radius:14px;padding:1.5rem;overflow-x:auto;">
+  <svg width="100%" viewBox="0 0 920 780" xmlns="http://www.w3.org/2000/svg" style="min-width:720px;font-family:'IBM Plex Sans Thai',sans-serif;">
+    <defs>
+      <!-- Arrow markers -->
+      <marker id="arr-solid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M1 1L9 5L1 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+      <marker id="arr-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M1 1L9 5L1 9" fill="none" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+      <marker id="arr-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M1 1L9 5L1 9" fill="none" stroke="#EF9F27" stroke-width="1.8" stroke-linecap="round"/>
+      </marker>
+      <marker id="arr-coral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M1 1L9 5L1 9" fill="none" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+    </defs>
+
+    <!-- ========== ROW 1: SHAREHOLDERS ========== -->
+    <rect x="335" y="10" width="250" height="44" rx="8" fill="#EF9F27" stroke="#854F0B" stroke-width="1.5"/>
+    <text x="460" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="white">Shareholders</text>
+    <text x="460" y="44" text-anchor="middle" font-size="9" fill="#FAEEDA">Proterra Asia (PAFF3) · Founding family · Public (post-IPO)</text>
+
+    <!-- External Auditor (left, dashed) -->
+    <rect x="20" y="10" width="130" height="44" rx="7" fill="#F4F3EE" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="85" y="27" text-anchor="middle" font-size="10" font-weight="600" fill="#5F5E5A">External Auditor</text>
+    <text x="85" y="40" text-anchor="middle" font-size="8.5" fill="#888780">แต่งตั้งโดย AGM</text>
+    <text x="85" y="51" text-anchor="middle" font-size="8.5" fill="#888780">รายงาน Audit Cmt</text>
+
+    <!-- Company Secretary (right, dashed) -->
+    <rect x="770" y="10" width="130" height="44" rx="7" fill="#FFF8EC" stroke="#FAC775" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="835" y="27" text-anchor="middle" font-size="10" font-weight="600" fill="#854F0B">Company Secretary</text>
+    <text x="835" y="40" text-anchor="middle" font-size="8.5" fill="#633806">SET/SEC compliance</text>
+    <text x="835" y="51" text-anchor="middle" font-size="8.5" fill="#633806">Board secretariat</text>
+
+    <!-- Shareholders → Board (solid) -->
+    <line x1="460" y1="54" x2="460" y2="88" stroke="#0F6E56" stroke-width="2" marker-end="url(#arr-green)"/>
+    <!-- External Auditor → Board (dashed) -->
+    <line x1="150" y1="32" x2="335" y2="110" stroke="#B4B2A9" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr-solid)"/>
+    <!-- Company Secretary ↔ Board (dashed) -->
+    <line x1="770" y1="32" x2="585" y2="110" stroke="#EF9F27" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr-amber)"/>
+
+    <!-- ========== ROW 2: BOARD ========== -->
+    <rect x="335" y="88" width="250" height="44" rx="8" fill="#085041" stroke="#1D9E75" stroke-width="1.5"/>
+    <text x="460" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="white">Board of Directors</text>
+    <text x="460" y="121" text-anchor="middle" font-size="9" fill="#9FE1CB">7 กรรมการ · Independent ≥ 3 · Proterra Asia nominees 3</text>
+
+    <!-- Board → Committees (solid) -->
+    <line x1="460" y1="132" x2="460" y2="148" stroke="#0F6E56" stroke-width="1.5"/>
+    <line x1="155" y1="148" x2="765" y2="148" stroke="#0F6E56" stroke-width="1.5"/>
+    <line x1="155" y1="148" x2="155" y2="162" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <line x1="320" y1="148" x2="320" y2="162" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <line x1="490" y1="148" x2="490" y2="162" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <line x1="660" y1="148" x2="660" y2="162" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <line x1="765" y1="148" x2="765" y2="162" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+    <!-- ========== ROW 3: COMMITTEES ========== -->
+    <!-- Audit Committee -->
+    <rect x="60" y="162" width="190" height="48" rx="7" fill="#0C447C" stroke="#378ADD" stroke-width="1.5"/>
+    <text x="155" y="180" text-anchor="middle" font-size="10" font-weight="700" fill="white">Audit Committee</text>
+    <text x="155" y="193" text-anchor="middle" font-size="8.5" fill="#B5D4F4">≥3 Independent directors</text>
+    <text x="155" y="205" text-anchor="middle" font-size="8.5" fill="#B5D4F4">Financial expert required</text>
+
+    <!-- Risk Committee -->
+    <rect x="225" y="162" width="190" height="48" rx="7" fill="#0C447C" stroke="#378ADD" stroke-width="1.5"/>
+    <text x="320" y="180" text-anchor="middle" font-size="10" font-weight="700" fill="white">Risk Committee</text>
+    <text x="320" y="193" text-anchor="middle" font-size="8.5" fill="#B5D4F4">Enterprise Risk</text>
+    <text x="320" y="205" text-anchor="middle" font-size="8.5" fill="#B5D4F4">ERM oversight</text>
+
+    <!-- CG&SD Committee -->
+    <rect x="395" y="162" width="190" height="48" rx="7" fill="#0C447C" stroke="#378ADD" stroke-width="1.5"/>
+    <text x="490" y="180" text-anchor="middle" font-size="10" font-weight="700" fill="white">CG &amp; SD Committee</text>
+    <text x="490" y="193" text-anchor="middle" font-size="8.5" fill="#B5D4F4">Governance · ESG</text>
+    <text x="490" y="205" text-anchor="middle" font-size="8.5" fill="#B5D4F4">Sustainability</text>
+
+    <!-- NRC -->
+    <rect x="565" y="162" width="200" height="48" rx="7" fill="#0C447C" stroke="#378ADD" stroke-width="1.5"/>
+    <text x="665" y="180" text-anchor="middle" font-size="10" font-weight="700" fill="white">Nomination &amp; Remuneration</text>
+    <text x="665" y="193" text-anchor="middle" font-size="8.5" fill="#B5D4F4">Board nomination</text>
+    <text x="665" y="205" text-anchor="middle" font-size="8.5" fill="#B5D4F4">Executive compensation</text>
+
+    <!-- ========== INTERNAL AUDIT & RISK (flanking CEO) ========== -->
+    <!-- Internal Audit -->
+    <rect x="20" y="290" width="130" height="52" rx="7" fill="#FAECE7" stroke="#D85A30" stroke-width="1.5"/>
+    <text x="85" y="308" text-anchor="middle" font-size="10" font-weight="700" fill="#4A1B0C">Internal Audit</text>
+    <text x="85" y="321" text-anchor="middle" font-size="8.5" fill="#993C1D">รายงาน Audit Cmt</text>
+    <text x="85" y="333" text-anchor="middle" font-size="8.5" fill="#993C1D">อิสระจาก CEO</text>
+
+    <!-- Internal Audit ↔ CEO (dashed) -->
+    <line x1="150" y1="316" x2="335" y2="316" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr-coral)"/>
+    <!-- Internal Audit → Audit Cmt (dashed up) -->
+    <line x1="85" y1="290" x2="85" y2="250" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5,3"/>
+    <line x1="85" y1="250" x2="155" y2="210" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr-coral)"/>
+
+    <!-- Risk & Compliance -->
+    <rect x="770" y="290" width="130" height="52" rx="7" fill="#FAECE7" stroke="#D85A30" stroke-width="1.5"/>
+    <text x="835" y="308" text-anchor="middle" font-size="10" font-weight="700" fill="#4A1B0C">Risk &amp; Compliance</text>
+    <text x="835" y="321" text-anchor="middle" font-size="8.5" fill="#993C1D">รายงาน Risk Cmt</text>
+    <text x="835" y="333" text-anchor="middle" font-size="8.5" fill="#993C1D">ERM framework</text>
+
+    <!-- Risk → CEO (dashed) -->
+    <line x1="770" y1="316" x2="585" y2="316" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr-coral)"/>
+    <!-- Risk → Risk Cmt (dashed up) -->
+    <line x1="835" y1="290" x2="835" y2="250" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5,3"/>
+    <line x1="835" y1="250" x2="765" y2="210" stroke="#D85A30" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arr-coral)"/>
+
+    <!-- Board → CEO (solid center) -->
+    <line x1="460" y1="210" x2="460" y2="286" stroke="#0F6E56" stroke-width="2" marker-end="url(#arr-green)"/>
+
+    <!-- ========== ROW 4: CEO ========== -->
+    <rect x="335" y="286" width="250" height="50" rx="9" fill="#0F6E56" stroke="#1D9E75" stroke-width="2"/>
+    <text x="460" y="307" text-anchor="middle" font-size="13" font-weight="700" fill="white">CEO</text>
+    <text x="460" y="325" text-anchor="middle" font-size="9.5" fill="#9FE1CB">Aphirak Kosayodhin · รายงานต่อ Board of Directors</text>
+
+    <!-- ====== MDM DUAL REPORTING LINE ====== -->
+    <!-- Board → MDM dot line (governance/secretary function) -->
+    <!-- Goes: Board right side → right → down → MDM top -->
+    <path d="M 585 132 Q 900 132 900 420 Q 900 480 760 480" stroke="#EF9F27" stroke-width="1.8" stroke-dasharray="6,3" fill="none" marker-end="url(#arr-amber)"/>
+    <!-- Label on dot line -->
+    <text x="892" y="310" text-anchor="middle" font-size="8" fill="#854F0B" font-style="italic" transform="rotate(-90,892,310)">Secretary function · dot line → Board</text>
+
+    <!-- CEO → MDM solid line -->
+    <line x1="585" y1="311" x2="640" y2="455" stroke="#0F6E56" stroke-width="1.8" marker-end="url(#arr-green)"/>
+    <!-- Label -->
+    <text x="598" y="390" font-size="8" fill="#0F6E56" font-style="italic">solid line</text>
+
+    <!-- CEO → C-Suite (solid) -->
+    <line x1="460" y1="336" x2="460" y2="356" stroke="#0F6E56" stroke-width="1.5"/>
+    <line x1="140" y1="356" x2="620" y2="356" stroke="#0F6E56" stroke-width="1.5"/>
+    <line x1="140" y1="356" x2="140" y2="370" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <line x1="280" y1="356" x2="280" y2="370" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <line x1="420" y1="356" x2="420" y2="370" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <line x1="555" y1="356" x2="555" y2="370" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <!-- Innovation separate line from CEO -->
+    <line x1="460" y1="336" x2="460" y2="345" stroke="#0F6E56" stroke-width="1.5"/>
+
+    <!-- ========== ROW 5: C-SUITE 4 boxes ========== -->
+    <!-- COO -->
+    <rect x="60" y="370" width="160" height="70" rx="8" fill="#E0F4FA" stroke="#1A9FBB" stroke-width="1.5" style="cursor:pointer" onclick="go('management')"/>
+    <text x="140" y="390" text-anchor="middle" font-size="11" font-weight="700" fill="#084957">COO</text>
+    <text x="140" y="404" text-anchor="middle" font-size="8.5" fill="#0D6E82">Farming · Procurement</text>
+    <text x="140" y="416" text-anchor="middle" font-size="8.5" fill="#0D6E82">Supply Chain · Operation</text>
+    <text x="140" y="428" text-anchor="middle" font-size="8.5" fill="#0D6E82">QA / QC · R&amp;D</text>
+
+    <!-- CCO -->
+    <rect x="200" y="370" width="160" height="70" rx="8" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.5" style="cursor:pointer" onclick="go('management')"/>
+    <text x="280" y="390" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C">CCO</text>
+    <text x="280" y="404" text-anchor="middle" font-size="8.5" fill="#185FA5">Export Sales · Key Account</text>
+    <text x="280" y="416" text-anchor="middle" font-size="8.5" fill="#185FA5">Market Development</text>
+    <text x="280" y="428" text-anchor="middle" font-size="8.5" fill="#185FA5">Brand: Minnamame/Chocofruiz</text>
+
+    <!-- CFO -->
+    <rect x="340" y="370" width="160" height="70" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1.5" style="cursor:pointer" onclick="go('management')"/>
+    <text x="420" y="390" text-anchor="middle" font-size="11" font-weight="700" fill="#26215C">CFO</text>
+    <text x="420" y="404" text-anchor="middle" font-size="8.5" fill="#534AB7">Accounting · Finance</text>
+    <text x="420" y="416" text-anchor="middle" font-size="8.5" fill="#534AB7">Strategy</text>
+    <text x="420" y="428" text-anchor="middle" font-size="8.5" fill="#534AB7">Investor Relations (IR)</text>
+
+    <!-- MDM Manager — dual reporting -->
+    <rect x="640" y="440" width="180" height="80" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2.5" style="cursor:pointer" onclick="go('management')"/>
+    <!-- Star indicator -->
+    <text x="730" y="462" text-anchor="middle" font-size="11" font-weight="700" fill="#633806">MDM Manager ★</text>
+    <text x="730" y="476" text-anchor="middle" font-size="8.5" fill="#854F0B">HR · IT · Legal</text>
+    <!-- Dual reporting badge -->
+    <rect x="655" y="484" width="148" height="28" rx="5" fill="#EF9F27" stroke="none"/>
+    <text x="729" y="495" text-anchor="middle" font-size="7.5" font-weight="700" fill="white">Solid → CEO (HR/IT/Legal)</text>
+    <text x="729" y="507" text-anchor="middle" font-size="7.5" font-weight="700" fill="white">Dot → Board (Secretary)</text>
+
+    <!-- Innovation — direct to CEO -->
+    <rect x="480" y="370" width="150" height="70" rx="8" fill="#EAF3DE" stroke="#639922" stroke-width="2" stroke-dasharray="0" style="cursor:pointer" onclick="go('management')"/>
+    <text x="555" y="388" text-anchor="middle" font-size="10" font-weight="700" fill="#27500A">Innovation ✦</text>
+    <text x="555" y="401" text-anchor="middle" font-size="8" fill="#3B6D11">รายงานตรง CEO</text>
+    <text x="555" y="413" text-anchor="middle" font-size="8.5" fill="#3B6D11">Product · Process</text>
+    <text x="555" y="425" text-anchor="middle" font-size="8.5" fill="#3B6D11">Business Model</text>
+
+    <!-- Innovation line from CEO -->
+    <line x1="555" y1="356" x2="555" y2="370" stroke="#639922" stroke-width="1.8" marker-end="url(#arr-green)"/>
+
+    <!-- ========== ROW 6: OPERATIONS ========== -->
+    <!-- Lines from COO/CCO/CFO down -->
+    <line x1="140" y1="440" x2="140" y2="560" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4,2"/>
+    <line x1="280" y1="440" x2="280" y2="560" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4,2"/>
+    <line x1="420" y1="440" x2="420" y2="560" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4,2"/>
+
+    <!-- Operations container -->
+    <rect x="40" y="560" width="560" height="100" rx="9" fill="white" stroke="#1D9E75" stroke-width="1.5"/>
+    <text x="320" y="577" text-anchor="middle" font-size="9" font-weight="700" fill="#085041" font-family="monospace" letter-spacing="1">BUSINESS OPERATIONS — FUNCTIONS</text>
+
+    <!-- COO functions -->
+    <rect x="52" y="584" width="168" height="66" rx="6" fill="#E0F4FA" stroke="#1A9FBB" stroke-width="1"/>
+    <text x="136" y="599" text-anchor="middle" font-size="8" font-weight="700" fill="#084957">COO</text>
+    <text x="136" y="611" text-anchor="middle" font-size="7.5" fill="#0D6E82">🌱 Agro &amp; Farming</text>
+    <text x="136" y="622" text-anchor="middle" font-size="7.5" fill="#0D6E82">📦 Procurement</text>
+    <text x="136" y="633" text-anchor="middle" font-size="7.5" fill="#0D6E82">🚚 Supply Chain · 🏭 Production</text>
+    <text x="136" y="644" text-anchor="middle" font-size="7.5" fill="#0D6E82">🔬 QA / QC / R&amp;D</text>
+
+    <!-- CCO functions -->
+    <rect x="228" y="584" width="168" height="66" rx="6" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
+    <text x="312" y="599" text-anchor="middle" font-size="8" font-weight="700" fill="#0C447C">CCO</text>
+    <text x="312" y="611" text-anchor="middle" font-size="7.5" fill="#185FA5">✈️ Export Sales (JP/EU/Global)</text>
+    <text x="312" y="622" text-anchor="middle" font-size="7.5" fill="#185FA5">🤝 Key Account Management</text>
+    <text x="312" y="633" text-anchor="middle" font-size="7.5" fill="#185FA5">🫛 Brand: Minnamame</text>
+    <text x="312" y="644" text-anchor="middle" font-size="7.5" fill="#185FA5">🍫 Brand: Chocofruiz</text>
+
+    <!-- CFO functions -->
+    <rect x="404" y="584" width="184" height="66" rx="6" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+    <text x="496" y="599" text-anchor="middle" font-size="8" font-weight="700" fill="#26215C">CFO</text>
+    <text x="496" y="611" text-anchor="middle" font-size="7.5" fill="#534AB7">📊 Accounting &amp; Finance</text>
+    <text x="496" y="622" text-anchor="middle" font-size="7.5" fill="#534AB7">🎯 Strategy</text>
+    <text x="496" y="633" text-anchor="middle" font-size="7.5" fill="#534AB7">📣 Investor Relations (IR)</text>
+    <text x="496" y="644" text-anchor="middle" font-size="7.5" fill="#534AB7">💱 FX &amp; Hedging</text>
+
+    <!-- MDM functions box -->
+    <rect x="640" y="532" width="180" height="90" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+    <text x="730" y="548" text-anchor="middle" font-size="8" font-weight="700" fill="#633806">MDM Manager ★</text>
+    <text x="730" y="560" text-anchor="middle" font-size="7.5" fill="#854F0B">👥 HR Management</text>
+    <text x="730" y="572" text-anchor="middle" font-size="7.5" fill="#854F0B">💻 IT &amp; Digital</text>
+    <text x="730" y="584" text-anchor="middle" font-size="7.5" fill="#854F0B">⚖️ Legal &amp; Compliance</text>
+    <text x="730" y="596" text-anchor="middle" font-size="7.5" fill="#854F0B">📋 Secretary (Board)</text>
+    <text x="730" y="608" text-anchor="middle" font-size="7.5" fill="#854F0B">🌿 ESG / CG Support</text>
+
+    <!-- MDM box to functions -->
+    <line x1="730" y1="520" x2="730" y2="532" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+
+    <!-- Innovation functions -->
+    <rect x="640" y="670" width="180" height="66" rx="8" fill="#EAF3DE" stroke="#639922" stroke-width="1.5"/>
+    <text x="730" y="685" text-anchor="middle" font-size="8" font-weight="700" fill="#27500A">Innovation ✦</text>
+    <text x="730" y="698" text-anchor="middle" font-size="7.5" fill="#3B6D11">💡 Product Innovation</text>
+    <text x="730" y="710" text-anchor="middle" font-size="7.5" fill="#3B6D11">⚙️ Process Innovation</text>
+    <text x="730" y="722" text-anchor="middle" font-size="7.5" fill="#3B6D11">🚀 Business Model Innovation</text>
+
+    <!-- Innovation box line from unit -->
+    <line x1="555" y1="440" x2="555" y2="680" stroke="#639922" stroke-width="1" stroke-dasharray="4,2"/>
+    <line x1="555" y1="680" x2="640" y2="700" stroke="#639922" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arr-green)"/>
+
+    <!-- Legend -->
+    <rect x="20" y="680" width="600" height="44" rx="7" fill="#F4F3EE" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="30" y="697" font-size="8" font-weight="700" fill="#5F5E5A">LEGEND:</text>
+    <line x1="85" y1="694" x2="130" y2="694" stroke="#0F6E56" stroke-width="2"/>
+    <text x="135" y="697" font-size="8" fill="#5F5E5A">Solid line = Reporting line (CEO)</text>
+    <line x1="85" y1="710" x2="130" y2="710" stroke="#EF9F27" stroke-width="2" stroke-dasharray="5,3"/>
+    <text x="135" y="713" font-size="8" fill="#5F5E5A">Dot amber = Secretary function → Board (MDM only)</text>
+    <line x1="340" y1="694" x2="385" y2="694" stroke="#D85A30" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="390" y="697" font-size="8" fill="#5F5E5A">Dot red = Functional reporting (Audit/Risk)</text>
+    <line x1="340" y1="710" x2="385" y2="710" stroke="#639922" stroke-width="2"/>
+    <text x="390" y="713" font-size="8" fill="#5F5E5A">Green solid = CEO direct line · Innovation ✦ = รายงานตรง CEO</text>
+  </svg>
+  </div>
+
+  <!-- Accountability Flow -->
+  <div style="margin-top:1rem;background:var(--surface);border:1px solid var(--gray-100);border-radius:11px;padding:14px;">
+    <div style="font-size:.65rem;font-family:var(--mono);color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Accountability Flow — SET CG Code v3.0 · MDM Dual Reporting</div>
+
+    <div class="flow-row">
+      <div><div class="flow-box fb-shareholders">Shareholders (AGM)</div><div class="flow-label">แต่งตั้ง Board</div></div>
+      <div class="flow-arrow">→</div>
+      <div><div class="flow-box fb-board">Board of Directors</div><div class="flow-label">กำกับดูแล CEO</div></div>
+      <div class="flow-arrow">→</div>
+      <div><div class="flow-box fb-ceo">CEO — Aphirak</div><div class="flow-label">บริหาร C-Suite</div></div>
+      <div class="flow-arrow">→</div>
+      <div><div class="flow-box fb-mgmt">COO / CCO / CFO / Innovation</div><div class="flow-label">Execute operations</div></div>
+    </div>
+
+    <div class="flow-row" style="margin-top:8px;">
+      <div><div class="flow-box fb-audit">Internal Audit</div><div class="flow-label">─── → Audit Cmt (not CEO)</div></div>
+      <div class="flow-arrow">|</div>
+      <div><div class="flow-box fb-risk">Risk &amp; Compliance</div><div class="flow-label">─── → Risk Cmt + CEO</div></div>
+      <div class="flow-arrow">|</div>
+      <div style="text-align:center;">
+        <div class="flow-box" style="background:var(--amber-50);color:var(--amber-800);border:2px solid var(--amber-400);font-weight:700;">MDM Manager ★</div>
+        <div class="flow-label" style="color:var(--amber-800);font-weight:600;">
+          Solid → CEO (HR/IT/Legal)<br>
+          <span style="color:var(--amber-600);">···· → Board (Secretary function)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MDM dual line explanation -->
+    <div style="margin-top:10px;background:var(--amber-50);border:1.5px solid var(--amber-400);border-radius:8px;padding:10px 14px;font-size:.68rem;line-height:1.7;">
+      <strong style="color:var(--amber-800);">MDM Manager — Dual Reporting Line (ตาม SET CG Code)</strong><br>
+      <span style="color:var(--amber-700);">
+        <strong>Solid line → CEO:</strong> บริหารงาน HR, IT, Legal ทั้งหมด — CEO สั่งงานได้เต็มที่<br>
+        <strong>Dot line → Board:</strong> Secretary function เท่านั้น — เตรียมวาระ, จดบันทึก, track action ของ Board Committees โดยไม่ผ่าน CEO filter เพื่อ independence ตาม SET CG Code<br>
+        <em style="color:var(--amber-600);">CEO ไม่มีสิทธิ์สั่งให้ MDM แก้ไข Board minutes หรือกรองข้อมูลก่อนถึง Board — ส่วนนี้ MDM รับ mandate จาก Board โดยตรง</em>
+      </span>
+    </div>
+  </div>
+
+  <div class="footer-note">LACO Corporate Structure v3.0 · MDM Dual Reporting Line · Innovation → CEO Direct · SET CG Code Compliant</div>
+</div>
+
+<!-- ============ BOARD ============ -->
+<div class="page" id="page-board">
+  <div class="sec-h"><h2>Board of Directors</h2><p>Composition · Qualifications · Proterra Asia nominees · SET CG Code requirements</p></div>
+
+  <!-- Board composition -->
+  <div style="background:var(--surface);border:1.5px solid var(--green-400);border-radius:11px;padding:1.2rem;margin-bottom:1rem;">
+    <div style="font-size:.65rem;font-family:var(--mono);color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Board Composition — Recommended for LACO IPO</div>
+    <div class="member-grid">
+      <div class="member-card" style="border-left:3px solid var(--green-400);">
+        <div class="role">Chairman</div>
+        <div class="name">Independent Chairman</div>
+        <div class="org">ต้องไม่ใช่ CEO (SET CG Code)</div>
+        <div class="tags"><span class="m-tag mt-ind">Independent</span><span class="m-tag mt-thai">Thai</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--green-600);">
+        <div class="role">CEO / Executive Director</div>
+        <div class="name">Aphirak Kosayodhin</div>
+        <div class="org">LACO CEO · Executive Director</div>
+        <div class="tags"><span class="m-tag mt-exec">Executive</span><span class="m-tag mt-thai">Thai</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--purple-400);">
+        <div class="role">Non-Executive Director (Proterra)</div>
+        <div class="name">Tai Lin</div>
+        <div class="org">Proterra Asia — PAFF3</div>
+        <div class="tags"><span class="m-tag mt-pe">PE Nominee</span><span class="m-tag mt-sg">Singapore</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--purple-400);">
+        <div class="role">Non-Executive Director (Proterra)</div>
+        <div class="name">Koh-Peng Chua</div>
+        <div class="org">Proterra Asia — PAFF3</div>
+        <div class="tags"><span class="m-tag mt-pe">PE Nominee</span><span class="m-tag mt-sg">Singapore</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--purple-400);">
+        <div class="role">Non-Executive Director (Proterra)</div>
+        <div class="name">William So</div>
+        <div class="org">Proterra Asia — PAFF3</div>
+        <div class="tags"><span class="m-tag mt-pe">PE Nominee</span><span class="m-tag mt-sg">Singapore</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--blue-400);">
+        <div class="role">Independent Director</div>
+        <div class="name">TBD — Financial Expert</div>
+        <div class="org">ต้องมี financial expertise<br>(Audit Committee requirement)</div>
+        <div class="tags"><span class="m-tag mt-ind">Independent</span><span class="m-tag mt-thai">Thai</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--blue-400);">
+        <div class="role">Independent Director</div>
+        <div class="name">TBD — Industry Expert</div>
+        <div class="org">Agro / food industry background<br>preferred</div>
+        <div class="tags"><span class="m-tag mt-ind">Independent</span><span class="m-tag mt-thai">Thai</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>SET Board Requirements</h3><p>กฎ SET ที่ Board ต้องทำตาม</p></div><span class="tag t-set">SET CG Code</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>SET CG Code กำหนดว่า Board ต้องมีองค์ประกอบและกระบวนการที่ชัดเจน — ถ้า Board composition ไม่ถูกต้อง SEC อาจไม่อนุมัติ filing</p></div>
+        <div class="items">
+          <div class="item"><h5>Board size</h5><p>ไม่น้อยกว่า 5 คน — LACO ควรมี 7 คน (1 Chairman + 1 CEO + 3 Proterra nominees + 2 Independent) เพื่อ balance ระหว่าง PE nominee และ Independent</p></div>
+          <div class="item"><h5>Independent Director ≥ 1/3</h5><p>ถ้า Board มี 7 คน → ต้องมี Independent อย่างน้อย 3 คน — Proterra nominees ไม่นับเป็น Independent เพราะมี material relationship กับ major shareholder</p></div>
+          <div class="item"><h5>Chairman ≠ CEO (SET requirement)</h5><p>ต้องแยก Chairman และ CEO ออกจากกันชัดเจน — Aphirak เป็น CEO ดังนั้น Chairman ต้องเป็นคนอื่น และควรเป็น Independent Director</p></div>
+          <div class="item"><h5>Board Charter</h5><p>ต้องมี Board Charter ที่กำหนด role, responsibility, authority, meeting frequency, และ evaluation process — document ที่ต้อง disclose บน SET website หลัง listing</p></div>
+          <div class="item"><h5>Board evaluation</h5><p>ทำ board performance evaluation ปีละ 1 ครั้ง (whole board + individual + committee) — ผลการประเมินต้องรายงานใน Annual Report</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">Independent ≥ 3/7</span><span class="chip ch-a">Chairman ≠ CEO</span><span class="chip ch-g">Board Charter required</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Proterra Asia — PE Nominee Strategy</h3><p>การจัดการ PE nominee ใน Board</p></div><span class="tag t-pe">Proterra Asia</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-blue"><p>Proterra Asia ในฐานะ major shareholder มีสิทธิ์ nominate กรรมการตามสัดส่วนถือหุ้น — การ balance ระหว่าง PE nominee กับ Independent Directors คือ governance challenge สำคัญก่อน IPO</p></div>
+        <div class="items">
+          <div class="item"><h5>PE nominee rights</h5><p>Proterra Asia (PAFF3) มี Tai Lin, Koh-Peng Chua, William So เป็น nominees — สิทธิ์ nominate จะลดลงตามสัดส่วนถือหุ้นหลัง IPO เมื่อมี public float เพิ่มขึ้น</p></div>
+          <div class="item"><h5>Exit timeline awareness</h5><p>PE fund มี investment horizon 5–7 ปี — PAFF3 ลงทุน LACO ปี 2025 ดังนั้น exit window คาดว่าประมาณ 2030–2032 Board ต้องรับรู้ timeline นี้ในการวาง long-term strategy</p></div>
+          <div class="item"><h5>Board independence post-IPO</h5><p>หลัง IPO สัดส่วน Proterra ลดลง → Independent Directors มี voice มากขึ้น → governance balance ดีขึ้น — ออกแบบ Independent Director selection process ให้ดีตั้งแต่ต้น</p></div>
+          <div class="item"><h5>LP reporting obligation</h5><p>Proterra Asia ต้องรายงาน ESG, financial performance, governance ให้ LP (Limited Partners) ของ fund — Board ต้องเข้าใจว่า reporting requirement ของ PE fund สูงกว่า SET minimum</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-p">3 PE nominees</span><span class="chip ch-b">Exit: ~2030-2032</span><span class="chip ch-g">Balance required</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Company Secretary</h3><p>หน้าที่และ qualification</p></div><span class="tag t-cg">CG Critical</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>Company Secretary คือ interface ระหว่าง Board กับ regulatory bodies (SET, SEC) — ต้องเป็นคนที่ทั้ง Board trust และมีความรู้ด้าน SET/SEC regulations อย่างลึกซึ้ง</p></div>
+        <div class="items">
+          <div class="item"><h5>Qualification (SET requirement)</h5><p>ต้องผ่าน Company Secretary Program ที่ IOD (Institute of Directors) หรือ Thai Listed Companies Association — มีความรู้ด้าน securities law, corporate law, SET regulations</p></div>
+          <div class="item"><h5>Core responsibilities</h5><p>จัดประชุม Board และ Shareholders (AGM/EGM), ดูแล Board resolutions, submit filings ต่อ SET/SEC, maintain share register, ดูแล Director disclosure ตาม SEC requirements</p></div>
+          <div class="item"><h5>MDM Manager overlap</h5><p>ใน LACO — MDM Manager (Boss) มี skill overlap กับ Company Secretary ในส่วนของ document governance และ Board secretariat อาจออกแบบให้ MDM Manager oversee Company Secretary function ได้</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">IOD certified</span><span class="chip ch-a">SET/SEC filings</span><span class="chip ch-g">Board secretariat</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Director Qualifications</h3><p>คุณสมบัติที่ SEC กำหนด</p></div><span class="tag t-set">SEC Requirement</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>SEC กำหนด negative qualifications สำหรับ Director — ถ้ากรรมการมีประวัติที่ขัดต่อเงื่อนไข SEC จะไม่อนุมัติ IPO filing ต้องตรวจสอบก่อน propose รายชื่อ</p></div>
+        <div class="items">
+          <div class="item"><h5>Negative qualifications (SEC)</h5><p>ไม่มีประวัติอาชญากรรมทางการเงิน, ไม่เคยถูก SEC สั่งห้ามดำรงตำแหน่ง, ไม่เป็นบุคคลล้มละลาย, ไม่มี conflict of interest ที่ material กับ LACO — ต้องทำ background check ทุกคน</p></div>
+          <div class="item"><h5>Independent Director definition (SEC)</h5><p>ถือหุ้นไม่เกิน 1% ของ voting shares, ไม่มีความสัมพันธ์ทางธุรกิจกับ LACO เกิน 3 ปีย้อนหลัง, ไม่เป็น key management ของ LACO หรือ related party ในปัจจุบัน</p></div>
+          <div class="item"><h5>Board diversity (CG Code)</h5><p>SET CG Code ส่งเสริม board diversity: gender, age, expertise — LACO ควร consider female director อย่างน้อย 1 คน เพื่อ ESG rating ที่ดีขึ้น (FTSE Russell ให้ weight กับ board diversity)</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-c">Background check required</span><span class="chip ch-g">Gender diversity signal</span></div>
+        <div class="warn"><p><strong>ตรวจสอบก่อน filing:</strong> Proterra Asia nominees ทั้ง 3 คน (Tai Lin, Koh-Peng Chua, William So) ต้องผ่าน SEC qualification check — Singapore executives ที่ไม่เคยอยู่ใน Thai listed company อาจต้องเตรียมเอกสารเพิ่มเติม</p></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">Board of Directors · LACO Corporate Structure IPO Edition</div>
+</div>
+
+<!-- ============ COMMITTEES ============ -->
+<div class="page" id="page-committees">
+  <div class="sec-h"><h2>Board Committees</h2><p>4 Committees ตาม SET CG Code — composition, mandate, และ MDM Manager interface</p></div>
+  <div class="grid">
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Audit Committee (AC)</h3><p>ตรวจสอบงบการเงิน · Internal control · Auditor oversight</p></div><span class="tag t-set">SET Mandatory</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>Audit Committee คือ committee ที่ SET/SEC ให้ความสำคัญมากที่สุด — ต้องประกอบด้วย Independent Directors ทั้งหมด และอย่างน้อย 1 คนต้องมี financial expertise</p></div>
+        <div class="items">
+          <div class="item"><h5>Composition (SET requirement)</h5><p>≥ 3 Independent Directors ทั้งหมด, อย่างน้อย 1 คน มีความรู้ด้าน accounting/finance — Chairman ของ Audit Committee ต้องไม่ใช่ Chairman of the Board</p></div>
+          <div class="item"><h5>Core mandate</h5><p>Review financial statements ก่อน Board approve, oversee internal audit function, select/recommend external auditor ต่อ AGM, review related-party transactions, evaluate adequacy of internal controls (COSO/SEC framework)</p></div>
+          <div class="item"><h5>Internal Audit oversight</h5><p>Internal Audit รายงานตรงต่อ Audit Committee (ไม่ใช่ CEO) เพื่อ independence — AC approve Internal Audit plan ทุกปี, review ผลการ audit, และ track remediation ของ audit findings</p></div>
+          <div class="item"><h5>MDM Manager interface</h5><p>MDM Manager (Boss) เป็นผู้นำเสนอเอกสารต่อ Audit Committee: internal control adequacy report, risk management update, legal compliance status — เป็น key presenter ไม่ใช่ decision maker</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">3 Independent Directors</span><span class="chip ch-a">Financial expert required</span><span class="chip ch-c">Internal Audit → AC direct</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Risk Committee (RC)</h3><p>Enterprise Risk Management · ERM framework</p></div><span class="tag t-set">SET CG Code</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>Risk Committee oversee ERM framework ทั้งองค์กร — MDM Manager ในฐานะ Secretary to Risk Committee มีประสบการณ์ตรงจาก Heng Leasing ที่ทำหน้าที่นี้มาแล้ว</p></div>
+        <div class="items">
+          <div class="item"><h5>Composition</h5><p>Mix ของ Independent Directors และ Non-executive Directors — ควรมี member ที่มีประสบการณ์ด้าน risk management, food industry, หรือ financial services</p></div>
+          <div class="item"><h5>Core mandate</h5><p>Approve ERM framework และ risk appetite statement, review top risks ทุกไตรมาส, oversee risk mitigation actions, ensure risk culture ฝังลึกในองค์กร</p></div>
+          <div class="item"><h5>LACO-specific risks</h5><p>Agricultural price volatility, Japan export concentration risk, JPY/THB FX exposure, food safety/recall risk, climate/weather impact on harvest, Proterra Asia exit timeline risk</p></div>
+          <div class="item"><h5>MDM Manager role</h5><p>Secretary to Risk Committee — prepare risk register, facilitate quarterly risk review, coordinate risk owner ทุก function ใน ERM process ตาม COSO framework</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">ERM COSO framework</span><span class="chip ch-a">Quarterly review</span><span class="chip ch-p">MDM = Secretary</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>CG &amp; Sustainable Development Committee</h3><p>Corporate Governance · ESG · Sustainability</p></div><span class="tag t-cg">ESG AAA Target</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>CG&SD Committee คือ committee ที่ MDM Manager มีความถนัดที่สุด — Boss มีประสบการณ์ elevate ESG จาก A → AAA ที่ Heng Leasing โดยตรง สามารถถ่ายทอด expertise นี้มาสู่ LACO ได้ทันที</p></div>
+        <div class="items">
+          <div class="item"><h5>Composition</h5><p>Independent Directors เป็น majority — ควรมี member ที่มีประสบการณ์ ESG หรือ sustainability โดยเฉพาะ Proterra Asia nominees ที่ต้องรายงาน ESG ให้ LP</p></div>
+          <div class="item"><h5>Core mandate</h5><p>Approve CG Policy และ Code of Conduct, oversee ESG strategy และ target, review sustainability report ก่อน disclose ต่อ SET, monitor SET ESG Rating และ FTSE Russell ESG Score</p></div>
+          <div class="item"><h5>ESG targets สำหรับ LACO</h5><p>SET ESG Rating: target A ในปีแรก → AA ในปีที่ 2 → AAA ในปีที่ 3 | FTSE Russell: เข้า index ใน 2 ปีหลัง listing | GRI reporting: ทำ sustainability report ตาม GRI Standards</p></div>
+          <div class="item"><h5>MDM Manager role</h5><p>Secretary to CG&SD Committee — prepare ESG report, coordinate ESG data จากทุก function (HR: training hrs, Safety: LTIR, Operations: carbon footprint, Supply: farmer welfare) รายงาน Board ทุกไตรมาส</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">ESG AAA target: Year 3</span><span class="chip ch-p">MDM = Secretary</span><span class="chip ch-b">FTSE Russell target</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Nomination &amp; Remuneration Committee</h3><p>Board nomination · Executive compensation</p></div><span class="tag t-cg">CG Best Practice</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>NRC ป้องกัน CEO กำหนด compensation ตัวเอง และป้องกัน Board nominate สมาชิกที่ไม่เหมาะสม — independence ของ NRC คือ signal สำคัญของ good governance ต่อ investor</p></div>
+        <div class="items">
+          <div class="item"><h5>Composition</h5><p>Independent Directors เป็น majority, Chairman ควรเป็น Independent Director — Proterra Asia อาจ nominate 1 member เพื่อ ensure executive compensation aligned กับ PE fund's return expectations</p></div>
+          <div class="item"><h5>Board nomination mandate</h5><p>กำหนด director qualification criteria, search และ screen candidates, propose รายชื่อต่อ Board และ AGM — ป้องกัน CEO มีอิทธิพลเกินไปต่อ board composition</p></div>
+          <div class="item"><h5>Executive remuneration mandate</h5><p>กำหนด compensation structure ของ CEO และ C-Suite ที่ link กับ performance metrics — ต้อง disclose ใน Annual Report ว่า remuneration ผูกกับ KPI อะไรบ้าง</p></div>
+          <div class="item"><h5>Succession planning</h5><p>NRC oversee CEO succession plan — ถ้า CEO ลาออกหรือไม่สามารถปฏิบัติหน้าที่ได้ ต้องมี succession candidate ที่พร้อม ไม่ให้องค์กร disrupted ซึ่งกระทบ IPO valuation</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">Independent majority</span><span class="chip ch-a">CEO compensation disclosed</span><span class="chip ch-g">Succession plan required</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">Board Committees · LACO Corporate Structure IPO Edition</div>
+</div>
+
+<!-- ============ MANAGEMENT ============ -->
+<div class="page" id="page-management">
+  <div class="sec-h"><h2>Management Structure</h2><p>CEO → C-Suite → Division → Operations — Thai Union model adapted for LACO scale</p></div>
+
+  <!-- C-Suite overview -->
+  <div style="background:var(--surface);border:1.5px solid var(--green-400);border-radius:11px;padding:1.2rem;margin-bottom:1rem;">
+    <div style="font-size:.65rem;font-family:var(--mono);color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">C-Suite Structure — LACO IPO v2.0</div>
+    <div class="member-grid">
+      <div class="member-card" style="border-left:3px solid var(--green-600);">
+        <div class="role">Chief Executive Officer</div>
+        <div class="name">CEO — Aphirak Kosayodhin</div>
+        <div class="org">รายงานต่อ Board of Directors</div>
+        <div class="tags"><span class="m-tag mt-exec">Executive Director</span><span class="m-tag mt-thai">Thai</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--teal-600);">
+        <div class="role">Chief Operations Officer</div>
+        <div class="name">COO</div>
+        <div class="org">Farming · Procurement · Supply Chain<br>Operation · QA/QC · R&amp;D</div>
+        <div class="tags"><span class="m-tag mt-exec">C-Suite</span><span class="m-tag" style="background:var(--teal-50);color:var(--teal-800);">Core Business</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--blue-600);">
+        <div class="role">Chief Commercial Officer</div>
+        <div class="name">CCO</div>
+        <div class="org">Export Sales · Key Account · Market Dev<br>Brand: Minnamame · Chocofruiz</div>
+        <div class="tags"><span class="m-tag mt-exec">C-Suite</span><span class="m-tag" style="background:var(--blue-50);color:var(--blue-800);">Revenue Driver</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--purple-600);">
+        <div class="role">Chief Financial Officer</div>
+        <div class="name">CFO</div>
+        <div class="org">Accounting · Finance · Strategy<br>Investor Relations · FX &amp; Hedging</div>
+        <div class="tags"><span class="m-tag mt-exec">C-Suite</span><span class="m-tag" style="background:var(--purple-50);color:var(--purple-800);">IPO Critical</span></div>
+      </div>
+      <div class="member-card" style="border-left:3px solid var(--green-400);background:var(--green-50);">
+        <div class="role">Innovation Unit ✦ — รายงานตรง CEO</div>
+        <div class="name">Head of Innovation</div>
+        <div class="org">Product · Process · Business Model Innovation<br>Cross-functional mandate · CEO เป็น champion</div>
+        <div class="tags"><span class="m-tag" style="background:var(--green-50);color:var(--green-800);">CEO Direct</span><span class="m-tag" style="background:var(--green-100);color:var(--green-800);">Cross-functional</span></div>
+      </div>
+        <div class="org">HR · IT &amp; Digital · Legal · Secretary<br>ESG/CG Support · AI Transformation Sponsor<br>Secretary: Risk Cmt + CG&amp;SD Cmt</div>
+        <div class="tags"><span class="m-tag mt-exec">Strategic Deputy</span><span class="m-tag" style="background:var(--amber-100);color:var(--amber-800);">Triple Threat</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>CEO — Aphirak Kosayodhin</h3><p>Authority, accountability, Board interface</p></div><span class="tag t-set">Executive Director</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>CEO มี dual role ใน LACO — เป็นทั้ง Executive Director ใน Board และ Head of Management Team ความชัดเจนของ authority boundary ระหว่าง Board oversight และ Management execution คือหัวใจของ good governance</p></div>
+        <div class="items">
+          <div class="item"><h5>Authority จาก Board</h5><p>Board delegate authority ให้ CEO ผ่าน Board Charter และ Delegation of Authority (DOA) — CEO ตัดสินใจได้ภายใน DOA limit โดยไม่ต้องขอ Board approval ทุกครั้ง</p></div>
+          <div class="item"><h5>CEO KPI (linked to remuneration)</h5><p>Financial: revenue growth, EBITDA margin, ROE | Operational: production volume, export market share, FSSC 22000 compliance | Strategic: IPO milestone, ESG rating, organizational capability | กำหนดโดย NRC อนุมัติโดย Board</p></div>
+          <div class="item"><h5>Board reporting</h5><p>CEO present ต่อ Board ทุกเดือน (monthly management report) + quarterly business review + annual strategy presentation ต่อ Board รวมถึง Proterra Asia executives</p></div>
+          <div class="item"><h5>Singapore Board interface</h5><p>Proterra Asia nominees (Tai Lin, Koh-Peng Chua, William So) มีความคาดหวังสูงด้าน data quality และ presentation — CEO และ MDM Manager ต้องเตรียม Board package ที่ concise, data-driven, และเป็น English ทั้งหมด</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">DOA defined</span><span class="chip ch-a">English Board package</span><span class="chip ch-b">Proterra Asia interface</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>MDM Manager — Strategic Role</h3><p>ตำแหน่งของ Boss ใน LACO structure</p></div><span class="tag t-ipo">Triple Threat Profile</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-amber"><p>MDM Manager ใน LACO ไม่ใช่แค่ Head of Admin — เป็น strategic deputy ของ CEO ที่มี triple value: IPO readiness architect + ESG governance expert + AI transformation leader รวมกันในคนเดียว</p></div>
+        <div class="items">
+          <div class="item"><h5>Direct reports (4 functions)</h5><p>HR Manager, IT Manager, Legal/Compliance Officer, Company Secretary — oversee ทั้ง 4 functions ในฐานะ Director of Directors ไม่ใช่ technical doer</p></div>
+          <div class="item"><h5>Board Committee Secretary (dual hat)</h5><p>Secretary to Risk Committee + Secretary to CG&SD Committee — เป็น bridge ระหว่าง Management และ Board ในทั้ง 2 committees prepare papers, facilitate meetings, track action items</p></div>
+          <div class="item"><h5>IPO Readiness leadership</h5><p>เป็น project lead สำหรับ IPO preparation ทาง governance: internal control system (COSO), HR policy manual (Board-approved), IT governance (ITGC), legal compliance — ทำงานร่วมกับ CFO ในส่วน financial readiness</p></div>
+          <div class="item"><h5>AI Transformation mandate</h5><p>Executive Sponsor ของ AI Transformation Office ใน Digital & Data section — cross-functional mandate ทุก function ต้องร่วม transformation ไม่มีข้อยกเว้น</p></div>
+          <div class="item"><h5>Proterra Asia reporting</h5><p>ESG data ที่ MDM Manager compile (LTIR, training hrs, governance metrics, GRI indicators) จะถูก include ใน Proterra Asia's LP report ที่ส่งให้ Singapore investors ทุกไตรมาส</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-a">4 direct reports</span><span class="chip ch-a">2 Committee Secretaries</span><span class="chip ch-p">AI Transformation Sponsor</span><span class="chip ch-g">ESG AAA architect</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>CCO — Commercial</h3><p>Export Sales · Key Account · Market Dev · Brand</p></div><span class="tag t-ops">Revenue Driver</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-blue"><p>CCO ใน LACO context ไม่ใช่ CMO แบบ consumer brand — เป็น B2B commercial leader ที่ต้องบริหาร long-term relationship กับ Japan/EU importer และ explore new markets พร้อมกัน ชื่อ CCO (Chief Commercial Officer) สื่อ scope นี้ได้ถูกต้องกว่า CMO</p></div>
+        <div class="items">
+          <div class="item"><h5>Export Sales — Japan priority</h5><p>Japan คือตลาดหลัก (Edamame เป็น staple food ในญี่ปุ่น) — บริหาร key account relationships กับ Japanese importers ที่ซื้อ volume สูง เจรจาราคาประจำปี และ manage JPY/THB FX exposure ร่วมกับ CFO</p></div>
+          <div class="item"><h5>Market diversification</h5><p>ลด Japan concentration risk ด้วยการพัฒนา EU (plant-based trend), US (Asian food popularity), และ ASEAN markets — ทำ market study และ distributor selection ก่อน เสนอ CEO</p></div>
+          <div class="item"><h5>OEM &amp; Food Service</h5><p>OEM services สำหรับ international food brands, Food Service channel (restaurants, airline catering) ที่ต้องการ frozen Edamame — เชื่อมกับ COO ด้าน production capacity planning</p></div>
+          <div class="item"><h5>Brand management</h5><p>Minnamame (retail Edamame brand ตลาด Japan/Thai), Chocofruiz (chocolate-coated fruits) — brand positioning, packaging development, e-commerce channel ทั้ง domestic และ export</p></div>
+          <div class="item"><h5>IPO — Investor story</h5><p>CCO ต้องเตรียม commercial narrative สำหรับ IPO prospectus: market size, growth trajectory, customer concentration analysis, pricing power evidence — ร่วมกับ CFO จัดทำ revenue forecast ที่ credible</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-b">Japan/EU/US markets</span><span class="chip ch-b">OEM + retail</span><span class="chip ch-a">IPO revenue story</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>CFO — Finance, Strategy &amp; IR</h3><p>Accounting · Finance · Strategy · Investor Relations</p></div><span class="tag t-ipo">IPO Critical</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-blue"><p>CFO ใน pre-IPO LACO ทำงาน 3 track พร้อมกัน: (1) ensure financial statements audit-ready, (2) build financial model สำหรับ IPO valuation, (3) เตรียม IR capability สำหรับ roadshow — งานหนักที่สุดใน C-Suite ก่อน listing</p></div>
+        <div class="items">
+          <div class="item"><h5>Financial reporting (TFRS)</h5><p>Financial statements ตาม TFRS ที่ SET กำหนด — month-end closing ≤ 5 วันทำการ, quarterly report ต่อ SET ภายใน 45 วันหลัง quarter end, annual report ภายใน 3 เดือน</p></div>
+          <div class="item"><h5>IPO prospectus — financial section</h5><p>3-year audited financials ที่ reconcile กับ SAP B1 ทุกตัวเลข, financial projections 5 ปี, use of proceeds, dividend policy — เป็น section ที่ SEC ตรวจเข้มที่สุด</p></div>
+          <div class="item"><h5>Strategy</h5><p>Corporate strategy 3-year plan ที่ Board approve ทุกปี — ร่วมกับ CEO วางทิศทาง: organic growth (production capacity), inorganic (M&amp;A ถ้ามี), market expansion strategy</p></div>
+          <div class="item"><h5>Investor Relations (IR)</h5><p>หลัง IPO: quarterly earnings call, analyst briefing, roadshow กับ institutional investors ไทยและ Singapore — IR materials ต้อง consistent กับ Board reporting ทุกตัวเลข</p></div>
+          <div class="item"><h5>FX &amp; Treasury</h5><p>JPY/THB exposure management — กำหนด hedging policy ร่วมกับ CCO (ที่รู้ export volume และ pricing) forward contract management รายงาน Board ทุกไตรมาส</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-p">TFRS compliant</span><span class="chip ch-a">Closing ≤ 5 days</span><span class="chip ch-b">IR capability</span><span class="chip ch-p">FX hedging policy</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>COO — Operations</h3><p>Farming · Procurement · Supply Chain · Operation · QA/QC · R&D</p></div><span class="tag t-ops">Core Business</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-blue"><p>COO ของ LACO คือ command center ของ core value chain ทั้งหมด — ตั้งแต่เมล็ด Edamame ในไร่เกษตรกร ถึง frozen product ที่พร้อม export ทุก function ใน COO scope เชื่อมต่อกันเป็น end-to-end chain ไม่มีที่ขาด</p></div>
+        <div class="items">
+          <div class="item"><h5>Agro &amp; Contract Farming</h5><p>บริหาร contract farming กับเกษตรกรในเชียงใหม่และพื้นที่ใกล้เคียง — guaranteed price program, GAP compliance, harvest scheduling ตาม production plan ข้อมูล farmer welfare เป็น ESG S-pillar data ที่ Proterra Asia ต้องการ</p></div>
+          <div class="item"><h5>Procurement</h5><p>Raw material sourcing (Edamame seed, chocolate, packaging), supplier qualification และ AVL management, import สำหรับ ingredients พิเศษ — manage ทั้ง domestic และ international supplier base ที่ Boss สร้างประสบการณ์มาจาก Nithi Foods</p></div>
+          <div class="item"><h5>Supply Chain &amp; Cold Chain</h5><p>End-to-end cold chain (-18°C) จาก harvest → processing → cold storage → loading → export logistics ร่วมกับ Freight Forwarder และ shipping lines ที่ serve Japan/EU market</p></div>
+          <div class="item"><h5>Production Operations</h5><p>Edamame processing line (20,000+ MT/year): blanching, IQF freezing, grading, packing — OEE ≥ 85%, capacity planning ตาม harvest cycle, machine maintenance program</p></div>
+          <div class="item"><h5>QA / QC / R&amp;D</h5><p>FSSC 22000, HACCP, GMP/GHP compliance — Edamame grading standards, lot traceability ≤ 4 ชั่วโมง, new product development (frozen vegetable, ready meals, Chocofruiz variants) — เชื่อมกับ CCO ด้าน new product → new market</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">20,000+ MT/year</span><span class="chip ch-g">FSSC 22000</span><span class="chip ch-a">Farmer welfare ESG</span><span class="chip ch-g">OEE ≥ 85%</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">Management Structure · LACO Corporate Structure IPO Edition</div>
+</div>
+
+<!-- ============ CG & SET COMPLIANCE ============ -->
+<div class="page" id="page-cg">
+  <div class="sec-h"><h2>Corporate Governance &amp; SET Compliance</h2><p>SET CG Code 8 Principles · Internal Control · ESG · Company Secretary roles</p></div>
+
+  <!-- CG Principles table -->
+  <div style="background:var(--surface);border:1px solid var(--gray-100);border-radius:11px;padding:1.2rem;margin-bottom:1rem;">
+    <div style="font-size:.65rem;font-family:var(--mono);color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">SET CG Code — 8 Principles Assessment สำหรับ LACO</div>
+    <table class="cg-table">
+      <tr>
+        <th style="width:5%">#</th>
+        <th style="width:20%">Principle</th>
+        <th style="width:35%">LACO Action Required</th>
+        <th style="width:25%">Owner</th>
+        <th style="width:15%">Status</th>
+      </tr>
+      <tr>
+        <td>1</td><td class="principle">Establish Clear Leadership Structure</td>
+        <td>แยก Chairman/CEO ชัดเจน, Board Charter documented, authority boundary กำหนดใน DOA</td>
+        <td>Board + MDM Manager</td>
+        <td><span class="badge-prep">ต้องทำ</span></td>
+      </tr>
+      <tr>
+        <td>2</td><td class="principle">Define Objectives &amp; Strategy</td>
+        <td>Board-approved 3-year strategy, KPI framework, IPO milestone plan ที่ Board review ทุกปี</td>
+        <td>CEO + CFO + MDM</td>
+        <td><span class="badge-prep">ต้องทำ</span></td>
+      </tr>
+      <tr>
+        <td>3</td><td class="principle">Strengthen Board Effectiveness</td>
+        <td>Board evaluation ปีละ 1 ครั้ง, Director development program, board skills matrix</td>
+        <td>NRC + Company Secretary</td>
+        <td><span class="badge-prep">ต้องทำ</span></td>
+      </tr>
+      <tr>
+        <td>4</td><td class="principle">Recruit &amp; Develop Quality Executives</td>
+        <td>CEO succession plan, C-Suite KPI linked to remuneration, executive development program</td>
+        <td>NRC + MDM Manager (HR)</td>
+        <td><span class="badge-prep">ต้องทำ</span></td>
+      </tr>
+      <tr>
+        <td>5</td><td class="principle">Nurture Innovation &amp; Responsible Business</td>
+        <td>AI Transformation Office (Digital section), ESG strategy, sustainable agriculture program</td>
+        <td>CEO + MDM (AI sponsor)</td>
+        <td><span class="badge-ready">In progress</span></td>
+      </tr>
+      <tr>
+        <td>6</td><td class="principle">Strengthen Financial Integrity</td>
+        <td>Internal control adequacy (SEC 17 principles/COSO), ITGC 4 domains, financial audit trail</td>
+        <td>CFO + MDM + IT Manager</td>
+        <td><span class="badge-gap">Critical Gap</span></td>
+      </tr>
+      <tr>
+        <td>7</td><td class="principle">Ensure Disclosure &amp; Transparency</td>
+        <td>SET disclosure policy, related-party transaction policy, insider trading policy, IR program</td>
+        <td>CFO + MDM + Company Sec</td>
+        <td><span class="badge-prep">ต้องทำ</span></td>
+      </tr>
+      <tr>
+        <td>8</td><td class="principle">Ensure Engagement &amp; Communication</td>
+        <td>AGM quality improvement, shareholder communication policy, ESG report (GRI), annual report</td>
+        <td>Company Secretary + MDM</td>
+        <td><span class="badge-prep">ต้องทำ</span></td>
+      </tr>
+    </table>
+    <div style="margin-top:8px;font-size:.61rem;color:var(--gray-600);font-family:var(--mono);">
+      <span class="badge-ready">In progress</span> = มีระบบเริ่มต้นแล้ว &nbsp;|&nbsp;
+      <span class="badge-prep">ต้องทำ</span> = ต้องเตรียมก่อน SET submission &nbsp;|&nbsp;
+      <span class="badge-gap">Critical Gap</span> = ต้องแก้เร่งด่วน — กระทบ IPO timeline
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Internal Control System</h3><p>SEC 17 principles · COSO 5 components</p></div><span class="tag t-set">SEC Required</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>SEC กำหนดให้ listed company ประเมิน adequacy ของ internal control ตาม 17 หลักการ / 5 components ของ COSO ทุกปี — MDM Manager มีประสบการณ์ design internal control system นี้มาแล้วตอน Nithi Foods IPO readiness</p></div>
+        <div class="items">
+          <div class="item"><h5>COSO 5 Components</h5><p>1) Control Environment: tone at the top, organizational structure, HR policies | 2) Risk Assessment: annual ERM process | 3) Control Activities: policies, procedures, IT controls (ITGC) | 4) Information &amp; Communication: SAP B1, reporting system | 5) Monitoring: internal audit, management review</p></div>
+          <div class="item"><h5>SEC Internal Control Form</h5><p>กรรมการต้องลงนามใน "แบบประเมินความเพียงพอของระบบการควบคุมภายใน" ส่ง SEC ปีละ 1 ครั้ง — ถ้ามี material weakness ต้อง disclose ซึ่งกระทบ IPO valuation</p></div>
+          <div class="item"><h5>MDM Manager deliverables</h5><p>Design และ document internal control สำหรับทุก function: HR controls, IT controls (ITGC), financial controls (AP/AR/payroll), legal compliance controls — ส่งให้ Internal Audit review และ Audit Committee approve</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">COSO 5 components</span><span class="chip ch-c">Zero material weakness</span><span class="chip ch-a">SEC form: annual</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Internal Audit Function</h3><p>Independent · รายงาน Audit Committee</p></div><span class="tag t-set">SET Mandatory</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>Internal Audit ต้องเป็น independent function ที่รายงานตรงต่อ Audit Committee — ห้ามรายงานต่อ CEO หรือ CFO เพราะจะกระทบ independence ซึ่ง SET auditor จะตรวจ</p></div>
+        <div class="items">
+          <div class="item"><h5>Charter &amp; independence</h5><p>Internal Audit Charter ที่ Audit Committee approve กำหนด scope, authority, independence — Internal Auditor มีสิทธิ์ access ข้อมูลทุกส่วนขององค์กรโดยไม่มีข้อยกเว้น</p></div>
+          <div class="item"><h5>Annual audit plan</h5><p>Risk-based audit plan ที่ Audit Committee approve ทุกปี — prioritize audit ตาม risk level: financial process (high), IT systems/SAP B1 (high), production floor (medium), HR compliance (medium)</p></div>
+          <div class="item"><h5>Staffing options for LACO</h5><p>Option A: hire in-house Internal Auditor 1-2 คน (cost สูงกว่า แต่ deep LACO knowledge) | Option B: co-source กับ audit firm (ยืดหยุ่นกว่า เหมาะ pre-IPO) — Audit Committee ตัดสินใจ</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">Reports to Audit Cmt</span><span class="chip ch-c">Independent from CEO</span><span class="chip ch-a">Risk-based audit plan</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>ESG Framework &amp; Disclosure</h3><p>SET ESG Rating · FTSE Russell · GRI</p></div><span class="tag t-cg">Proterra Asia LP Required</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>ESG ใน LACO มี 2 audiences พร้อมกัน: SET (E pillar: carbon/energy, S pillar: workforce/safety, G pillar: governance) และ Proterra Asia LP reporting ที่อาจมี standard สูงกว่า SET minimum</p></div>
+        <div class="items">
+          <div class="item"><h5>E — Environmental</h5><p>Carbon footprint จากการผลิตและ cold chain, water consumption, waste management, sustainable agriculture (GAP certification ของ farmer) — LACO มีข้อได้เปรียบจากธรรมชาติของ plant-based product</p></div>
+          <div class="item"><h5>S — Social</h5><p>LTIR = 0 target, training hrs ≥ 20/person, employee turnover ≤ 15%, farmer welfare (guaranteed price, income stability สำหรับ contract farmers), community development ใน Saraphi</p></div>
+          <div class="item"><h5>G — Governance</h5><p>Board independence, Audit Committee effectiveness, anti-corruption policy, related-party transaction controls, whistleblower protection policy — ทุกอัน document และ disclose ใน Annual Report</p></div>
+          <div class="item"><h5>MDM Manager ESG role</h5><p>Compile ESG data จากทุก function, prepare SET sustainability report (56-1 One Report), present ต่อ CG&SD Committee ทุกไตรมาส — ใช้ experience จาก Heng Leasing A → AAA journey โดยตรง</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-g">56-1 One Report</span><span class="chip ch-b">FTSE Russell ESG</span><span class="chip ch-p">LP ESG reporting</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Related-Party Transactions</h3><p>Conflict of interest · SEC disclosure</p></div><span class="tag t-set">SEC Critical</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-coral"><p>Related-Party Transactions (RPT) เป็น red flag ที่ SEC ดูเป็นพิเศษในทุก IPO — ถ้า LACO มี transactions กับ บริษัทที่ผู้ถือหุ้นใหญ่หรือ Board members มีส่วนได้เสีย ต้อง disclose และผ่าน Audit Committee ก่อน</p></div>
+        <div class="items">
+          <div class="item"><h5>RPT Policy</h5><p>กำหนด policy ว่า RPT ทุกรายการต้องผ่าน Audit Committee review ก่อน เพื่อยืนยัน arm's length terms — ห้าม CEO หรือกรรมการที่มี conflict of interest เข้าร่วม decision</p></div>
+          <div class="item"><h5>Proterra Asia RPT</h5><p>ถ้า LACO มี service contract หรือ fee arrangement กับ Proterra Asia (เช่น management fee) ต้องผ่าน Audit Committee และ disclose ใน prospectus — Independent Directors ต้องยืนยันว่า terms fair</p></div>
+          <div class="item"><h5>Pre-IPO RPT cleanup</h5><p>ทำ RPT audit ก่อน filing — identify ทุก transaction กับ related parties ย้อนหลัง 3 ปี ถ้ามี non-arm's length terms ต้อง remediate ก่อน SEC submission</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-c">RPT Policy required</span><span class="chip ch-a">Audit Cmt review: mandatory</span><span class="chip ch-g">3-year RPT audit</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">CG &amp; SET Compliance · LACO Corporate Structure IPO Edition</div>
+</div>
+
+<!-- ============ IPO READINESS ============ -->
+<div class="page" id="page-ipo">
+  <div class="sec-h"><h2>IPO Readiness — Master Checklist</h2><p>สิ่งที่ LACO ต้องทำก่อน SET filing — เรียงตาม priority และ owner</p></div>
+
+  <div style="background:linear-gradient(135deg,var(--green-50) 0%,var(--blue-50) 100%);border:1.5px solid var(--green-400);border-radius:11px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;">
+    <div style="background:var(--green-800);color:#fff;padding:6px 14px;border-radius:7px;font-size:.72rem;font-weight:700;font-family:var(--mono);white-space:nowrap;">IPO MASTER CHECKLIST</div>
+    <div style="font-size:.72rem;color:var(--green-800);line-height:1.6;">
+      MDM Manager (Boss) เป็น owner หลักของ governance track — ทำงานคู่กับ CFO (financial track) และ Legal advisor (regulatory track) รายงานความคืบหน้าต่อ CEO และ Board ทุกเดือน
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Track 1: Corporate Structure</h3><p>Board · Committees · Company Secretary</p></div><span class="tag t-ipo">Governance Track</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-amber"><p>เป็น critical path ที่ต้องทำก่อนทุก track — ถ้า Board composition ไม่ถูกต้อง SEC จะไม่รับ filing</p></div>
+        <div class="items">
+          <div class="item"><h5>✦ Appoint Independent Chairman</h5><p>ผู้ที่มีคุณสมบัติตาม SEC definition, ไม่ใช่ CEO, มีประสบการณ์ board level — ต้องทำก่อนอื่น</p></div>
+          <div class="item"><h5>✦ Recruit Independent Directors (2 คน)</h5><p>Financial expert 1 คน (สำหรับ Audit Committee), Industry expert 1 คน — ผ่าน NRC process และ SEC qualification check</p></div>
+          <div class="item"><h5>✦ Establish 4 Committees</h5><p>AC, RC, CG&SD, NRC — จัดตั้งพร้อม Charter, composition, และ meeting calendar สำหรับ 12 เดือนแรก</p></div>
+          <div class="item"><h5>✦ Appoint Company Secretary</h5><p>IOD-certified, เข้าใจ SET/SEC regulations — อาจ overlap กับ MDM Manager function ใน initial phase</p></div>
+          <div class="item"><h5>✦ Board Charter &amp; DOA</h5><p>Document Board Charter, กำหนด DOA ทุกระดับ (Board / CEO / C-Suite / Division Manager) — Board approve</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-a">Owner: MDM Manager</span><span class="chip ch-c">Timeline: ทันที</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Track 2: Financial Readiness</h3><p>3-year audit · TFRS · Prospectus</p></div><span class="tag t-ipo">Financial Track</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-blue"><p>SEC ต้องการ 3 ปีย้อนหลัง (audited) ที่ตาม TFRS — ถ้า financial statements มี restatement หรือ going concern issue = IPO ล่าช้า ทันที</p></div>
+        <div class="items">
+          <div class="item"><h5>✦ 3-year audited financials (TFRS)</h5><p>Engage Big 4 หรือ Tier 2 audit firm ที่ SET approved — audit ย้อนหลัง 3 ปี ต้องสอดคล้องกับ SAP B1 data ทุกตัวเลข</p></div>
+          <div class="item"><h5>✦ Financial model &amp; projection</h5><p>5-year financial projection ที่ justify IPO valuation — เชื่อมกับ production capacity, export market growth, และ AI efficiency gains</p></div>
+          <div class="item"><h5>✦ Related-party transaction audit</h5><p>ย้อนหลัง 3 ปี identify และ cleanup RPT ที่ไม่ arm's length ก่อน disclose ใน prospectus</p></div>
+          <div class="item"><h5>✦ Dividend policy</h5><p>Board กำหนด dividend policy ที่ชัดเจน — Proterra Asia ในฐานะ major shareholder มี expectation ด้าน capital return ที่ต้องสอดคล้องกัน</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-b">Owner: CFO</span><span class="chip ch-c">Timeline: 12-18 months</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Track 3: Internal Control &amp; ITGC</h3><p>COSO · SEC form · IT governance</p></div><span class="tag t-ipo">MDM + IT Track</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-amber"><p>Internal control "material weakness" ต้อง disclose ใน prospectus — กระทบ IPO valuation โดยตรง ต้อง remediate ทั้งหมดก่อน filing date</p></div>
+        <div class="items">
+          <div class="item"><h5>✦ Internal control system design</h5><p>COSO 5 components ครบทุก function — MDM Manager lead, ร่วมกับ function heads design control สำหรับ HR, IT, Finance, Legal, Operations</p></div>
+          <div class="item"><h5>✦ ITGC 4 domains</h5><p>Logical Access, Change Management, Computer Operations, Program Development — IT Manager implement ภายใน 12 เดือน ก่อน financial auditor เข้าตรวจ</p></div>
+          <div class="item"><h5>✦ Internal Audit (co-source)</h5><p>Engage audit firm สำหรับ internal audit co-sourcing — audit financial processes, IT systems, compliance ก่อน external auditor เข้า</p></div>
+          <div class="item"><h5>✦ SEC Internal Control Form</h5><p>กรรมการทุกคนลงนาม — MDM Manager prepare evidence package สนับสนุนการประเมิน</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-a">Owner: MDM Manager + IT Mgr</span><span class="chip ch-c">Timeline: 12 months</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Track 4: Legal &amp; Regulatory</h3><p>SEC filing · Business licenses · Labor law</p></div><span class="tag t-ipo">Legal Track</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-coral"><p>Legal due diligence คือ gate ที่ SEC ใช้ตรวจ — ถ้า LACO มีคดีความ, license ที่ไม่ครบ, หรือ labor law violation ที่ยังค้างอยู่ จะกระทบ IPO timeline และ valuation</p></div>
+        <div class="items">
+          <div class="item"><h5>✦ Legal due diligence</h5><p>Engage external law firm ทำ legal due diligence ครอบคลุม: business licenses ครบ, contracts กับ customers/suppliers arm's length, labor law compliance, environmental permits สำหรับโรงงาน</p></div>
+          <div class="item"><h5>✦ Corporate restructuring (ถ้าจำเป็น)</h5><p>ถ้า LACO มีบริษัทย่อยหรือ holding structure ที่ซับซ้อน อาจต้องทำ corporate restructuring ก่อน filing — ให้ structure เรียบง่ายและ transparent สำหรับ investor</p></div>
+          <div class="item"><h5>✦ Intellectual property audit</h5><p>ตรวจสอบ IP: brand (LACO, Minnamame, Chocofruiz), product formulas, processing know-how — register trademark ที่ยังไม่ได้ register ก่อน IPO</p></div>
+          <div class="item"><h5>✦ Export license &amp; certifications</h5><p>Verify ว่า export licenses, FSSC 22000, HACCP, HALAL (ถ้ามี) ทุกฉบับ valid และไม่ expire ระหว่าง IPO process</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-c">Owner: Legal/MDM Manager</span><span class="chip ch-c">Timeline: 6-12 months</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Track 5: HR &amp; Organization</h3><p>Policy manual · Compensation · Talent</p></div><span class="tag t-ipo">MDM HR Track</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb pb-amber"><p>HR readiness สำหรับ IPO ครอบคลุมทั้ง policy documentation (SEC requirement) และ talent strategy (Investor expectation) — MDM Manager เป็น owner โดยตรง</p></div>
+        <div class="items">
+          <div class="item"><h5>✦ HR Policy Manual (Board-approved)</h5><p>ครอบคลุม: recruitment, compensation structure, performance management, labor law compliance, disciplinary procedure, PDPA — Board approve ก่อน IPO filing</p></div>
+          <div class="item"><h5>✦ Compensation &amp; job grading</h5><p>Job grading system + salary band ที่ benchmark ตลาด — C-Suite remuneration structure ที่ NRC approve และ disclose ใน Annual Report</p></div>
+          <div class="item"><h5>✦ HRIS implementation</h5><p>Audit-ready HR data ย้อนหลัง 3 ปี: headcount trend, turnover rate, training hours, LTIR — ข้อมูลเหล่านี้ต้องอยู่ใน HRIS ไม่ใช่ Excel</p></div>
+          <div class="item"><h5>✦ Key person retention</h5><p>CEO, COO, CFO, MDM Manager — ต้องมี employment contract ที่ชัดเจนและ retention incentive ที่ link กับ IPO milestone Investor จะถามว่า key persons จะอยู่หลัง IPO ไหม</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-a">Owner: MDM Manager</span><span class="chip ch-g">3-year HR data required</span><span class="chip ch-a">Board-approved policy</span></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="tc(this)">
+      <div class="card-head"><div class="card-hl"><h3>Track 6: ESG &amp; Sustainability</h3><p>SET ESG Rating · GRI · Proterra Asia LP</p></div><span class="tag t-cg">MDM ESG Track</span><div class="tog">+</div></div>
+      <div class="card-body">
+        <div class="pb"><p>ESG ไม่ใช่ optional สำหรับ LACO — Proterra Asia LP ต้องการ ESG data สำหรับ LP reporting และ SET investor ให้น้ำหนัก ESG ใน valuation มากขึ้นทุกปี</p></div>
+        <div class="items">
+          <div class="item"><h5>✦ ESG baseline assessment</h5><p>ทำ ESG gap assessment เทียบกับ SET ESG criteria ทุก indicator — identify gap และวาง action plan 3 ปี เพื่อไปถึง ESG Rating A ในปีแรกหลัง listing</p></div>
+          <div class="item"><h5>✦ GRI Sustainability Report</h5><p>Prepare sustainability report ตาม GRI Standards ก่อน IPO — ใช้เป็น evidence ใน prospectus และ One Report (56-1) หลัง listing</p></div>
+          <div class="item"><h5>✦ Carbon footprint baseline</h5><p>วัด Scope 1 และ Scope 2 carbon emissions จากโรงงาน, cold chain, transport — ตั้ง reduction target เพื่อ align กับ global sustainability trend ที่ Japan buyer ให้ความสำคัญ</p></div>
+          <div class="item"><h5>✦ Farmer welfare program</h5><p>Document contract farming program: จำนวน farmer families, guaranteed income, GAP support — เป็น flagship S-pillar story ที่ investor ชอบและ differentiate LACO จาก competitors</p></div>
+        </div>
+        <div class="chips"><span class="chip ch-a">Owner: MDM Manager</span><span class="chip ch-g">Target: ESG A Year 1</span><span class="chip ch-p">Proterra LP aligned</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-note">IPO Readiness · LACO Corporate Structure IPO Edition · MDM Manager Governed</div>
+</div>
+
+<script>
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const map={overview:0,board:1,committees:2,management:3,cg:4,ipo:5};
+  if(map[id]!==undefined) document.querySelectorAll('.nav-tab')[map[id]].classList.add('active');
+  window.scrollTo(0,0);
+}
+function tc(card){
+  const wasOpen=card.classList.contains('open');
+  card.closest('.grid').querySelectorAll('.card').forEach(c=>c.classList.remove('open'));
+  if(!wasOpen) card.classList.add('open');
+}
+</script>
+</body>
+</html>
