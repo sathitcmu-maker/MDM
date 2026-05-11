@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDM — JD Dashboard | LACO</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-dark:   #00422B;
+  --green-mid:    #00704A;
+  --green-bright: #1E3932;
+  --cream:        #F2F0EB;
+  --cream2:       #E8E4DB;
+  --cream3:       #D4CFC4;
+  --warm-brown:   #7B4F3A;
+  --text-dark:    #1E3932;
+  --text-mid:     #3B5249;
+  --text-light:   #6B7C74;
+  --gold:         #CBA258;
+  --gold-light:   #F1DFB4;
+  --gold-bg:      #FBF5E8;
+  --white:        #FFFFFF;
+  --red-accent:   #A63018;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito Sans',sans-serif;background:var(--cream);color:var(--text-dark);font-size:16px;line-height:1.6}
+
+/* HEADER */
+.header{background:var(--green-dark);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--gold)}
+.hbrand{display:flex;align-items:center;gap:14px}
+.hmark{width:44px;height:44px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--green-dark);font-family:'Lora',serif}
+.htitle{font-size:17px;font-weight:800;color:#fff;letter-spacing:.01em}
+.hsub{font-size:12px;color:var(--gold-light);margin-top:1px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.htags{display:flex;gap:8px}
+.htag{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;background:rgba(255,255,255,.1);color:var(--gold-light);border:1px solid rgba(203,162,88,.35);letter-spacing:.02em}
+
+/* SHELL */
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 72px)}
+
+/* SIDEBAR */
+.sidebar{background:var(--green-bright);padding:28px 0;position:sticky;top:72px;height:calc(100vh - 72px);overflow-y:auto}
+.sb-sec{padding:0 18px;margin-bottom:6px}
+.sb-lbl{font-size:10px;font-weight:800;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;padding:8px 6px 6px;display:block}
+.nbtn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 10px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.65);font-size:14px;font-weight:700;font-family:'Nunito Sans',sans-serif;text-align:left;transition:all .18s}
+.nbtn:hover{background:rgba(255,255,255,.08);color:#fff}
+.nbtn.active{background:var(--gold);color:var(--green-dark)}
+.npip{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.nbadge{margin-left:auto;font-size:11px;font-weight:800;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px}
+.nbtn.active .nbadge{background:rgba(0,66,43,.2)}
+.sbdiv{border:none;border-top:1px solid rgba(255,255,255,.1);margin:12px 18px}
+
+/* CONTENT */
+.content{padding:36px 40px;overflow-y:auto}
+.page{display:none}
+.page.active{display:block}
+
+/* SECTION HEADING */
+.sec-h{font-family:'Lora',serif;font-size:13px;font-weight:700;color:var(--text-light);letter-spacing:.1em;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:10px}
+.sec-h::after{content:'';flex:1;height:1px;background:var(--cream3)}
+
+/* ── EXECUTIVE MODEL HERO ── */
+.exec-hero{background:var(--green-dark);border-radius:16px;padding:28px 32px;margin-bottom:28px;color:#fff}
+.exec-hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.exec-title{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.exec-sub{font-size:14px;color:var(--gold-light);font-weight:600}
+.not-spec{background:rgba(203,162,88,.15);border:1px solid rgba(203,162,88,.4);color:var(--gold-light);font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px;letter-spacing:.05em;white-space:nowrap}
+
+/* 3 Layers */
+.layers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.layer{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:20px;text-align:center;position:relative}
+.layer-num{font-family:'Lora',serif;font-size:28px;font-weight:700;color:var(--gold);margin-bottom:8px}
+.layer-name{font-size:15px;font-weight:800;color:#fff;margin-bottom:6px}
+.layer-desc{font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;font-weight:600}
+.layer-arrow{position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--gold);z-index:2}
+
+/* Subordinates */
+.sub-flow{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:20px 24px}
+.sub-flow-title{font-size:12px;font-weight:800;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.sub-boxes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sub-box{background:rgba(255,255,255,.08);border:1.5px solid rgba(203,162,88,.3);border-radius:10px;padding:14px 16px;text-align:center}
+.sub-box-label{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.sub-box-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px}
+.sub-box-scope{font-size:12px;color:rgba(255,255,255,.55);line-height:1.5;font-weight:600}
+.ceo-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.ceo-box{background:var(--gold);color:var(--green-dark);font-size:13px;font-weight:800;padding:6px 20px;border-radius:8px}
+.reports-to{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.04em}
+.arrow-down{font-size:18px;color:var(--gold);text-align:center;margin:4px 0}
+
+/* WEIGHT PAGE */
+.weight-card{background:#fff;border:1.5px solid var(--cream3);border-radius:16px;padding:32px;margin-bottom:20px}
+.wrow{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--cream2)}
+.wrow:last-child{border-bottom:none;padding-bottom:0}
+.wicon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.winfo{flex:1}
+.wname{font-size:16px;font-weight:800;color:var(--green-dark);margin-bottom:7px}
+.wtrack{height:10px;background:var(--cream2);border-radius:5px;overflow:hidden}
+.wfill{height:100%;border-radius:5px}
+.wnote{font-size:13px;color:var(--text-light);margin-top:6px;font-weight:600}
+.wpct{font-size:22px;font-weight:800;font-family:'Lora',serif;min-width:52px;text-align:right}
+
+.ipo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.ipo-cell{background:#fff;border:1.5px solid var(--cream3);border-radius:12px;padding:18px;border-top:4px solid var(--green-mid)}
+.ipo-tag{font-size:11px;font-weight:800;color:var(--green-mid);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.ipo-txt{font-size:14px;color:var(--text-mid);line-height:1.6;font-weight:600}
+
+/* CLUSTER PAGE */
+.cluster-stack{display:flex;flex-direction:column;gap:16px}
+.ccard{background:#fff;border:1.5px solid var(--cream3);border-radius:16px;overflow:hidden;transition:box-shadow .2s}
+.ccard:hover{box-shadow:0 4px 20px rgba(0,66,43,.1)}
+.cheader{display:flex;align-items:center;gap:16px;padding:20px 24px;cursor:pointer;user-select:none}
+.cicon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cinfo{flex:1}
+.cname{font-family:'Lora',serif;font-size:18px;font-weight:700;color:var(--green-dark)}
+.cprinciple{font-size:13px;color:var(--text-light);font-weight:600;margin-top:3px}
+.cright{display:flex;align-items:center;gap:10px}
+.cpill{font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase}
+.pill-crit{background:#FDDDD8;color:var(--red-accent)}
+.pill-high{background:var(--gold-light);color:var(--warm-brown)}
+.pill-med{background:#D4F0E4;color:#00422B}
+.carr{font-size:18px;color:var(--text-light);transition:transform .25s;display:inline-block}
+.carr.open{transform:rotate(180deg)}
+.cbody{display:none;border-top:2px solid var(--cream2)}
+.cbody.open{display:block}
+.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cream2)}
+.mc{background:var(--cream);padding:18px 22px}
+.mc-lbl{font-size:11px;font-weight:800;color:var(--text-light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.mc-val{font-size:14px;color:var(--text-dark);line-height:1.6;font-weight:600}
+.mc-val.em{color:var(--red-accent)}
+.mc-val.eg{color:var(--warm-brown)}
+.mc-val.eg2{color:var(--green-mid)}
+.duties-wrap{padding:20px 24px;display:flex;flex-direction:column;gap:10px}
+.duty{display:flex;gap:14px;align-items:flex-start;padding:12px 16px;background:var(--gold-bg);border-left:4px solid var(--gold);border-radius:8px}
+.dnum{font-size:11px;font-weight:800;color:var(--gold);font-family:'Lora',serif;min-width:24px;margin-top:2px}
+.dtxt{font-size:15px;color:var(--text-dark);line-height:1.6;font-weight:600}
+
+/* JD PAGE */
+.jd-wrap{background:#fff;border:1.5px solid var(--cream3);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.jd-header{background:var(--green-dark);padding:24px 32px}
+.jd-header-title{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:4px}
+.jd-header-sub{font-size:13px;color:var(--gold-light);font-weight:600}
+.jd-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--cream2)}
+.jd-meta-cell{background:var(--cream);padding:14px 24px}
+.jd-meta-lbl{font-size:11px;font-weight:800;color:var(--text-light);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
+.jd-meta-val{font-size:15px;font-weight:700;color:var(--green-dark)}
+.jd-sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cream2)}
+.jd-sub-cell{background:var(--gold-bg);padding:16px 24px}
+.jd-sub-num{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.jd-sub-title{font-size:15px;font-weight:800;color:var(--green-dark);margin-bottom:3px}
+.jd-sub-scope{font-size:12px;color:var(--text-light);font-weight:600}
+.jd-section{padding:28px 32px;border-bottom:1px solid var(--cream2)}
+.jd-section:last-child{border-bottom:none}
+.jd-sec-title{font-family:'Lora',serif;font-size:17px;font-weight:700;color:var(--green-dark);margin-bottom:18px;padding-bottom:8px;border-bottom:2px solid var(--cream2)}
+.jd-item{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:8px;margin-bottom:8px;background:var(--cream);border-left:3px solid var(--green-mid)}
+.jd-item:last-child{margin-bottom:0}
+.jd-dot{width:7px;height:7px;border-radius:50%;background:var(--green-mid);flex-shrink:0;margin-top:8px}
+.jd-txt{font-size:15px;color:var(--text-dark);line-height:1.7;font-weight:600}
+.qual-item{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:8px;margin-bottom:8px;background:var(--gold-bg);border-left:3px solid var(--gold)}
+.qual-item:last-child{margin-bottom:0}
+.qual-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:8px}
+.qual-txt{font-size:15px;color:var(--text-dark);line-height:1.7;font-weight:600}
+
+/* INSIGHT */
+.insight{margin-top:24px;padding:20px 26px;background:var(--green-dark);border-radius:14px;color:var(--cream);font-size:15px;line-height:1.8;font-weight:600}
+.insight strong{color:var(--gold);font-weight:800}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--cream2)}
+::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:3px}
+
+/* KPI PAGE */
+.kpi-filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.kfbtn{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;border:1.5px solid var(--cream3);background:var(--white);color:var(--text-light);cursor:pointer;transition:all .15s;font-family:'Nunito Sans',sans-serif}
+.kfbtn:hover{background:var(--cream2);color:var(--text-dark)}
+.kfbtn.kon{background:var(--green-dark);color:var(--white);border-color:var(--green-dark)}
+.kpi-tbl-wrap{background:var(--white);border:1.5px solid var(--cream3);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.kpi-tbl{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed}
+.kpi-tbl thead tr{background:var(--green-dark)}
+.kpi-tbl th{padding:12px 16px;text-align:left;font-size:11px;font-weight:800;color:var(--gold-light);letter-spacing:.07em;text-transform:uppercase;border-bottom:none}
+.kpi-tbl th:nth-child(1){width:4%}
+.kpi-tbl th:nth-child(2){width:19%}
+.kpi-tbl th:nth-child(3){width:22%}
+.kpi-tbl th:nth-child(4){width:32%}
+.kpi-tbl th:nth-child(5){width:10%}
+.kpi-tbl th:nth-child(6){width:13%}
+.kpi-tbl td{padding:14px 16px;border-bottom:1px solid var(--cream2);vertical-align:top;line-height:1.6}
+.kpi-tbl tr:last-child td{border-bottom:none}
+.kpi-tbl tr:hover td{background:var(--gold-bg)}
+.kpi-tbl .grp-row td{background:var(--cream2);font-size:11px;font-weight:800;color:var(--text-light);letter-spacing:.08em;text-transform:uppercase;padding:7px 16px}
+.kn{font-weight:700;font-size:14px;color:var(--green-dark)}
+.ko{font-size:13px;color:var(--text-light);line-height:1.55}
+.kkr{font-size:13px;color:var(--text-light);line-height:1.55}
+.knum{font-size:12px;color:var(--text-light);font-weight:700}
+.kpill{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;white-space:nowrap}
+.kp-ipo{background:#E1F5EE;color:#085041}
+.kp-legal{background:#E6F1FB;color:#0C447C}
+.kp-hr{background:#EEEDFE;color:#3C3489}
+.kp-it{background:#FAEEDA;color:#633806}
+.kp-ops{background:#F1EFE8;color:#444441}
+.sdots{display:flex;gap:3px;margin-bottom:3px}
+.sdot{width:10px;height:10px;border-radius:50%;background:var(--cream3)}
+.sd1{background:#E24B4A}.sd2{background:#EF9F27}.sd3{background:#EF9F27}.sd4{background:#639922}.sd5{background:#1D9E75}
+.slbl{font-size:11px;font-weight:700}
+.sl1{color:#A32D2D}.sl2{color:#854F0B}.sl3{color:#854F0B}.sl4{color:#3B6D11}.sl5{color:#085041}
+.kpi-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text-light);align-items:center;margin-top:12px}
+.kleg-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px;flex-shrink:0}
+
+/* PROGRESS DASHBOARD */
+.prog-period-row{display:flex;gap:8px;margin-bottom:24px}
+.pbtn{font-size:13px;font-weight:700;padding:7px 18px;border-radius:20px;border:1.5px solid var(--cream3);background:var(--white);color:var(--text-light);cursor:pointer;transition:all .15s;font-family:'Nunito Sans',sans-serif}
+.pbtn:hover{background:var(--cream2)}
+.pbtn.pon{background:var(--green-dark);color:var(--white);border-color:var(--green-dark)}
+.prog-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.pstat{background:var(--white);border:1.5px solid var(--cream3);border-radius:14px;padding:18px 20px;border-top:4px solid var(--green-mid)}
+.pstat.red-t{border-top-color:#E24B4A}
+.pstat.gold-t{border-top-color:var(--gold)}
+.pstat.purple-t{border-top-color:#7F77DD}
+.pstat-lbl{font-size:11px;font-weight:800;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.pstat-val{font-size:30px;font-weight:800;font-family:'Lora',serif;color:var(--green-dark);line-height:1}
+.pstat-val.red{color:#A32D2D}
+.pstat-val.gold{color:var(--gold)}
+.pstat-val.purple{color:#534AB7}
+.pstat-sub{font-size:12px;color:var(--text-light);margin-top:5px;font-weight:600}
+.kpi-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.kpi-card{background:var(--white);border:1.5px solid var(--cream3);border-radius:14px;padding:20px 22px;position:relative;overflow:hidden}
+.kcard-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:10px}
+.kcard-num{font-size:11px;font-weight:800;color:var(--text-light);letter-spacing:.06em;text-transform:uppercase}
+.kcard-name{font-size:15px;font-weight:800;color:var(--green-dark);margin-top:2px;line-height:1.3}
+.kcard-cat{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.kcard-score-wrap{display:flex;align-items:flex-end;gap:10px;margin-bottom:10px}
+.kcard-score{font-size:42px;font-weight:800;font-family:'Lora',serif;line-height:1}
+.kcard-of{font-size:16px;color:var(--text-light);font-weight:600;margin-bottom:6px}
+.kcard-bar-track{height:8px;background:var(--cream2);border-radius:4px;overflow:hidden;margin-bottom:8px}
+.kcard-bar-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.kcard-status{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+.st-exceed{background:#D4F0E4;color:#085041}
+.st-meet{background:#E1F5EE;color:#0F6E56}
+.st-dev{background:#FAEEDA;color:#633806}
+.st-below{background:#FDDDD8;color:#A63018}
+.kcard-kr{font-size:12px;color:var(--text-light);line-height:1.55;margin-top:10px;padding-top:10px;border-top:1px solid var(--cream2)}
+.kcard-accent{position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
+.radar-wrap{background:var(--white);border:1.5px solid var(--cream3);border-radius:14px;padding:24px;margin-bottom:16px}
+.radar-title{font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--green-dark);margin-bottom:18px}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.sum-cell{background:var(--cream);border-radius:10px;padding:14px 16px;border-left:3px solid var(--green-mid)}
+.sum-cell.gold-b{border-left-color:var(--gold)}
+.sum-cell.red-b{border-left-color:#E24B4A}
+.sum-lbl{font-size:11px;font-weight:800;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.sum-val{font-size:14px;font-weight:700;color:var(--text-dark);line-height:1.5}
+
+/* WBS PAGE */
+.wbs-filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.wfbtn{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;border:1.5px solid var(--cream3);background:var(--white);color:var(--text-light);cursor:pointer;transition:all .15s;font-family:'Nunito Sans',sans-serif}
+.wfbtn:hover{background:var(--cream2)}
+.wfbtn.won{background:var(--green-dark);color:var(--white);border-color:var(--green-dark)}
+.wbs-stack{display:flex;flex-direction:column;gap:12px}
+.wbs-card{background:var(--white);border:1.5px solid var(--cream3);border-radius:14px;overflow:hidden;transition:box-shadow .18s}
+.wbs-card:hover{box-shadow:0 3px 16px rgba(0,66,43,.09)}
+.wbs-top{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+.wbs-num{font-family:'Lora',serif;font-size:18px;font-weight:700;color:var(--gold);min-width:32px;flex-shrink:0}
+.wbs-title-wrap{flex:1}
+.wbs-duty{font-size:15px;font-weight:800;color:var(--green-dark);line-height:1.35}
+.wbs-cluster-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-top:4px;display:inline-block}
+.wbs-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wbs-sla-badge{font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;background:var(--gold-bg);color:var(--warm-brown);border:1px solid rgba(203,162,88,.3);white-space:nowrap}
+.wbs-arr{font-size:16px;color:var(--text-light);transition:transform .25s;display:inline-block}
+.wbs-arr.open{transform:rotate(180deg)}
+.wbs-body{display:none;border-top:1.5px solid var(--cream2)}
+.wbs-body.open{display:block}
+.wbs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cream2)}
+.wbs-cell{background:var(--cream);padding:16px 20px}
+.wbs-cell-full{background:var(--cream);padding:16px 20px;grid-column:1/-1;border-top:1px solid var(--cream2)}
+.wbs-cell-lbl{font-size:10px;font-weight:800;color:var(--text-light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
+.wbs-cell-val{font-size:13px;font-weight:600;color:var(--text-dark);line-height:1.65}
+.wbs-cell-val.em{color:var(--red-accent)}
+.wbs-cell-val.gold{color:var(--warm-brown)}
+.wbs-cell-val.green{color:var(--green-mid)}
+.resp-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.resp-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.rt-mdm{background:#D4F0E4;color:#085041}
+.rt-it{background:#FAEEDA;color:#633806}
+.rt-hr{background:#EEEDFE;color:#3C3489}
+.rt-sec{background:#E6F1FB;color:#0C447C}
+.rt-ceo{background:#FDDDD8;color:#A63018}
+.tasks-list{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.task-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--text-mid);line-height:1.5;font-weight:600}
+.task-dot{width:5px;height:5px;border-radius:50%;background:var(--green-mid);flex-shrink:0;margin-top:6px}
+.budget-chip{display:inline-flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px solid rgba(203,162,88,.35);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--warm-brown)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="hbrand">
+    <div class="hmark">L</div>
+    <div>
+      <div class="htitle" style="font-size:22px;font-weight:800;letter-spacing:.01em">Management Division Manager — JD Dashboard</div>
+      <div class="hsub">Lanna Agro Industry Co., Ltd. (LACO) · Saraphi, Chiang Mai · Pre-IPO Stage</div>
+    </div>
+  </div>
+  <!-- RIGHT PANEL -->
+  <div style="display:flex;align-items:stretch;gap:0;flex-shrink:0;border:1px solid rgba(203,162,88,.25);border-radius:10px;overflow:hidden">
+
+    <!-- Left: datetime + location -->
+    <div style="background:rgba(0,0,0,.25);padding:10px 18px;display:flex;flex-direction:column;justify-content:center;min-width:210px">
+      <div id="hdr-datetime" style="font-size:17px;font-weight:800;color:#fff;letter-spacing:.02em;font-family:'Lora',serif;line-height:1.2"></div>
+      <div style="font-size:11px;color:rgba(255,255,255,.55);font-weight:600;margin-top:5px;letter-spacing:.04em;text-transform:uppercase">LACO Command Center</div>
+    </div>
+
+    <!-- Divider -->
+    <div style="width:1px;background:rgba(203,162,88,.3)"></div>
+
+    <!-- Right: designer credit -->
+    <div style="background:rgba(203,162,88,.12);padding:10px 18px;display:flex;flex-direction:column;justify-content:center;text-align:right">
+      <div style="font-size:9px;font-weight:800;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">Design By</div>
+      <div style="font-size:14px;font-weight:800;color:var(--gold);letter-spacing:.03em;font-family:'Lora',serif;line-height:1.2">Mr. Sathit Chobpimai</div>
+      <div style="font-size:10px;color:rgba(203,162,88,.7);font-weight:600;margin-top:3px;letter-spacing:.02em">Management Division Manager</div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function(){
+  function pad(n){return n<10?'0'+n:n}
+  function tick(){
+    var d=new Date();
+    var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var str=days[d.getDay()]+' '+pad(d.getDate())+' '+months[d.getMonth()]+' '+d.getFullYear()+'  '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+    var el=document.getElementById('hdr-datetime');
+    if(el) el.textContent=str;
+  }
+  tick();
+  setInterval(tick,1000);
+})();
+</script>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-sec">
+      <span class="sb-lbl">Navigation</span>
+      <button class="nbtn active" onclick="showPage('priority',this)">
+        <div class="npip" style="background:var(--gold)"></div>
+        Priority Ranking
+      </button>
+      <button class="nbtn" onclick="showPage('clusters',this)">
+        <div class="npip" style="background:#7EE787"></div>
+        Job Clusters
+        <span class="nbadge">6</span>
+      </button>
+      <button class="nbtn" onclick="showPage('jd',this)">
+        <div class="npip" style="background:#B5D4F4"></div>
+        Job Description
+      </button>
+      <button class="nbtn" onclick="showPage('kpi',this)">
+        <div class="npip" style="background:#CBA258"></div>
+        KPI Guideline
+        <span class="nbadge">8</span>
+      </button>
+      <button class="nbtn" onclick="showPage('progress',this)">
+        <div class="npip" style="background:#FF7B72"></div>
+        Progress &amp; KPI Dashboard
+      </button>
+      <button class="nbtn" onclick="showPage('wbs',this)">
+        <div class="npip" style="background:#5DCAA5"></div>
+        Work Breakdown Structure
+        <span class="nbadge">16</span>
+      </button>
+    </div>
+    <hr class="sbdiv">
+    <div class="sb-sec">
+      <span class="sb-lbl">Jump to Cluster</span>
+      <button class="nbtn" onclick="goCluster('c1')"><div class="npip" style="background:#58A6FF"></div>Strategic Direction</button>
+      <button class="nbtn" onclick="goCluster('c2')"><div class="npip" style="background:#39D353"></div>Legal &amp; Compliance</button>
+      <button class="nbtn" onclick="goCluster('c3')"><div class="npip" style="background:#BC8CFF"></div>HR &amp; IPO Readiness</button>
+      <button class="nbtn" onclick="goCluster('c4')"><div class="npip" style="background:#E3B341"></div>Digital &amp; IT</button>
+      <button class="nbtn" onclick="goCluster('c5')"><div class="npip" style="background:#FF7B72"></div>Corporate Image</button>
+      <button class="nbtn" onclick="goCluster('c6')"><div class="npip" style="background:#7EE787"></div>Documentation</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════
+         PAGE 1: PRIORITY RANKING
+    ══════════════════════════════════════════ -->
+    <div class="page active" id="page-priority">
+
+      <!-- Executive Model -->
+      <div class="exec-hero">
+        <div class="exec-hero-top">
+          <div>
+            <div class="exec-title">Management Division Manager</div>
+            <div class="exec-sub">Executive Oversight Role — Not a Specialist Position</div>
+          </div>
+          <div class="not-spec">NOT A SPECIALIST · EXECUTIVE OVERSEE</div>
+        </div>
+
+        <!-- 3 Layers -->
+        <div style="font-size:12px;font-weight:800;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">3 Executive Operating Layers</div>
+        <div class="layers">
+          <div class="layer">
+            <div class="layer-num">1</div>
+            <div class="layer-name">Set Direction</div>
+            <div class="layer-desc">Policy · Strategy · Vision<br>Define where the division goes and why</div>
+            <div class="layer-arrow">→</div>
+          </div>
+          <div class="layer">
+            <div class="layer-num">2</div>
+            <div class="layer-name">Govern &amp; Coach</div>
+            <div class="layer-desc">Control · Coach · Facilitate<br>Ensure teams execute with quality and compliance</div>
+            <div class="layer-arrow">→</div>
+          </div>
+          <div class="layer">
+            <div class="layer-num">3</div>
+            <div class="layer-name">Accountability</div>
+            <div class="layer-desc">Report to CEO &amp; BOD<br>Own outcomes — not the operational tasks</div>
+          </div>
+        </div>
+
+        <!-- Subordinate Flow -->
+        <div class="sub-flow">
+          <div class="sub-flow-title">Reporting Structure — 3 Departments Under MDM</div>
+          <div class="ceo-row">
+            <div class="reports-to">Reports to</div>
+            <div class="ceo-box">CEO / Board of Directors</div>
+          </div>
+          <div class="arrow-down">↓</div>
+          <div style="text-align:center;font-size:12px;font-weight:800;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Management Division Manager (MDM)</div>
+          <div class="arrow-down">↓</div>
+          <div class="sub-boxes">
+            <div class="sub-box">
+              <div class="sub-box-label">Subordinate 1</div>
+              <div class="sub-box-title">IT Manager</div>
+              <div class="sub-box-scope">Digital strategy · Cybersecurity · IT infrastructure governance</div>
+            </div>
+            <div class="sub-box">
+              <div class="sub-box-label">Subordinate 2</div>
+              <div class="sub-box-title">HR &amp; Admin Manager</div>
+              <div class="sub-box-scope">People strategy · Labor law · Asset management · Admin ops</div>
+            </div>
+            <div class="sub-box">
+              <div class="sub-box-label">Subordinate 3</div>
+              <div class="sub-box-title">Secretary</div>
+              <div class="sub-box-scope">BOD registers · Corporate docs · Bilingual reporting · Coordination</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Priority Bars -->
+      <div class="sec-h">Cluster Priority — by Criticality</div>
+      <div class="weight-card">
+        <div class="wrow">
+          <div class="wicon" style="background:#D4F0E4;border:2px solid #9FE1CB">⚖️</div>
+          <div class="winfo">
+            <div class="wname">Legal, Compliance &amp; Corporate Documents</div>
+            <div class="wtrack"><div class="wfill" style="width:95%;background:#00704A"></div></div>
+            <div class="wnote">Pre-IPO requires 100% clean. SEC/SET reviews every contract, license, and BOD register. Zero-gap policy.</div>
+          </div>
+          <div class="wpct" style="color:var(--green-mid)">95%</div>
+        </div>
+        <div class="wrow">
+          <div class="wicon" style="background:#E3F0FB;border:2px solid #B5D4F4">🎯</div>
+          <div class="winfo">
+            <div class="wname">Strategic Direction &amp; Division Governance</div>
+            <div class="wtrack"><div class="wfill" style="width:90%;background:#185FA5"></div></div>
+            <div class="wnote">Foundational mandate. All three subordinate functions derive their direction from this cluster.</div>
+          </div>
+          <div class="wpct" style="color:#185FA5">90%</div>
+        </div>
+        <div class="wrow">
+          <div class="wicon" style="background:#EDE8FA;border:2px solid #C9BAEE">👥</div>
+          <div class="winfo">
+            <div class="wname">HR Strategy, Org Development &amp; IPO Readiness</div>
+            <div class="wtrack"><div class="wfill" style="width:85%;background:#7F77DD"></div></div>
+            <div class="wnote">Proterra Asia exit timeline is directly tied to IPO milestones. HR structure must be investor-grade.</div>
+          </div>
+          <div class="wpct" style="color:#7F77DD">85%</div>
+        </div>
+        <div class="wrow">
+          <div class="wicon" style="background:#FBF3DD;border:2px solid #F1DFB4">💻</div>
+          <div class="winfo">
+            <div class="wname">Digital Strategy, IT Oversight &amp; Gen AI</div>
+            <div class="wtrack"><div class="wfill" style="width:75%;background:#CBA258"></div></div>
+            <div class="wnote">Governance-level oversight only. Gen AI capability is an explicit differentiator called out in the JD.</div>
+          </div>
+          <div class="wpct" style="color:var(--gold)">75%</div>
+        </div>
+        <div class="wrow">
+          <div class="wicon" style="background:#FDDDD8;border:2px solid #FFBFB8">🏢</div>
+          <div class="winfo">
+            <div class="wname">Corporate Image, External Relations &amp; Administration</div>
+            <div class="wtrack"><div class="wfill" style="width:65%;background:#A63018"></div></div>
+            <div class="wnote">Critical for institutional credibility with SEC/SET during Pre-IPO period.</div>
+          </div>
+          <div class="wpct" style="color:var(--red-accent)">65%</div>
+        </div>
+        <div class="wrow">
+          <div class="wicon" style="background:#D4F0E4;border:2px solid #9FE1CB">📄</div>
+          <div class="winfo">
+            <div class="wname">Documentation, Reporting &amp; Cross-function Coordination</div>
+            <div class="wtrack"><div class="wfill" style="width:55%;background:#00704A"></div></div>
+            <div class="wnote">Execution quality signals professionalism to CEO and Board. Bilingual Thai/English required.</div>
+          </div>
+          <div class="wpct" style="color:var(--green-mid)">55%</div>
+        </div>
+      </div>
+
+      <!-- IPO Cross-cut -->
+      <div class="sec-h" style="margin-top:28px">IPO Readiness — Horizontal Cross-cut Across All Clusters</div>
+      <div class="ipo-grid">
+        <div class="ipo-cell" style="border-top-color:#00704A"><div class="ipo-tag">Legal</div><div class="ipo-txt">SEC internal control adequacy (17 principles / 5 COSO components), contract governance, BOD register</div></div>
+        <div class="ipo-cell" style="border-top-color:#7F77DD"><div class="ipo-tag">HR / Org</div><div class="ipo-txt">Org structure, job descriptions, compensation benchmarking for Prospectus disclosure</div></div>
+        <div class="ipo-cell" style="border-top-color:#CBA258"><div class="ipo-tag">Digital / IT</div><div class="ipo-txt">IT governance framework, cybersecurity policy, ERP system integrity</div></div>
+        <div class="ipo-cell" style="border-top-color:#185FA5"><div class="ipo-tag">Strategic</div><div class="ipo-txt">3–5 year business plan, financial projections, COSO ERM framework alignment</div></div>
+        <div class="ipo-cell" style="border-top-color:#A63018"><div class="ipo-tag">Admin</div><div class="ipo-txt">Asset register, license inventory, corporate image for investor materials</div></div>
+        <div class="ipo-cell" style="border-top-color:#1D9E75"><div class="ipo-tag">Documentation</div><div class="ipo-txt">Bilingual Board reports, shareholder communications, SEC filing preparation</div></div>
+      </div>
+
+      <div class="insight">
+        <strong>Interview Strategy:</strong> Answer IPO readiness questions <strong>horizontally, not vertically.</strong> Not "I manage HR" — but "I connect all six clusters into a single governance system so LACO is fully ready for SET listing within Proterra Asia's target timeline." That is the MDM's true value proposition.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 2: JOB CLUSTERS
+    ══════════════════════════════════════════ -->
+    <div class="page" id="page-clusters">
+      <div class="sec-h">6 Job Clusters — Principle · Objective · Importance · Key Results</div>
+      <div class="cluster-stack">
+
+        <!-- C1 -->
+        <div class="ccard" id="c1">
+          <div class="cheader" onclick="toggleC('cb1','ca1')">
+            <div class="cicon" style="background:#E3F0FB;border:2px solid #B5D4F4">🎯</div>
+            <div class="cinfo">
+              <div class="cname">Strategic Direction &amp; Division Governance</div>
+              <div class="cprinciple">Principle: Align division mission with company strategy</div>
+            </div>
+            <div class="cright">
+              <span class="cpill pill-crit">Critical</span>
+              <span style="font-size:13px;font-weight:700;color:var(--text-light)">3 duties</span>
+              <span class="carr open" id="ca1">▾</span>
+            </div>
+          </div>
+          <div class="cbody open" id="cb1">
+            <div class="meta-grid">
+              <div class="mc"><div class="mc-lbl">Objective</div><div class="mc-val">Set overall policy and direction for the Management Division, aligned to CEO agenda and corporate strategic goals</div></div>
+              <div class="mc"><div class="mc-lbl">Importance</div><div class="mc-val em">Critical — foundational mandate. Every subordinate function depends on this direction</div></div>
+              <div class="mc"><div class="mc-lbl">Key Results</div><div class="mc-val">Division charter approved · Annual plan aligned to CEO KPI · Budget managed within policy</div></div>
+            </div>
+            <div class="duties-wrap">
+              <div class="duty"><div class="dnum">01</div><div class="dtxt">Define the overall direction and policies of the Management Division to align with the company's strategic goals</div></div>
+              <div class="duty"><div class="dnum">02</div><div class="dtxt">Manage the division's budget aligned with company policies</div></div>
+              <div class="duty"><div class="dnum">03</div><div class="dtxt">Perform duties assigned by the CEO or the Board of Directors</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C2 -->
+        <div class="ccard" id="c2">
+          <div class="cheader" onclick="toggleC('cb2','ca2')">
+            <div class="cicon" style="background:#D4F0E4;border:2px solid #9FE1CB">⚖️</div>
+            <div class="cinfo">
+              <div class="cname">Legal, Compliance &amp; Corporate Documents</div>
+              <div class="cprinciple">Principle: Legal risk is operational risk — zero tolerance for gaps</div>
+            </div>
+            <div class="cright">
+              <span class="cpill pill-crit">Critical</span>
+              <span style="font-size:13px;font-weight:700;color:var(--text-light)">5 duties</span>
+              <span class="carr" id="ca2">▾</span>
+            </div>
+          </div>
+          <div class="cbody" id="cb2">
+            <div class="meta-grid">
+              <div class="mc"><div class="mc-lbl">Objective</div><div class="mc-val">Protect company from legal exposure, maintain document integrity, ensure regulatory readiness for SET listing</div></div>
+              <div class="mc"><div class="mc-lbl">Importance</div><div class="mc-val em">Critical — Pre-IPO requires 100% clean licenses, contracts, and BOD registers before SEC/SET review</div></div>
+              <div class="mc"><div class="mc-lbl">Key Results</div><div class="mc-val">Zero lapsed licenses · Contracts reviewed before execution · BOD &amp; shareholder registers compliant · Risk reports to CEO</div></div>
+            </div>
+            <div class="duties-wrap">
+              <div class="duty"><div class="dnum">01</div><div class="dtxt">Supervise all corporate legal matters — contracts, MOUs, legal binding documents, renewals, and document retention</div></div>
+              <div class="duty"><div class="dnum">02</div><div class="dtxt">Oversee and control all business-related licenses, permits, and certifications for regulatory compliance</div></div>
+              <div class="duty"><div class="dnum">03</div><div class="dtxt">Monitor regulatory updates and assess business impact to ensure ongoing compliance</div></div>
+              <div class="duty"><div class="dnum">04</div><div class="dtxt">Analyze and assess legal risks — prepare reports with actionable recommendations for executive review</div></div>
+              <div class="duty"><div class="dnum">05</div><div class="dtxt">Ensure proper governance of Board of Directors' registers, shareholder registers, and critical corporate documents</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C3 -->
+        <div class="ccard" id="c3">
+          <div class="cheader" onclick="toggleC('cb3','ca3')">
+            <div class="cicon" style="background:#EDE8FA;border:2px solid #C9BAEE">👥</div>
+            <div class="cinfo">
+              <div class="cname">HR Strategy, Org Development &amp; IPO Readiness</div>
+              <div class="cprinciple">Principle: People capability drives sustainable growth and listing viability</div>
+            </div>
+            <div class="cright">
+              <span class="cpill pill-high">High</span>
+              <span style="font-size:13px;font-weight:700;color:var(--text-light)">3 duties</span>
+              <span class="carr" id="ca3">▾</span>
+            </div>
+          </div>
+          <div class="cbody" id="cb3">
+            <div class="meta-grid">
+              <div class="mc"><div class="mc-lbl">Objective</div><div class="mc-val">Build org structure and HR systems supporting aggressive growth and SET listing requirements</div></div>
+              <div class="mc"><div class="mc-lbl">Importance</div><div class="mc-val eg">High — Proterra Asia fund exit timeline is directly tied to IPO milestones; HR must be investor-grade</div></div>
+              <div class="mc"><div class="mc-lbl">Key Results</div><div class="mc-val">HR structure SET-ready · Compensation benchmarked · Org restructuring proposals approved · Zero labor violations</div></div>
+            </div>
+            <div class="duties-wrap">
+              <div class="duty"><div class="dnum">01</div><div class="dtxt">Manage HR strategies and compensation structures aligned with business direction</div></div>
+              <div class="duty"><div class="dnum">02</div><div class="dtxt">Provide labor law consultation across all business units</div></div>
+              <div class="duty"><div class="dnum">03</div><div class="dtxt">Study and propose organizational restructuring and capability development to support sustainable growth and IPO readiness</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C4 -->
+        <div class="ccard" id="c4">
+          <div class="cheader" onclick="toggleC('cb4','ca4')">
+            <div class="cicon" style="background:#FBF3DD;border:2px solid #F1DFB4">💻</div>
+            <div class="cinfo">
+              <div class="cname">Digital Strategy, IT Oversight &amp; Gen AI</div>
+              <div class="cprinciple">Principle: Technology is a multiplier — governance-level oversight, not hands-on technical work</div>
+            </div>
+            <div class="cright">
+              <span class="cpill pill-high">High</span>
+              <span style="font-size:13px;font-weight:700;color:var(--text-light)">3 duties</span>
+              <span class="carr" id="ca4">▾</span>
+            </div>
+          </div>
+          <div class="cbody" id="cb4">
+            <div class="meta-grid">
+              <div class="mc"><div class="mc-lbl">Objective</div><div class="mc-val">Define IT and digital direction; identify AI and innovation opportunities for efficiency and competitive advantage</div></div>
+              <div class="mc"><div class="mc-lbl">Importance</div><div class="mc-val eg">High — Pre-IPO must demonstrate digital maturity to Proterra Asia investors and future public shareholders</div></div>
+              <div class="mc"><div class="mc-lbl">Key Results</div><div class="mc-val">IT strategy approved · Cybersecurity policy in place · ≥1 Gen AI use case deployed per year</div></div>
+            </div>
+            <div class="duties-wrap">
+              <div class="duty"><div class="dnum">01</div><div class="dtxt">Define digital strategies to support business and manufacturing operations</div></div>
+              <div class="duty"><div class="dnum">02</div><div class="dtxt">Oversee cybersecurity and IT infrastructure governance</div></div>
+              <div class="duty"><div class="dnum">03</div><div class="dtxt">Explore the application of innovation, digital technologies, and Gen AI to drive efficiency and competitiveness</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C5 -->
+        <div class="ccard" id="c5">
+          <div class="cheader" onclick="toggleC('cb5','ca5')">
+            <div class="cicon" style="background:#FDDDD8;border:2px solid #FFBFB8">🏢</div>
+            <div class="cinfo">
+              <div class="cname">Corporate Image, External Relations &amp; Administration</div>
+              <div class="cprinciple">Principle: The company's public face and operational backbone must both be managed proactively</div>
+            </div>
+            <div class="cright">
+              <span class="cpill pill-med">Medium-High</span>
+              <span style="font-size:13px;font-weight:700;color:var(--text-light)">2 duties</span>
+              <span class="carr" id="ca5">▾</span>
+            </div>
+          </div>
+          <div class="cbody" id="cb5">
+            <div class="meta-grid">
+              <div class="mc"><div class="mc-lbl">Objective</div><div class="mc-val">Maintain institutional trust with regulators, government agencies, and the public; keep admin running efficiently</div></div>
+              <div class="mc"><div class="mc-lbl">Importance</div><div class="mc-val eg2">Medium-High — Critical for Pre-IPO credibility with SEC/SET and investor confidence</div></div>
+              <div class="mc"><div class="mc-lbl">Key Results</div><div class="mc-val">Government relations maintained · Asset register updated · Zero administrative compliance failures</div></div>
+            </div>
+            <div class="duties-wrap">
+              <div class="duty"><div class="dnum">01</div><div class="dtxt">Oversee corporate image management and maintain relationships with external organizations and government agencies</div></div>
+              <div class="duty"><div class="dnum">02</div><div class="dtxt">Supervise all administrative functions and company-wide asset management</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C6 -->
+        <div class="ccard" id="c6">
+          <div class="cheader" onclick="toggleC('cb6','ca6')">
+            <div class="cicon" style="background:#D4F0E4;border:2px solid #9FE1CB">📄</div>
+            <div class="cinfo">
+              <div class="cname">Documentation, Reporting &amp; Cross-function Coordination</div>
+              <div class="cprinciple">Principle: Accurate documentation is the infrastructure of governance</div>
+            </div>
+            <div class="cright">
+              <span class="cpill pill-med">Medium</span>
+              <span style="font-size:13px;font-weight:700;color:var(--text-light)">3 duties</span>
+              <span class="carr" id="ca6">▾</span>
+            </div>
+          </div>
+          <div class="cbody" id="cb6">
+            <div class="meta-grid">
+              <div class="mc"><div class="mc-lbl">Objective</div><div class="mc-val">Produce high-quality bilingual Thai/English documents and ensure seamless cross-functional coordination</div></div>
+              <div class="mc"><div class="mc-lbl">Importance</div><div class="mc-val eg2">Medium — Execution quality reflects the division's professional standard to CEO and Board</div></div>
+              <div class="mc"><div class="mc-lbl">Key Results</div><div class="mc-val">Board reports on time · Bilingual docs error-free · Internal/external coordination SLA met</div></div>
+            </div>
+            <div class="duties-wrap">
+              <div class="duty"><div class="dnum">01</div><div class="dtxt">Prepare documents, reports, and presentations in both Thai and English for internal and external audiences</div></div>
+              <div class="duty"><div class="dnum">02</div><div class="dtxt">Coordinate with internal departments and external parties on behalf of the division</div></div>
+              <div class="duty"><div class="dnum">03</div><div class="dtxt">Execute other assigned tasks from CEO or Board of Directors</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 3: JOB DESCRIPTION
+    ══════════════════════════════════════════ -->
+    <div class="page" id="page-jd">
+      <div class="sec-h">Official Job Description</div>
+
+      <div class="jd-wrap">
+        <!-- JD Header -->
+        <div class="jd-header">
+          <div class="jd-header-title">Management Division Manager (ผู้จัดการฝ่ายบริหาร)</div>
+          <div class="jd-header-sub">Lanna Agro Industry Co., Ltd. (LACO) · Saraphi, Chiang Mai · Pre-IPO Stage</div>
+        </div>
+
+        <!-- Meta -->
+        <div class="jd-meta">
+          <div class="jd-meta-cell">
+            <div class="jd-meta-lbl">Report to</div>
+            <div class="jd-meta-val">Chief Executive Officer (CEO)</div>
+          </div>
+          <div class="jd-meta-cell">
+            <div class="jd-meta-lbl">Location</div>
+            <div class="jd-meta-val">Chiang Mai</div>
+          </div>
+        </div>
+
+        <!-- Subordinates -->
+        <div class="jd-sub-grid">
+          <div class="jd-sub-cell">
+            <div class="jd-sub-num">1</div>
+            <div class="jd-sub-title">IT Manager</div>
+            <div class="jd-sub-scope">Digital strategy · Cybersecurity · IT infrastructure governance</div>
+          </div>
+          <div class="jd-sub-cell">
+            <div class="jd-sub-num">2</div>
+            <div class="jd-sub-title">HR &amp; Administration Manager</div>
+            <div class="jd-sub-scope">People strategy · Labor law · Asset management · Admin operations</div>
+          </div>
+          <div class="jd-sub-cell">
+            <div class="jd-sub-num">3</div>
+            <div class="jd-sub-title">Secretary</div>
+            <div class="jd-sub-scope">BOD registers · Corporate docs · Bilingual reporting · Coordination</div>
+          </div>
+        </div>
+
+        <!-- Job Description -->
+        <div class="jd-section">
+          <div class="jd-sec-title">Job Description</div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Define the overall direction and policies of the Management Division to align with the company's strategic goals.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Oversee corporate image management and maintain relationships with external organizations and government agencies.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Supervise all corporate legal matters, including reviewing business contracts, MOUs, and legal binding documents, as well as managing contract renewals and document retention.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Oversee and control all business-related licenses, permits, and certifications to ensure compliance with regulatory requirements.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Manage HR strategies and compensation structures aligned with business direction, and provide labor law consultation.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Study and propose organizational restructuring and capability development to support sustainable growth and IPO readiness.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Supervise all administrative functions and company-wide asset management.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Define digital strategies to support business and manufacturing operations while overseeing cybersecurity and IT infrastructure.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Explore the application of innovation, digital technologies, and Gen AI to drive efficiency and competitiveness.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Monitor regulatory updates and assess business impact to ensure compliance.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Analyze and assess legal risks and prepare reports with recommendations.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Ensure proper governance of Board of Directors' registers, shareholder registers, and other critical corporate documents.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Prepare documents, reports, and presentations in Thai and English, and coordinate with internal/external parties.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Perform duties assigned by the CEO or the Board of Directors.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Manage the division's budget aligned with company policies.</div></div>
+          <div class="jd-item"><div class="jd-dot"></div><div class="jd-txt">Execute other assigned tasks.</div></div>
+        </div>
+
+        <!-- Qualification -->
+        <div class="jd-section">
+          <div class="jd-sec-title">Qualification</div>
+          <div class="qual-item"><div class="qual-dot"></div><div class="qual-txt">Master's degree or higher in Business Administration, Law, Human Resources &amp; Organization Management, or related fields.</div></div>
+          <div class="qual-item"><div class="qual-dot"></div><div class="qual-txt">Experience working with leading organizations in Thailand or multinational companies.</div></div>
+          <div class="qual-item"><div class="qual-dot"></div><div class="qual-txt">Minimum 15 years of experience in business law and general management, with at least 10 years in an executive role.</div></div>
+          <div class="qual-item"><div class="qual-dot"></div><div class="qual-txt">Strong communication skills with excellent command of English.</div></div>
+          <div class="qual-item"><div class="qual-dot"></div><div class="qual-txt">High attention to detail and ability to work under pressure.</div></div>
+          <div class="qual-item"><div class="qual-dot"></div><div class="qual-txt">Strong multi-tasking and time management skills.</div></div>
+          <div class="qual-item"><div class="qual-dot"></div><div class="qual-txt">Experience in the food industry or a publicly listed company is an advantage.</div></div>
+        </div>
+      </div>
+
+      <div class="insight">
+        <strong>Role Clarity:</strong> Every duty in this JD maps to one of three executive layers — <strong>Set Direction</strong> (policies, strategy, digital direction), <strong>Govern &amp; Coach</strong> (supervise legal, control licenses, oversee IT/HR), or <strong>Accountability</strong> (report to CEO/BOD, manage budget, prepare Board documents). This is not a doing role — it is a <strong>directing and governing role</strong> across three departments.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 4: KPI GUIDELINE
+    ══════════════════════════════════════════ -->
+    <div class="page" id="page-kpi">
+      <div class="sec-h">KPI Guideline — 8 Core KPIs</div>
+
+      <div style="background:var(--green-dark);border-radius:14px;padding:20px 26px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:20px">
+        <div>
+          <div style="font-family:'Lora',serif;font-size:17px;font-weight:700;color:var(--gold);margin-bottom:5px">Outcome-Level KPIs — Management Division Manager</div>
+          <div style="font-size:13px;color:var(--gold-light);font-weight:600;line-height:1.6">MDM KPIs measure division <strong style="color:var(--gold)">outcomes</strong>, not department activities. Each KPI reflects accountability to CEO &amp; BOD — not the work of subordinates.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0">
+          <div style="background:rgba(203,162,88,.15);border:1px solid rgba(203,162,88,.4);border-radius:10px;padding:10px 16px;text-align:center">
+            <div style="font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--gold);line-height:1">8</div>
+            <div style="font-size:11px;font-weight:800;color:var(--gold-light);letter-spacing:.05em;text-transform:uppercase;margin-top:2px">Total KPIs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-filter-row">
+        <button class="kfbtn kon" onclick="kFilter('all',this)">All (8)</button>
+        <button class="kfbtn" onclick="kFilter('ipo',this)">IPO &amp; Governance</button>
+        <button class="kfbtn" onclick="kFilter('legal',this)">Legal &amp; Compliance</button>
+        <button class="kfbtn" onclick="kFilter('hr',this)">HR &amp; Org</button>
+        <button class="kfbtn" onclick="kFilter('it',this)">Digital &amp; IT</button>
+        <button class="kfbtn" onclick="kFilter('ops',this)">Division Ops</button>
+      </div>
+
+      <div class="kpi-tbl-wrap">
+        <table class="kpi-tbl">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>KPI</th>
+              <th>Objective</th>
+              <th>Key Result</th>
+              <th>Category</th>
+              <th>Scale 1–5</th>
+            </tr>
+          </thead>
+          <tbody id="kpi-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="kpi-legend">
+        <span style="font-weight:700;color:var(--text-mid)">Scale:</span>
+        <span><span class="kleg-dot" style="background:#E24B4A"></span>1 = Critical gap</span>
+        <span><span class="kleg-dot" style="background:#EF9F27"></span>2 = Below target</span>
+        <span><span class="kleg-dot" style="background:#EF9F27"></span>3 = Developing</span>
+        <span><span class="kleg-dot" style="background:#639922"></span>4 = Meets target</span>
+        <span><span class="kleg-dot" style="background:#1D9E75"></span>5 = Exceeds target</span>
+      </div>
+
+      <div class="insight" style="margin-top:20px">
+        <strong>Negotiation tip:</strong> As the first MDM hire at LACO, propose splitting Year 1 into two phases — <strong>Q1–Q2: Diagnose &amp; Build</strong> (no output KPIs, focus on baseline assessment) and <strong>Q3–Q4: Operate &amp; Deliver</strong> (activate all 8 KPIs). KPIs rated <strong>3 — Developing</strong> (Org Restructuring, Digital Governance) have no existing baseline and require build time before measurement is meaningful.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 5: PROGRESS & KPI DASHBOARD
+    ══════════════════════════════════════════ -->
+    <div class="page" id="page-progress">
+      <div class="sec-h">Progress &amp; KPI Dashboard — CEO View</div>
+
+      <!-- Period Selector -->
+      <div class="prog-period-row">
+        <button class="pbtn pon" onclick="setPeriod('q1',this)">Q1 · Jan–Mar</button>
+        <button class="pbtn" onclick="setPeriod('q2',this)">Q2 · Apr–Jun</button>
+        <button class="pbtn" onclick="setPeriod('q3',this)">Q3 · Jul–Sep</button>
+        <button class="pbtn" onclick="setPeriod('q4',this)">Q4 · Oct–Dec</button>
+      </div>
+
+      <!-- Stat Summary Row -->
+      <div class="prog-stat-row">
+        <div class="pstat">
+          <div class="pstat-lbl">Overall Score</div>
+          <div class="pstat-val" id="ps-overall">4.1</div>
+          <div class="pstat-sub">Average across 8 KPIs</div>
+        </div>
+        <div class="pstat">
+          <div class="pstat-lbl">Exceeds Target</div>
+          <div class="pstat-val" id="ps-exceed">3</div>
+          <div class="pstat-sub">KPIs scored 5</div>
+        </div>
+        <div class="pstat gold-t">
+          <div class="pstat-lbl">Meets Target</div>
+          <div class="pstat-val gold" id="ps-meet">3</div>
+          <div class="pstat-sub">KPIs scored 4</div>
+        </div>
+        <div class="pstat red-t">
+          <div class="pstat-lbl">Developing</div>
+          <div class="pstat-val red" id="ps-dev">2</div>
+          <div class="pstat-sub">KPIs scored 3 — needs focus</div>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-cards-grid" id="kpi-cards-grid"></div>
+
+      <!-- Radar Chart -->
+      <div class="radar-wrap">
+        <div class="radar-title">Performance Overview — All 8 KPIs</div>
+        <canvas id="radar-chart" height="320"></canvas>
+      </div>
+
+      <!-- Summary Cells -->
+      <div class="summary-grid" id="summary-grid"></div>
+
+      <div class="insight">
+        <strong>CEO Read:</strong> Green = on track, no action needed. Gold = monitor quarterly. Red = requires immediate executive discussion and resource allocation. KPIs scored <strong>3 — Developing</strong> are expected in Year 1 for a first-hire MDM role — recommend setting formal baseline in Q1 before committing to Q3-Q4 targets.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 6: WORK BREAKDOWN STRUCTURE
+    ══════════════════════════════════════════ -->
+    <div class="page" id="page-wbs">
+      <div class="sec-h">Work Breakdown Structure — 16 JD Duties</div>
+
+      <div style="background:var(--green-dark);border-radius:14px;padding:18px 24px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <div>
+          <div style="font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:4px">WBS — Management Division Manager · LACO</div>
+          <div style="font-size:13px;color:var(--gold-light);font-weight:600">Each JD duty broken into: Objective · Key Result · SLA · Budget · Work Tasks · Key Responsibility</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-shrink:0">
+          <div style="text-align:center;background:rgba(203,162,88,.15);border:1px solid rgba(203,162,88,.3);border-radius:10px;padding:10px 16px">
+            <div style="font-family:'Lora',serif;font-size:24px;font-weight:700;color:var(--gold)">16</div>
+            <div style="font-size:10px;font-weight:800;color:var(--gold-light);letter-spacing:.05em;text-transform:uppercase">Duties</div>
+          </div>
+          <div style="text-align:center;background:rgba(203,162,88,.15);border:1px solid rgba(203,162,88,.3);border-radius:10px;padding:10px 16px">
+            <div style="font-family:'Lora',serif;font-size:24px;font-weight:700;color:var(--gold)">6</div>
+            <div style="font-size:10px;font-weight:800;color:var(--gold-light);letter-spacing:.05em;text-transform:uppercase">Clusters</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wbs-filter-row">
+        <button class="wfbtn won" onclick="wFilter('all',this)">All (16)</button>
+        <button class="wfbtn" onclick="wFilter('strategic',this)">Strategic</button>
+        <button class="wfbtn" onclick="wFilter('legal',this)">Legal &amp; Compliance</button>
+        <button class="wfbtn" onclick="wFilter('hr',this)">HR &amp; Org</button>
+        <button class="wfbtn" onclick="wFilter('digital',this)">Digital &amp; IT</button>
+        <button class="wfbtn" onclick="wFilter('admin',this)">Admin &amp; Ops</button>
+        <button class="wfbtn" onclick="wFilter('reporting',this)">Reporting &amp; Docs</button>
+      </div>
+
+      <div class="wbs-stack" id="wbs-stack"></div>
+
+      <div class="insight" style="margin-top:20px">
+        <strong>Presentation note:</strong> In an interview context, lead with <strong>clusters 1–3</strong> (Strategic, Legal, IPO) as the top priority workstreams. Budget figures are indicative estimates for Pre-IPO stage company of LACO's size — to be validated with CEO in first 30 days. SLA = target completion or cycle time per occurrence, not a one-time deadline.
+      </div>
+    </div>
+
+  </div><!-- end .content -->
+</div><!-- end .shell -->
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nbtn').forEach(n => n.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+function toggleC(bodyId, arrId) {
+  document.getElementById(bodyId).classList.toggle('open');
+  document.getElementById(arrId).classList.toggle('open');
+}
+function goCluster(id) {
+  showPage('clusters', null);
+  document.querySelectorAll('.nbtn').forEach(n => n.classList.remove('active'));
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
+const kpiData = [
+  {group:'IPO & Governance Readiness', cat:'ipo'},
+  {n:1,cat:'ipo',catLabel:'IPO / Gov',kpi:'Internal Control Adequacy Score',obj:'Ensure LACO meets SEC/SET internal control standards required for IPO listing',kr:'All 17 principles across 5 COSO components assessed as "Adequate" — zero deficiencies before IPO filing',scale:5,slabel:'Exceeds target'},
+  {n:2,cat:'ipo',catLabel:'IPO / Gov',kpi:'IPO Readiness Milestone Rate',obj:'Deliver Pre-IPO governance milestones on schedule per Proterra Asia timeline',kr:'100% of quarterly milestones completed on time — org structure, HR policy, IT governance, BOD register',scale:5,slabel:'Exceeds target'},
+  {group:'Legal & Compliance', cat:'legal'},
+  {n:3,cat:'legal',catLabel:'Legal',kpi:'Legal & Regulatory Compliance Rate',obj:'Protect the company from legal risk, regulatory violations, and document gaps',kr:'0 legal disputes · 0 regulatory violations · 0 lapsed licenses · 0 gaps in BOD / shareholder registers',scale:4,slabel:'Meets target'},
+  {group:'HR & Org Development', cat:'hr'},
+  {n:4,cat:'hr',catLabel:'HR / Org',kpi:'Org Restructuring Completion',obj:'Build an investor-grade org structure ready for Prospectus disclosure and SET listing',kr:'Org chart, revised JDs, and compensation benchmark submitted and CEO-approved by Q2',scale:3,slabel:'Developing'},
+  {n:5,cat:'hr',catLabel:'HR / Org',kpi:'Key Talent Retention Rate',obj:'Retain high-performing employees critical to company growth and IPO execution',kr:'Key talent voluntary turnover ≤ 10% per year across all departments',scale:4,slabel:'Meets target'},
+  {group:'Digital Strategy & IT', cat:'it'},
+  {n:6,cat:'it',catLabel:'Digital / IT',kpi:'Digital Governance Milestone Completion',obj:'Define IT direction, secure cybersecurity policy, and deploy at least one Gen AI use case',kr:'IT strategy approved · Cybersecurity policy in place · ≥1 Gen AI use case deployed with documented efficiency gain',scale:3,slabel:'Developing'},
+  {group:'Division Operations & Accountability', cat:'ops'},
+  {n:7,cat:'ops',catLabel:'Div Ops',kpi:'Subordinate Dept KPI Achievement Rate',obj:'Hold IT Manager, HR & Admin Manager, and Secretary accountable to performance standards',kr:'Average KPI achievement rate across all 3 departments ≥ 80% per quarter',scale:4,slabel:'Meets target'},
+  {n:8,cat:'ops',catLabel:'Div Ops',kpi:'Board & CEO Report Delivery — On-Time Rate',obj:'Maintain executive trust through reliable, accurate, and on-schedule reporting',kr:'100% of Board and CEO reports delivered on schedule — 0 late or incomplete submissions',scale:5,slabel:'Exceeds target'},
+];
+
+const dotCls={1:'sd1',2:'sd2',3:'sd3',4:'sd4',5:'sd5'};
+const txtCls={1:'sl1',2:'sl2',3:'sl3',4:'sl4',5:'sl5'};
+const pillCls={ipo:'kp-ipo',legal:'kp-legal',hr:'kp-hr',it:'kp-it',ops:'kp-ops'};
+
+function kDots(s){
+  let h='<div class="sdots">';
+  for(let i=1;i<=5;i++) h+=`<div class="sdot ${i<=s?dotCls[s]:''}"></div>`;
+  return h+'</div>';
+}
+
+function kRender(cat){
+  const tb=document.getElementById('kpi-tbody');
+  if(!tb) return;
+  tb.innerHTML='';
+  kpiData.forEach(r=>{
+    if(r.group){
+      if(cat!=='all'&&r.cat!==cat) return;
+      const gr=document.createElement('tr');
+      gr.className='grp-row';
+      gr.setAttribute('data-cat',r.cat);
+      gr.innerHTML=`<td colspan="6">${r.group}</td>`;
+      tb.appendChild(gr);
+      return;
+    }
+    if(cat!=='all'&&r.cat!==cat) return;
+    const tr=document.createElement('tr');
+    tr.setAttribute('data-cat',r.cat);
+    tr.innerHTML=`
+      <td class="knum">${r.n}</td>
+      <td><div class="kn">${r.kpi}</div></td>
+      <td><div class="ko">${r.obj}</div></td>
+      <td><div class="kkr">${r.kr}</div></td>
+      <td><span class="kpill ${pillCls[r.cat]}">${r.catLabel}</span></td>
+      <td>${kDots(r.scale)}<div class="slbl ${txtCls[r.scale]}">${r.scale} — ${r.slabel}</div></td>`;
+    tb.appendChild(tr);
+  });
+}
+
+function kFilter(cat,btn){
+  document.querySelectorAll('.kfbtn').forEach(b=>b.classList.remove('kon'));
+  btn.classList.add('kon');
+  kRender(cat);
+}
+
+kRender('all');
+
+const wbsData = [
+  {
+    n:1, cat:'strategic', clusterTag:'Strategic Direction', clusterCls:'kp-ipo',
+    duty:'Define overall direction and policies of the Management Division',
+    objective:'Establish a clear governance framework and policy architecture that aligns the entire division to the company\'s Pre-IPO strategic goals',
+    importance:'Critical — without clear direction, all 3 subordinate departments operate independently with no unified governance standard',
+    keyResult:'Division charter approved by CEO · Annual operating plan signed off · Policy manual published to all departments',
+    sla:'Division charter: 30 days from onboarding · Annual plan: by end of Q1 · Policy review: every 6 months',
+    budget:'50,000–80,000 THB (consultant support for policy drafting if needed)',
+    tasks:['Conduct stakeholder interviews with CEO and department heads','Draft division mission, scope, and governance boundaries','Develop policy architecture document for each function','Present to CEO for approval and publish company-wide'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Author & owner'},{tag:'CEO',cls:'rt-ceo',label:'CEO — Approver'}]
+  },
+  {
+    n:2, cat:'admin', clusterTag:'Admin & Image', clusterCls:'kp-ops',
+    duty:'Oversee corporate image management and maintain relationships with external organizations and government agencies',
+    objective:'Build and protect LACO\'s institutional reputation with key stakeholders in preparation for Pre-IPO public exposure',
+    importance:'High — regulatory agencies and government bodies will scrutinize LACO more closely as IPO filing approaches',
+    keyResult:'Relationship map of key external stakeholders completed · 0 formal complaints from government agencies · Corporate image guideline established',
+    sla:'Stakeholder map: 60 days · Routine government engagement: ongoing monthly · Crisis response: within 24 hours',
+    budget:'30,000–60,000 THB/year (event, visits, PR materials)',
+    tasks:['Map all external stakeholders — regulators, government bodies, industry associations','Establish meeting cadence and communication protocol','Develop corporate image guideline aligned to IPO brand standards','Assign Secretary as primary coordinator for government document submissions'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Strategy & relationship owner'},{tag:'Secretary',cls:'rt-sec',label:'Secretary — Coordination & documents'}]
+  },
+  {
+    n:3, cat:'legal', clusterTag:'Legal & Compliance', clusterCls:'kp-legal',
+    duty:'Supervise all corporate legal matters — contracts, MOUs, legal binding documents, renewals, document retention',
+    objective:'Eliminate all legal exposure gaps by creating a systematic contract governance process across the entire organization',
+    importance:'Critical — un-reviewed contracts are the #1 source of legal risk in Pre-IPO companies; SEC/SET requires clean contract records',
+    keyResult:'100% of contracts reviewed before execution · Contract register maintained and updated · Zero lapsed contracts or expired MOUs',
+    sla:'Contract review cycle: ≤ 3 business days · MOU renewal alert: 90 days before expiry · Document retention audit: annually',
+    budget:'100,000–200,000 THB/year (external legal counsel retainer)',
+    tasks:['Audit all existing contracts and classify by risk level','Establish contract review SOP and approval workflow','Create contract register and renewal calendar','Set up document retention system per SEC requirements','Train Secretary on contract filing and tracking protocol'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Final reviewer & approver'},{tag:'Secretary',cls:'rt-sec',label:'Secretary — Register & tracking'},{tag:'External Counsel',cls:'rt-ceo',label:'Legal Counsel — Drafting support'}]
+  },
+  {
+    n:4, cat:'legal', clusterTag:'Legal & Compliance', clusterCls:'kp-legal',
+    duty:'Oversee and control all business-related licenses, permits, and certifications',
+    objective:'Maintain 100% license and certification validity at all times — zero lapses that could halt operations or block IPO filing',
+    importance:'Critical — lapsed licenses create regulatory violations that SEC/SET flags as governance failure during IPO due diligence',
+    keyResult:'License inventory 100% complete · Zero lapsed licenses · All certifications renewed before expiry',
+    sla:'License audit: within 30 days of onboarding · Renewal initiation: 90 days before expiry · New license tracking: ongoing',
+    budget:'20,000–40,000 THB/year (filing fees, agent fees for complex permits)',
+    tasks:['Conduct full inventory of all licenses, permits, certifications','Build renewal calendar with automated alerts','Assign Secretary as renewal coordinator with MDM as final approver','Verify food safety certifications (FSSC 22000, HACCP, GHPs) are current','Document all licenses in SEC-compliant format'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Oversight & approval'},{tag:'Secretary',cls:'rt-sec',label:'Secretary — Inventory & renewal tracking'},{tag:'HR Admin',cls:'rt-hr',label:'HR&Admin — Labor-related permits'}]
+  },
+  {
+    n:5, cat:'hr', clusterTag:'HR & Org', clusterCls:'kp-hr',
+    duty:'Manage HR strategies and compensation structures aligned with business direction, and provide labor law consultation',
+    objective:'Build a competitive, legally compliant HR system that attracts and retains talent required for IPO execution and sustainable growth',
+    importance:'High — compensation structure and HR policy will be disclosed in IPO Prospectus; must be benchmarked and defensible to investors',
+    keyResult:'Compensation benchmark completed · HR policy manual approved by CEO · Zero labor law violations · Provident fund governance reviewed',
+    sla:'Compensation benchmark: Q2 · HR policy manual: Q1 · Labor law audit: within 45 days · Annual review: every December',
+    budget:'80,000–150,000 THB (compensation survey, external HR consultant if needed)',
+    tasks:['Audit current compensation structure against market benchmark','Design grading system aligned to org structure','Draft or update HR policy manual per labor law standards','Conduct labor law compliance audit across all departments','Review provident fund structure and ensure proper governance','Establish annual performance review process'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Strategy & policy owner'},{tag:'HR Admin',cls:'rt-hr',label:'HR&Admin Mgr — Execution & records'}]
+  },
+  {
+    n:6, cat:'hr', clusterTag:'HR & Org', clusterCls:'kp-hr',
+    duty:'Study and propose organizational restructuring and capability development to support sustainable growth and IPO readiness',
+    objective:'Design an investor-grade org structure with clear accountability, role definitions, and succession readiness suitable for Prospectus disclosure',
+    importance:'High — Proterra Asia and future public shareholders require transparent org structure; weak org design signals governance risk',
+    keyResult:'Org chart redesigned and CEO-approved · All JDs updated and signed · Capability gap assessment completed · Training roadmap published',
+    sla:'Org chart draft: 30 days · JD revisions: 60 days · Capability gap report: 90 days · Training plan: Q2',
+    budget:'60,000–120,000 THB (org design consultant, training programs)',
+    tasks:['Conduct org diagnostic — interview all department heads','Map current vs. required capabilities for IPO stage','Redesign org structure with clear reporting lines and spans of control','Revise or create Job Descriptions for all positions','Identify capability gaps and design training/development plan','Present restructuring proposal to CEO for approval'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Design lead & presenter to CEO'},{tag:'HR Admin',cls:'rt-hr',label:'HR&Admin Mgr — JD execution & training coordination'}]
+  },
+  {
+    n:7, cat:'admin', clusterTag:'Admin & Ops', clusterCls:'kp-ops',
+    duty:'Supervise all administrative functions and company-wide asset management',
+    objective:'Ensure administrative operations run efficiently and all company assets are fully documented, tracked, and audit-ready',
+    importance:'Medium-High — asset register completeness is required for financial statement accuracy in IPO Prospectus',
+    keyResult:'Asset register 100% complete and audited · Admin SOP published · Asset tagging system implemented',
+    sla:'Asset audit: within 60 days · Admin SOP: Q1 · Annual asset verification: every fiscal year-end',
+    budget:'30,000–50,000 THB (asset tagging system, audit support)',
+    tasks:['Audit all company assets — fixed assets, IT equipment, vehicles','Implement asset tagging and tracking system','Set asset disposal and acquisition approval process','Publish admin SOPs covering facilities, procurement, and office management','Assign HR&Admin Manager as day-to-day owner'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Policy & governance oversight'},{tag:'HR Admin',cls:'rt-hr',label:'HR&Admin Mgr — Day-to-day execution'}]
+  },
+  {
+    n:8, cat:'digital', clusterTag:'Digital & IT', clusterCls:'kp-it',
+    duty:'Define digital strategies to support business and manufacturing operations while overseeing cybersecurity and IT infrastructure',
+    objective:'Establish an IT governance framework that supports LACO\'s operations and demonstrates digital maturity to investors',
+    importance:'High — IT governance is assessed in IPO due diligence; cybersecurity failure can trigger regulatory concern',
+    keyResult:'IT strategy document approved by CEO · Cybersecurity policy in place · IT infrastructure gap assessment completed',
+    sla:'IT strategy draft: 60 days · Cybersecurity policy: 90 days · Infrastructure audit: 45 days',
+    budget:'150,000–300,000 THB/year (IT audit, cybersecurity tools, infrastructure upgrades)',
+    tasks:['Conduct IT infrastructure audit with IT Manager','Identify gaps between current state and IPO-readiness standard','Draft 3-year IT strategy aligned to business growth plan','Develop cybersecurity policy covering access control, data protection, incident response','Present IT strategy to CEO for approval','Establish IT governance review cadence — quarterly'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Strategy direction & CEO presenter'},{tag:'IT Mgr',cls:'rt-it',label:'IT Manager — Technical execution & audit'}]
+  },
+  {
+    n:9, cat:'digital', clusterTag:'Digital & IT', clusterCls:'kp-it',
+    duty:'Explore the application of innovation, digital technologies, and Gen AI to drive efficiency and competitiveness',
+    objective:'Identify and deploy at least one high-impact AI or digital use case per year to generate measurable operational efficiency',
+    importance:'High — Gen AI capability is an explicit differentiator in JD; Proterra Asia expects LACO to be a forward-looking agro-tech company',
+    keyResult:'≥1 Gen AI use case deployed with documented efficiency gain · Innovation pipeline reviewed annually · Digital roadmap published',
+    sla:'First use case scoped: 60 days · Pilot deployed: Q2 · Annual innovation review: Q4',
+    budget:'80,000–200,000 THB/year (tools, training, pilot projects)',
+    tasks:['Conduct pain-point mapping across all departments to identify AI opportunity areas','Prioritize use cases by impact and implementation ease','Select and pilot first Gen AI use case — e.g. document processing, production reporting, compliance monitoring','Measure and document efficiency gain','Train team members on adopted tools','Publish digital innovation roadmap for Board visibility'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Use case sponsor & priority setter'},{tag:'IT Mgr',cls:'rt-it',label:'IT Manager — Technical implementation'}]
+  },
+  {
+    n:10, cat:'legal', clusterTag:'Legal & Compliance', clusterCls:'kp-legal',
+    duty:'Monitor regulatory updates and assess business impact to ensure compliance',
+    objective:'Keep LACO ahead of regulatory changes with proactive impact assessment — preventing surprise compliance failures',
+    importance:'High — food industry regulations change frequently; non-compliance risks halting export operations',
+    keyResult:'Regulatory monitoring system in place · Impact assessment delivered to CEO within 5 business days of any change · Zero surprise violations',
+    sla:'Regulatory monitoring: ongoing weekly · Impact report to CEO: within 5 business days of change · Annual compliance review: Q4',
+    budget:'20,000–40,000 THB/year (legal news subscription, regulatory alert tools)',
+    tasks:['Subscribe to regulatory alert services — FDA, Ministry of Agriculture, SEC, BOT, MOL','Create regulatory calendar covering all relevant laws','Establish assessment template for impact analysis','Assign Secretary as first-line monitoring; MDM as assessor','Deliver monthly regulatory update memo to CEO'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Assessment & CEO briefing'},{tag:'Secretary',cls:'rt-sec',label:'Secretary — Monitoring & alert tracking'}]
+  },
+  {
+    n:11, cat:'legal', clusterTag:'Legal & Compliance', clusterCls:'kp-legal',
+    duty:'Analyze and assess legal risks and prepare reports with recommendations',
+    objective:'Provide the CEO and Board with a structured view of legal risk exposure across all operations — enabling proactive governance decisions',
+    importance:'Critical — legal risk analysis is a core Pre-IPO requirement; blind spots in legal risk are the most common reason IPOs are delayed',
+    keyResult:'Legal risk register maintained · Quarterly risk report to CEO · Risk-adjusted action plan approved by Board',
+    sla:'Initial risk register: 45 days · Quarterly risk report: within 10 days of quarter-end · Board report: per BOD meeting schedule',
+    budget:'50,000–100,000 THB/year (external legal review support)',
+    tasks:['Create legal risk register covering contracts, labor, regulatory, IP, and export compliance','Assess probability and impact of each risk','Develop mitigation plan for high-priority risks','Prepare quarterly legal risk report for CEO','Present annual legal risk assessment to Board'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Risk owner & report author'},{tag:'External Counsel',cls:'rt-ceo',label:'Legal Counsel — Technical legal assessment'}]
+  },
+  {
+    n:12, cat:'legal', clusterTag:'Legal & Compliance', clusterCls:'kp-legal',
+    duty:'Ensure proper governance of BOD registers, shareholder registers, and other critical corporate documents',
+    objective:'Maintain legally compliant, complete, and audit-ready corporate records that meet SEC/SET requirements for public company listing',
+    importance:'Critical — BOD and shareholder registers are the first documents reviewed in IPO due diligence; any gap can delay listing',
+    keyResult:'BOD register 100% complete and current · Shareholder register accurate · All corporate documents archived per SEC retention requirements',
+    sla:'Initial audit: 30 days · Monthly update: within 3 days of any Board change · Annual verification: fiscal year-end',
+    budget:'10,000–20,000 THB/year (corporate secretarial software or service)',
+    tasks:['Audit all existing BOD and shareholder records for completeness','Establish update protocol after every BOD meeting and shareholder change','Implement corporate document management system','Ensure all records are in SEC-compliant format','Prepare document readiness report for IPO due diligence team'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Governance oversight & approval'},{tag:'Secretary',cls:'rt-sec',label:'Secretary — Day-to-day maintenance & filing'}]
+  },
+  {
+    n:13, cat:'reporting', clusterTag:'Reporting & Docs', clusterCls:'kp-ops',
+    duty:'Prepare documents, reports, and presentations in Thai and English, and coordinate with internal/external parties',
+    objective:'Ensure all executive-level documents meet the quality, accuracy, and bilingual standards required for CEO, Board, and investor audiences',
+    importance:'Medium — quality of documents reflects the professionalism of the division and the MDM to all internal and external stakeholders',
+    keyResult:'100% on-time delivery of all Board and CEO documents · Zero factual errors in official reports · Bilingual standard maintained across all submissions',
+    sla:'Board presentation: 5 business days before meeting · CEO briefing note: 2 business days · Ad-hoc request: within 24 hours',
+    budget:'15,000–30,000 THB/year (translation support, presentation design tools)',
+    tasks:['Establish document quality standard — template library in Thai and English','Set document production SOP with Secretary','Create review and approval workflow before CEO/Board submission','Maintain version control for all official documents','Coordinate with external parties for document exchange and translation'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Content owner & final approver'},{tag:'Secretary',cls:'rt-sec',label:'Secretary — Production, formatting & coordination'}]
+  },
+  {
+    n:14, cat:'strategic', clusterTag:'Strategic Direction', clusterCls:'kp-ipo',
+    duty:'Perform duties assigned by the CEO or the Board of Directors',
+    objective:'Execute high-priority ad-hoc strategic tasks assigned by CEO or Board with speed and quality — demonstrating reliability and executive judgment',
+    importance:'High — ad-hoc CEO/BOD assignments are often the most visible and career-defining work for an MDM in a Pre-IPO company',
+    keyResult:'100% of assigned tasks completed within agreed timeline · Zero escalations due to missed deadlines · CEO satisfaction maintained',
+    sla:'Response to assignment: within 4 hours · Completion: per CEO-agreed deadline · Progress update: every 48 hours on complex tasks',
+    budget:'Variable — absorbed within division budget; escalate if >50,000 THB',
+    tasks:['Maintain a priority task tracker for all CEO/BOD assignments','Communicate timeline and resource requirement upon receiving assignment','Provide regular progress updates without being asked','Escalate risks early if timeline is at risk','Debrief with CEO upon completion'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Sole owner & executor'},{tag:'CEO',cls:'rt-ceo',label:'CEO — Assignment authority'}]
+  },
+  {
+    n:15, cat:'strategic', clusterTag:'Strategic Direction', clusterCls:'kp-ipo',
+    duty:'Manage the division\'s budget aligned with company policies',
+    objective:'Maintain fiscal discipline across the Management Division — delivering planned outcomes within approved budget with full transparency',
+    importance:'Medium-High — budget management demonstrates financial accountability to CEO and Board; overspend signals poor planning',
+    keyResult:'Actual spend within ±5% of approved budget · Monthly budget report to CFO · Zero unauthorized expenditures',
+    sla:'Budget plan submission: annually by November · Monthly variance report: within 5 days of month-end · Over-budget alert: same day',
+    budget:'Division operating budget: 500,000–1,200,000 THB/year (estimate) — to be negotiated with CEO on onboarding',
+    tasks:['Prepare annual division budget by cluster and function','Submit budget for CFO and CEO approval','Track monthly actuals vs. plan by budget category','Report variances and corrective actions monthly','Conduct mid-year budget review and reforecast if needed'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Budget owner & report author'},{tag:'HR Admin',cls:'rt-hr',label:'HR&Admin Mgr — Admin budget tracking'},{tag:'IT Mgr',cls:'rt-it',label:'IT Manager — IT budget tracking'}]
+  },
+  {
+    n:16, cat:'reporting', clusterTag:'Reporting & Docs', clusterCls:'kp-ops',
+    duty:'Execute other assigned tasks',
+    objective:'Maintain flexibility and responsiveness to handle emerging organizational needs that fall outside defined role boundaries',
+    importance:'Low-Medium — signals executive adaptability; important for trust-building in early tenure',
+    keyResult:'All ad-hoc tasks logged and completed · No dropped balls on informal assignments · Positive feedback from CEO',
+    sla:'Acknowledge: within 2 hours · Completion: per situation urgency · Escalation if capacity-constrained: same day',
+    budget:'Absorbed in division budget — no separate allocation',
+    tasks:['Maintain a task log for all informal assignments','Prioritize against existing workload and escalate if conflict arises','Communicate completion clearly to assigning party','Identify if recurring ad-hoc tasks should become a formal responsibility'],
+    responsibility:[{tag:'MDM',cls:'rt-mdm',label:'MDM — Primary handler'},{tag:'Secretary',cls:'rt-sec',label:'Secretary — Support coordination as needed'}]
+  }
+];
+
+const clusterColors = {strategic:'#E1F5EE',legal:'#E6F1FB',hr:'#EEEDFE',digital:'#FAEEDA',admin:'#F1EFE8',reporting:'#FAF0E6'};
+const clusterTextColors = {strategic:'#085041',legal:'#0C447C',hr:'#3C3489',digital:'#633806',admin:'#444441',reporting:'#7B4F3A'};
+
+function wRender(filter) {
+  const stack = document.getElementById('wbs-stack');
+  stack.innerHTML = '';
+  const items = filter === 'all' ? wbsData : wbsData.filter(w => w.cat === filter);
+  items.forEach(w => {
+    const bodyId = 'wbody-' + w.n;
+    const arrId = 'warr-' + w.n;
+    const respHtml = w.responsibility.map(r => `<span class="resp-tag ${r.cls}">${r.label}</span>`).join('');
+    const tasksHtml = w.tasks.map(t => `<div class="task-item"><div class="task-dot"></div><div>${t}</div></div>`).join('');
+    const bgColor = clusterColors[w.cat] || '#F1EFE8';
+    const textColor = clusterTextColors[w.cat] || '#444441';
+    stack.innerHTML += `
+    <div class="wbs-card">
+      <div class="wbs-top" onclick="toggleWbs('${bodyId}','${arrId}')">
+        <div class="wbs-num">${String(w.n).padStart(2,'0')}</div>
+        <div class="wbs-title-wrap">
+          <div class="wbs-duty">${w.duty}</div>
+          <span class="wbs-cluster-tag" style="background:${bgColor};color:${textColor}">${w.clusterTag}</span>
+        </div>
+        <div class="wbs-right">
+          <div class="wbs-sla-badge">SLA: ${w.sla.split('·')[0].trim()}</div>
+          <span class="wbs-arr" id="${arrId}">▾</span>
+        </div>
+      </div>
+      <div class="wbs-body" id="${bodyId}">
+        <div class="wbs-grid">
+          <div class="wbs-cell">
+            <div class="wbs-cell-lbl">Objective</div>
+            <div class="wbs-cell-val">${w.objective}</div>
+          </div>
+          <div class="wbs-cell">
+            <div class="wbs-cell-lbl">Importance</div>
+            <div class="wbs-cell-val em">${w.importance}</div>
+          </div>
+          <div class="wbs-cell">
+            <div class="wbs-cell-lbl">Key Result</div>
+            <div class="wbs-cell-val green">${w.keyResult}</div>
+          </div>
+          <div class="wbs-cell">
+            <div class="wbs-cell-lbl">SLA (Full Detail)</div>
+            <div class="wbs-cell-val">${w.sla}</div>
+          </div>
+          <div class="wbs-cell">
+            <div class="wbs-cell-lbl">Budget (Est.)</div>
+            <div class="wbs-cell-val gold">
+              <div class="budget-chip">&#36; ${w.budget}</div>
+            </div>
+          </div>
+          <div class="wbs-cell">
+            <div class="wbs-cell-lbl">Key Responsibility</div>
+            <div class="resp-row">${respHtml}</div>
+          </div>
+          <div class="wbs-cell-full">
+            <div class="wbs-cell-lbl">Work Tasks (Breakdown)</div>
+            <div class="tasks-list">${tasksHtml}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+function toggleWbs(bodyId, arrId) {
+  document.getElementById(bodyId).classList.toggle('open');
+  document.getElementById(arrId).classList.toggle('open');
+}
+
+function wFilter(cat, btn) {
+  document.querySelectorAll('.wfbtn').forEach(b => b.classList.remove('won'));
+  btn.classList.add('won');
+  wRender(cat);
+}
+
+wRender('all');
+
+const progData = {
+  q1: [
+    {n:1,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'Internal Control Adequacy Score',score:5,kr:'All 17 COSO principles assessed — zero deficiencies filed',status:'exceed'},
+    {n:2,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'IPO Readiness Milestone Rate',score:5,kr:'Q1 milestones 100% complete — org structure submitted',status:'exceed'},
+    {n:3,cat:'legal',catLabel:'Legal',catCls:'kp-legal',accent:'#185FA5',name:'Legal & Regulatory Compliance Rate',score:4,kr:'0 violations, all licenses current, BOD register clean',status:'meet'},
+    {n:4,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Org Restructuring Completion',score:3,kr:'Draft org chart submitted — CEO review pending',status:'dev'},
+    {n:5,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Key Talent Retention Rate',score:4,kr:'Turnover 6% YTD — within 10% target',status:'meet'},
+    {n:6,cat:'it',catLabel:'Digital / IT',catCls:'kp-it',accent:'#CBA258',name:'Digital Governance Milestone Completion',score:3,kr:'IT strategy draft in review — cybersecurity policy 60%',status:'dev'},
+    {n:7,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Subordinate Dept KPI Achievement Rate',score:4,kr:'Avg 82% across IT, HR&Admin, Secretary',status:'meet'},
+    {n:8,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Board & CEO Report Delivery',score:5,kr:'100% on-time delivery — 0 late submissions',status:'exceed'},
+  ],
+  q2: [
+    {n:1,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'Internal Control Adequacy Score',score:5,kr:'All 17 COSO principles confirmed adequate — SEC pre-review passed',status:'exceed'},
+    {n:2,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'IPO Readiness Milestone Rate',score:4,kr:'Q2 milestone 90% — HR policy finalization delayed 2 weeks',status:'meet'},
+    {n:3,cat:'legal',catLabel:'Legal',catCls:'kp-legal',accent:'#185FA5',name:'Legal & Regulatory Compliance Rate',score:5,kr:'0 violations, all permits renewed, BOD register fully audited',status:'exceed'},
+    {n:4,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Org Restructuring Completion',score:4,kr:'Org chart + JDs approved by CEO — compensation benchmark Q3',status:'meet'},
+    {n:5,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Key Talent Retention Rate',score:4,kr:'Turnover 8% YTD — within target',status:'meet'},
+    {n:6,cat:'it',catLabel:'Digital / IT',catCls:'kp-it',accent:'#CBA258',name:'Digital Governance Milestone Completion',score:3,kr:'IT strategy approved — Gen AI use case planning stage',status:'dev'},
+    {n:7,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Subordinate Dept KPI Achievement Rate',score:4,kr:'Avg 85% across all 3 departments',status:'meet'},
+    {n:8,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Board & CEO Report Delivery',score:5,kr:'100% on-time — Board approved all Q2 reports',status:'exceed'},
+  ],
+  q3: [
+    {n:1,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'Internal Control Adequacy Score',score:5,kr:'Full SEC adequacy assessment submitted — 0 gaps',status:'exceed'},
+    {n:2,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'IPO Readiness Milestone Rate',score:5,kr:'All Q3 milestones complete — Prospectus draft in legal review',status:'exceed'},
+    {n:3,cat:'legal',catLabel:'Legal',catCls:'kp-legal',accent:'#185FA5',name:'Legal & Regulatory Compliance Rate',score:5,kr:'0 issues — all compliance controls verified',status:'exceed'},
+    {n:4,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Org Restructuring Completion',score:5,kr:'Full org structure + compensation benchmark SET-ready',status:'exceed'},
+    {n:5,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Key Talent Retention Rate',score:4,kr:'Turnover 9% — within 10% target',status:'meet'},
+    {n:6,cat:'it',catLabel:'Digital / IT',catCls:'kp-it',accent:'#CBA258',name:'Digital Governance Milestone Completion',score:4,kr:'IT strategy live, cybersecurity policy approved, Gen AI pilot deployed',status:'meet'},
+    {n:7,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Subordinate Dept KPI Achievement Rate',score:4,kr:'Avg 83% across all 3 departments',status:'meet'},
+    {n:8,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Board & CEO Report Delivery',score:5,kr:'100% on-time — 0 revisions requested',status:'exceed'},
+  ],
+  q4: [
+    {n:1,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'Internal Control Adequacy Score',score:5,kr:'Final SEC submission complete — IPO filing approved',status:'exceed'},
+    {n:2,cat:'ipo',catLabel:'IPO / Gov',catCls:'kp-ipo',accent:'#1D9E75',name:'IPO Readiness Milestone Rate',score:5,kr:'100% annual milestones achieved — listing roadshow commenced',status:'exceed'},
+    {n:3,cat:'legal',catLabel:'Legal',catCls:'kp-legal',accent:'#185FA5',name:'Legal & Regulatory Compliance Rate',score:4,kr:'0 violations — 1 minor contract amendment handled within SLA',status:'meet'},
+    {n:4,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Org Restructuring Completion',score:5,kr:'Full investor-grade org structure disclosed in Prospectus',status:'exceed'},
+    {n:5,cat:'hr',catLabel:'HR / Org',catCls:'kp-hr',accent:'#534AB7',name:'Key Talent Retention Rate',score:5,kr:'Turnover 7% — best year on record',status:'exceed'},
+    {n:6,cat:'it',catLabel:'Digital / IT',catCls:'kp-it',accent:'#CBA258',name:'Digital Governance Milestone Completion',score:4,kr:'All milestones complete — Gen AI efficiency gain documented 18%',status:'meet'},
+    {n:7,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Subordinate Dept KPI Achievement Rate',score:4,kr:'Avg 86% — best quarter for all 3 departments',status:'meet'},
+    {n:8,cat:'ops',catLabel:'Div Ops',catCls:'kp-ops',accent:'#6B7C74',name:'Board & CEO Report Delivery',score:5,kr:'100% on-time all year — zero revisions',status:'exceed'},
+  ]
+};
+
+const statusCfg = {
+  exceed:{cls:'st-exceed',label:'Exceeds Target',bar:'#1D9E75'},
+  meet:{cls:'st-meet',label:'Meets Target',bar:'#39D353'},
+  dev:{cls:'st-dev',label:'Developing',bar:'#EF9F27'},
+  below:{cls:'st-below',label:'Below Target',bar:'#E24B4A'}
+};
+
+let radarChart = null;
+let currentPeriod = 'q1';
+
+function renderProgress(period) {
+  currentPeriod = period;
+  const items = progData[period];
+  const exceed = items.filter(i=>i.status==='exceed').length;
+  const meet = items.filter(i=>i.status==='meet').length;
+  const dev = items.filter(i=>i.status==='dev'||i.status==='below').length;
+  const avg = (items.reduce((a,b)=>a+b.score,0)/items.length).toFixed(1);
+
+  document.getElementById('ps-overall').textContent = avg;
+  document.getElementById('ps-exceed').textContent = exceed;
+  document.getElementById('ps-meet').textContent = meet;
+  document.getElementById('ps-dev').textContent = dev;
+
+  const grid = document.getElementById('kpi-cards-grid');
+  grid.innerHTML = '';
+  items.forEach(k => {
+    const sc = statusCfg[k.status];
+    const pct = Math.round((k.score/5)*100);
+    const scoreColor = k.score>=5?'#085041':k.score>=4?'#3B6D11':k.score>=3?'#854F0B':'#A32D2D';
+    grid.innerHTML += `
+    <div class="kpi-card">
+      <div class="kcard-accent" style="background:${k.accent}"></div>
+      <div class="kcard-top">
+        <div>
+          <div class="kcard-num">KPI ${k.n}</div>
+          <div class="kcard-name">${k.name}</div>
+        </div>
+        <span class="kcard-cat ${k.catCls}">${k.catLabel}</span>
+      </div>
+      <div class="kcard-score-wrap">
+        <div class="kcard-score" style="color:${scoreColor}">${k.score}</div>
+        <div class="kcard-of">/ 5</div>
+        <span class="kcard-status ${sc.cls}">${sc.label}</span>
+      </div>
+      <div class="kcard-bar-track">
+        <div class="kcard-bar-fill" style="width:${pct}%;background:${sc.bar}"></div>
+      </div>
+      <div class="kcard-kr">${k.kr}</div>
+    </div>`;
+  });
+
+  const sumGrid = document.getElementById('summary-grid');
+  const exceedNames = items.filter(i=>i.status==='exceed').map(i=>'KPI '+i.n+' '+i.name.split(' ').slice(0,3).join(' ')+'…').join(' · ');
+  const devNames = items.filter(i=>i.status==='dev'||i.status==='below').map(i=>'KPI '+i.n+' '+i.name.split(' ').slice(0,3).join(' ')+'…').join(' · ');
+  sumGrid.innerHTML = `
+    <div class="sum-cell"><div class="sum-lbl">Overall Score</div><div class="sum-val" style="font-size:20px;font-family:'Lora',serif;color:var(--green-dark)">${avg} / 5.0</div></div>
+    <div class="sum-cell"><div class="sum-lbl">Top performers</div><div class="sum-val">${exceedNames||'—'}</div></div>
+    <div class="sum-cell red-b"><div class="sum-lbl">Needs attention</div><div class="sum-val">${devNames||'All on track'}</div></div>`;
+
+  renderRadar(items);
+}
+
+function renderRadar(items) {
+  const ctx = document.getElementById('radar-chart');
+  if (!ctx) return;
+  const labels = items.map(i => 'KPI '+i.n);
+  const scores = items.map(i => i.score);
+  const colors = items.map(i => statusCfg[i.status].bar);
+
+  if (radarChart) { radarChart.destroy(); radarChart = null; }
+
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Score',
+        data: scores,
+        backgroundColor: 'rgba(0,112,74,0.15)',
+        borderColor: '#00704A',
+        borderWidth: 2.5,
+        pointBackgroundColor: colors,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0, max: 5,
+          ticks: { stepSize: 1, font: { size: 11 }, color: '#6B7C74', backdropColor: 'transparent' },
+          grid: { color: 'rgba(0,0,0,0.07)' },
+          pointLabels: { font: { size: 12, weight: '700', family: "'Nunito Sans', sans-serif" }, color: '#1E3932' },
+          angleLines: { color: 'rgba(0,0,0,0.08)' }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const k = items[ctx.dataIndex];
+              return ` ${k.name}: ${k.score}/5 — ${statusCfg[k.status].label}`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+function setPeriod(period, btn) {
+  document.querySelectorAll('.pbtn').forEach(b => b.classList.remove('pon'));
+  btn.classList.add('pon');
+  renderProgress(period);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof Chart !== 'undefined') renderProgress('q1');
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" onload="renderProgress('q1')"></script>
+</body>
+</html>
