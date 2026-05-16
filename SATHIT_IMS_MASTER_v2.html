@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SATHIT'S IMS MASTER</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{
+  /* CPF Theme — Dark Teal + Lime Green Accent */
+  --cpf-dark:#1a4a3a;   /* header dark teal */
+  --cpf-mid:#2d6e55;    /* secondary teal */
+  --cpf-light:#e8f5f0;  /* very light teal */
+  --cpf-lime:#7ab648;   /* lime green accent */
+  --cpf-lime2:#5a9a2e;  /* lime darker */
+  --cpf-white:#ffffff;
+  --cpf-offwhite:#f4f8f6;
+  --cpf-border:#c8ddd5;
+  --cpf-text:#1a2e26;
+  --cpf-muted:#5a7a6e;
+
+  /* Group accent colors */
+  --qfs:#c86400;   --qfs-l:#fff0e0;   --qfs-b:#7a3a00;
+  --fs:#1a3a7e;    --fs-l:#e8eef8;
+  --ehs-e:#2a6e3a; --ehs-e-l:#e0f0e5;
+  --ehs-s:#c8900a; --ehs-s-l:#fff4e0;
+  --lab:#c04030;   --lab-l:#fce8e5;
+  --farm:#3a7a2e;  --farm-l:#e5f0e0;
+  --mgmt:#2d4a7e;  --mgmt-l:#e5eaf8;
+  --man:#6a3a9e;   --man-l:#f0eaf8;
+
+  /* Integration map standard colors */
+  --qms:#0d6e6e;  --qms-l:#d0eaea;
+  --ems:#2e6e3a;  --ems-l:#d0ebd5;
+  --ohs:#b8860b;  --ohs-l:#f5e6b0;
+  --lbc:#c04a2e;  --lbc-l:#fae0d8;
+  --ghp:#be185d;  --ghp-l:#fce7f3;
+  --hac:#c2410c;  --hac-l:#ffedd5;
+  --brc:#1d4ed8;  --brc-l:#dbeafe;
+  --i22:#065f46;  --i22-l:#d1fae5;
+  --ps7:#b85a00;  --ps7-l:#fde8d0;
+  --ggap:#4a7a2e; --ggap-l:#d8edc8;
+  --bap:#1e5f74;  --bap-l:#cdeaf0;
+  --lv-h:#5a3a8e; --lv-h-l:#e8dff8;
+  --lv-o:#0d6e6e; --lv-o-l:#d0eaea;
+  --lv-f:#c2410c; --lv-f-l:#ffedd5;
+
+  --ink:var(--cpf-text); --ink2:#2d4a40; --ink3:var(--cpf-muted);
+  --paper:var(--cpf-offwhite); --paper2:#ecf4f0; --paper3:#d8e8e0;
+  --border:var(--cpf-border); --r:8px; --rl:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.65}
+
+/* ══════════════ HEADER ══════════════ */
+.hdr{background:var(--cpf-dark);color:#fff;padding:0;border-bottom:4px solid var(--cpf-lime)}
+.hdr-top{padding:20px 36px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.hdr-logo{display:flex;align-items:center;gap:14px}
+.hdr-icon{width:48px;height:48px;background:var(--cpf-lime);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.hdr h1{font-family:'DM Serif Display',serif;font-size:26px;color:#fff;letter-spacing:-.3px;line-height:1.2}
+.hdr h1 span{color:var(--cpf-lime)}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;letter-spacing:.8px;text-transform:uppercase}
+.hdr-badges{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:560px}
+.badge{font-size:10px;font-weight:700;letter-spacing:.5px;padding:4px 10px;border-radius:5px;text-transform:uppercase}
+
+/* ══════════════ NAV ══════════════ */
+.nav-wrap{background:var(--cpf-dark);border-bottom:3px solid var(--cpf-lime);position:sticky;top:0;z-index:200;overflow-x:auto;box-shadow:0 3px 12px rgba(0,0,0,.25)}
+.nav-groups{display:flex;min-width:max-content}
+.nav-group{display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.12)}
+.nav-group:last-child{border-right:none}
+.nav-group-label{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:5px 12px 4px;border-bottom:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.55)}
+.nav-group-label.active-grp{color:#fff}
+.nav-tabs{display:flex}
+.tab{padding:10px 15px;font-size:13px;font-weight:500;color:rgba(255,255,255,.65);cursor:pointer;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.07)}
+.tab.active{color:#fff;font-weight:700;border-bottom-color:var(--cpf-lime)}
+/* group label accent colors */
+.grp-qfs .nav-group-label{border-top:3px solid var(--qfs)}
+.grp-fs .nav-group-label{border-top:3px solid var(--fs)}
+.grp-ehs .nav-group-label{border-top:3px solid var(--ehs-e)}
+.grp-lab .nav-group-label{border-top:3px solid var(--lab)}
+.grp-farm .nav-group-label{border-top:3px solid var(--farm)}
+.grp-mgmt .nav-group-label{border-top:3px solid var(--mgmt)}
+.grp-man .nav-group-label{border-top:3px solid var(--man)}
+.grp-imap .nav-group-label{border-top:3px solid var(--cpf-lime)}
+
+/* ══════════════ SECTIONS ══════════════ */
+.sec{display:none;padding:28px 36px;max-width:1440px}
+.sec.active{display:block}
+.st{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:5px;color:var(--cpf-dark)}
+.ss{font-size:13px;color:var(--ink3);margin-bottom:24px;border-bottom:2px solid var(--cpf-lime);padding-bottom:12px}
+
+/* ══════════════ HERO BANDS ══════════════ */
+.chero{border-radius:var(--rl);padding:22px 26px;margin-bottom:18px;display:flex;align-items:flex-start;gap:20px}
+.chero .num{font-family:'DM Serif Display',serif;font-size:56px;line-height:1;opacity:.2;flex-shrink:0}
+.chero h2{font-family:'DM Serif Display',serif;font-size:20px}
+.chero p{font-size:13px;margin-top:6px;opacity:.9;max-width:720px}
+.ch-qfs{background:var(--qfs);color:#fff}
+.ch-fs{background:var(--fs);color:#fff}
+.ch-ehs-e{background:var(--ehs-e);color:#fff}
+.ch-ehs-s{background:var(--ehs-s);color:#fff}
+.ch-lab{background:var(--lab);color:#fff}
+.ch-farm{background:var(--farm);color:#fff}
+.ch-man{background:var(--man);color:#fff}
+
+/* ══════════════ CONTENT BOXES ══════════════ */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.cgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:18px}
+.cbox{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:18px 20px;margin-bottom:0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cbox h4{font-size:13px;font-weight:700;margin-bottom:11px;padding-bottom:8px;border-bottom:2px solid var(--paper3);color:var(--cpf-dark)}
+.cbox ul{list-style:none}
+.cbox ul li{font-size:13px;color:var(--ink2);padding:4px 0;border-bottom:1px solid var(--paper3);display:flex;gap:8px;align-items:flex-start}
+.cbox ul li:last-child{border:none}
+.cbox ul li::before{content:'→';font-size:11px;color:var(--cpf-lime2);margin-top:3px;flex-shrink:0;font-weight:700}
+.cbox p{font-size:13px;color:var(--ink2);line-height:1.7}
+.notebox{background:var(--cpf-light);border-left:4px solid var(--cpf-lime);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--ink2)}
+.notebox.nb-fs{border-left-color:var(--fs)}
+.notebox.nb-ehs{border-left-color:var(--ehs-e)}
+.notebox.nb-lab{border-left-color:var(--lab)}
+.notebox.nb-farm{border-left-color:var(--farm)}
+.notebox.nb-man{border-left-color:var(--man)}
+
+/* ══════════════ TABLES ══════════════ */
+.rt{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.rt thead tr{background:var(--cpf-dark);color:#fff}
+.rt thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:12px;letter-spacing:.3px}
+.rt tbody tr{border-bottom:1px solid var(--paper3)}
+.rt tbody tr:hover{background:var(--cpf-light)}
+.rt tbody td{padding:9px 13px;color:var(--ink2);vertical-align:top;font-size:13px}
+.rt tbody td:first-child{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cpf-muted);white-space:nowrap}
+.rt tbody td:nth-child(2){font-weight:600;color:var(--ink)}
+
+/* ══════════════ HSTRIP ══════════════ */
+.hstrip{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.hbox{flex:1;min-width:90px;border-radius:var(--r);padding:11px 10px;text-align:center;font-size:12px;font-weight:600;border:1px solid var(--border);position:relative;background:#fff}
+.hbox small{display:block;font-weight:400;font-size:10px;color:var(--ink3);margin-top:3px}
+.hbox::after{content:'→';position:absolute;right:-9px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--cpf-lime2);z-index:1;font-weight:700}
+.hbox:last-child::after{display:none}
+
+/* ══════════════ PILLS ══════════════ */
+.prow{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:18px}
+.ppill{border-radius:var(--r);padding:11px 8px;text-align:center;font-size:12px;font-weight:600;border:1px solid var(--border);background:#fff}
+.ppill span{display:block;font-size:20px;margin-bottom:4px}
+
+/* ══════════════ IMS CORE ══════════════ */
+.ims-core{background:var(--cpf-dark);color:#fff;border-radius:var(--rl);padding:18px 24px;text-align:center;margin-bottom:16px;border-bottom:4px solid var(--cpf-lime)}
+.ims-core h3{font-family:'DM Serif Display',serif;font-size:18px;color:var(--cpf-lime)}
+.ims-core p{font-size:12px;color:rgba(255,255,255,.7);margin-top:4px}
+
+/* ══════════════ SHARED PILLS ══════════════ */
+.shared{background:var(--mgmt-l);border:1px solid var(--mgmt);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px}
+.shared h4{font-size:12px;font-weight:700;color:var(--mgmt);margin-bottom:10px;text-transform:uppercase;letter-spacing:.8px}
+.spills{display:flex;flex-wrap:wrap;gap:7px}
+.sp{background:var(--cpf-dark);color:#fff;font-size:12px;padding:4px 12px;border-radius:20px;font-weight:500}
+
+/* ══════════════ DOCUMENTS ══════════════ */
+.dsec{margin-bottom:28px}
+.dsec h3{font-size:14px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px;color:var(--cpf-dark)}
+.tag{font-size:11px;padding:3px 8px;border-radius:4px;font-weight:600}
+.dt{width:100%;border-collapse:collapse;font-size:13px}
+.dt thead tr{background:var(--cpf-dark);color:#fff}
+.dt thead th{padding:9px 13px;text-align:left;font-weight:600;font-size:12px}
+.dt tbody tr{border-bottom:1px solid var(--paper3)}
+.dt tbody tr:hover{background:var(--cpf-light)}
+.dt tbody td{padding:8px 13px;color:var(--ink2);vertical-align:top;font-size:13px}
+.dt tbody td:first-child{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cpf-muted)}
+.dt tbody td:nth-child(2){font-weight:600;color:var(--ink)}
+
+/* ══════════════ PDCA / WORKFLOW ══════════════ */
+.pdca{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.pc{border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.pc-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px}
+.pcl{font-family:'DM Serif Display',serif;font-size:28px;opacity:.28}
+.pc-ht h4{font-size:14px;font-weight:700}
+.pc-ht p{font-size:11px;opacity:.78}
+.pc-body{padding:13px 14px;background:#fff}
+.ps{display:flex;gap:9px;margin-bottom:10px;align-items:flex-start}
+.pn{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
+.pc-c h5{font-size:12px;font-weight:700;color:var(--ink)}
+.pc-c p{font-size:11px;color:var(--ink3);margin-top:2px}
+.pp .pc-hdr{background:var(--cpf-dark);color:#fff}
+.pd .pc-hdr{background:var(--qfs);color:#fff}
+.pch .pc-hdr{background:var(--ehs-s);color:#fff}
+.pa .pc-hdr{background:var(--lab);color:#fff}
+
+/* ══════════════ RESULTS ══════════════ */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:18px;border-top:4px solid;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.kpi h5{font-size:11px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.kpi .kv{font-family:'DM Serif Display',serif;font-size:28px;color:var(--ink)}
+.kpi .ks{font-size:11px;color:var(--ink3);margin-top:3px}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.rc{background:#fff;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.rc-hdr{padding:12px 18px;font-size:13px;font-weight:700;background:var(--cpf-light);color:var(--cpf-dark);border-bottom:2px solid var(--cpf-lime)}
+.rc-body{padding:14px 18px}
+.ri{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--paper3)}
+.ri:last-child{border:none}
+.ri-l{font-size:12px;color:var(--ink2)}
+.ri-v{font-size:13px;font-weight:700}
+.sdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.dg{background:var(--ehs-e)}.dam{background:var(--ehs-s)}.dr{background:var(--lab)}
+.bwrap{flex:1;max-width:130px;background:var(--paper3);border-radius:3px;height:6px;overflow:hidden;margin:0 10px}
+.bf{height:100%;border-radius:3px}
+.tli{display:flex;gap:13px;margin-bottom:14px;position:relative}
+.tli::before{content:'';position:absolute;left:11px;top:24px;bottom:-14px;width:2px;background:var(--cpf-lime);opacity:.3}
+.tli:last-child::before{display:none}
+.tld{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;color:#fff}
+.tlc h5{font-size:13px;font-weight:700;color:var(--ink)}
+.tlc p{font-size:12px;color:var(--ink3);margin-top:2px}
+.tlc .per{font-size:10px;font-weight:700;color:var(--cpf-lime2);font-family:'JetBrains Mono',monospace}
+
+/* ══════════════ MANUALS ══════════════ */
+.audit-cal{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:18px}
+.audit-cal thead tr{background:var(--cpf-dark);color:#fff}
+.audit-cal thead th{padding:9px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.3px}
+.audit-cal tbody tr{border-bottom:1px solid var(--paper3)}
+.audit-cal tbody tr:hover{background:var(--cpf-light)}
+.audit-cal tbody td{padding:8px 12px;vertical-align:top;font-size:13px;color:var(--ink2)}
+.ac-dot{display:inline-block;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:10px;font-weight:700;color:#fff}
+.tmat{width:100%;border-collapse:collapse;font-size:13px}
+.tmat thead tr{background:var(--man);color:#fff}
+.tmat thead th{padding:9px 12px;text-align:left;font-size:11px;font-weight:600}
+.tmat tbody tr{border-bottom:1px solid var(--paper3)}
+.tmat tbody tr:hover{background:var(--man-l)}
+.tmat tbody td{padding:8px 12px;vertical-align:top;font-size:13px;color:var(--ink2)}
+
+/* ══════════════ INTEGRATION MAP STYLES ══════════════ */
+.imap-wrap{padding:0}
+.imap-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.imap-stat{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:14px;text-align:center;border-top:4px solid;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.imap-stat-n{font-family:'DM Serif Display',serif;font-size:2.2rem;line-height:1.1}
+.imap-stat-l{font-size:12px;color:var(--ink3);margin-top:4px;line-height:1.4;font-weight:500}
+
+.imap-legend{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:16px}
+.ilc{border-radius:var(--r);padding:7px 10px;border:1px solid}
+.ilc-std{font-size:11px;font-weight:700}
+.ilc-name{font-size:10px;margin-top:2px;opacity:.8}
+
+.imap-lv-legend{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:10px 14px}
+.imap-lv-legend .lbl{font-size:11px;font-weight:700;color:var(--cpf-muted);text-transform:uppercase;letter-spacing:.08em;margin-right:6px}
+.lv-pill{font-size:11px;font-weight:700;padding:.25rem .8rem;border-radius:10px}
+.lv-h-pill{background:var(--lv-h-l);color:var(--lv-h)}
+.lv-o-pill{background:var(--lv-o-l);color:var(--lv-o)}
+.lv-f-pill{background:var(--lv-f-l);color:var(--lv-f)}
+
+.imap-filters{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:14px 18px;margin-bottom:16px}
+.imap-filters .flabel{font-size:11px;color:var(--cpf-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px}
+.frow{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.frow:last-child{margin-bottom:0}
+.fb{padding:.32rem .9rem;border-radius:16px;border:1px solid var(--border);background:transparent;color:var(--ink3);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .13s;white-space:nowrap;font-weight:500}
+.fb:hover{border-color:var(--cpf-dark);color:var(--cpf-dark)}
+.fb.on{color:#fff;border-color:transparent;font-weight:700}
+.fb.on.t-all{background:var(--cpf-dark)}
+.fb.on.t-full{background:#14532d}
+.fb.on.t-partial{background:#1e3a5f}
+.fb.on.t-food{background:#7c2d12}
+.fb.on.t-unique{background:#3b0764}
+.fb.on.t-farm{background:#1a4a1a}
+.fb.on.lv-high{background:var(--lv-h)}
+.fb.on.lv-ops{background:var(--lv-o)}
+.fb.on.lv-func{background:var(--lv-f)}
+.fb.on.s-qms{background:var(--qms)}.fb.on.s-ems{background:var(--ems)}
+.fb.on.s-ohs{background:var(--ohs)}.fb.on.s-lab{background:var(--lbc)}
+.fb.on.s-ghp{background:var(--ghp)}.fb.on.s-hac{background:var(--hac)}
+.fb.on.s-brc{background:var(--brc)}.fb.on.s-i22{background:var(--i22)}
+.fb.on.s-ps7{background:var(--ps7)}.fb.on.s-ggap{background:var(--ggap)}.fb.on.s-bap{background:var(--bap)}
+
+#imap-ci{font-size:12px;color:var(--cpf-muted);margin-bottom:10px;font-weight:500}
+.imap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+
+.icard{background:#fff;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:transform .12s,box-shadow .12s;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.icard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.icard-hd{padding:12px 14px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid var(--border)}
+.icard-title{font-size:14px;font-weight:700;line-height:1.35;flex:1;color:var(--cpf-dark)}
+.ibadge{flex-shrink:0;font-size:10px;font-weight:700;padding:.18rem .55rem;border-radius:6px;letter-spacing:.04em;white-space:nowrap;margin-top:2px}
+.ib-full{background:#14532d;color:#86efac}
+.ib-partial{background:#1e3a5f;color:#93c5fd}
+.ib-food{background:#7c2d12;color:#fed7aa}
+.ib-unique{background:#3b0764;color:#e9d5ff}
+.ib-farm{background:#1a4a1a;color:#bbf7d0}
+.hd-full{background:#f0fdf4}
+.hd-partial{background:#eff6ff}
+.hd-food{background:#fff7ed}
+.hd-unique{background:#faf5ff}
+.hd-farm{background:#f0fdf4}
+.icard-bd{padding:10px 14px}
+.level-tag{display:inline-flex;align-items:center;gap:.3rem;font-size:10px;font-weight:700;padding:.14rem .55rem;border-radius:4px;margin-bottom:7px;letter-spacing:.05em}
+.istrow{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:7px}
+.istag{font-size:11px;font-weight:700;padding:.15rem .5rem;border-radius:4px}
+.t-qms{background:var(--qms-l);color:var(--qms)}.t-ems{background:var(--ems-l);color:var(--ems)}
+.t-ohs{background:var(--ohs-l);color:var(--ohs)}.t-lab{background:var(--lbc-l);color:var(--lbc)}
+.t-ghp{background:var(--ghp-l);color:var(--ghp)}.t-hac{background:var(--hac-l);color:var(--hac)}
+.t-brc{background:var(--brc-l);color:var(--brc)}.t-i22{background:var(--i22-l);color:var(--i22)}
+.t-ps7{background:var(--ps7-l);color:var(--ps7)}.t-ggap{background:var(--ggap-l);color:var(--ggap)}
+.t-bap{background:var(--bap-l);color:var(--bap)}
+.irefrow{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:7px}
+.rchip{font-family:'JetBrains Mono',monospace;font-size:10px;padding:.12rem .42rem;border-radius:3px;border:1px solid;opacity:.85}
+.idesc{font-size:12px;color:var(--cpf-muted);line-height:1.55;border-top:1px solid var(--paper3);padding-top:8px;margin-top:6px}
+.idocref{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--cpf-muted);margin-top:7px}
+.idocref span{color:var(--ink2);font-weight:500}
+
+/* ══════════════ PRINT BUTTON ══════════════ */
+.print-btn{position:fixed;bottom:22px;right:22px;background:var(--cpf-dark);color:#fff;border:none;padding:12px 20px;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.25);z-index:300;transition:.2s;border-bottom:3px solid var(--cpf-lime)}
+.print-btn:hover{background:var(--cpf-mid);transform:translateY(-1px)}
+
+@media print{.nav-wrap,.print-btn,.imap-filters{display:none}.sec{display:block!important}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ HEADER ══════════════════════════ -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-logo">
+      <div class="hdr-icon">🏆</div>
+      <div>
+        <h1>SATHIT'S <span>IMS MASTER</span></h1>
+        <div class="hdr-sub">Integrated Management System · Master Reference · Rev.02 · 2025</div>
+      </div>
+    </div>
+    <div class="hdr-badges">
+      <span class="badge" style="background:var(--ps7);color:#fff">PS 7818</span>
+      <span class="badge" style="background:var(--qfs);color:#fff">GHPs/HACCP</span>
+      <span class="badge" style="background:var(--qfs);color:#fff">ISO 9001</span>
+      <span class="badge" style="background:var(--qfs);color:#fff">ISO 22000</span>
+      <span class="badge" style="background:var(--fs);color:#fff">BRCGS</span>
+      <span class="badge" style="background:var(--ehs-e);color:#fff">ISO 14001</span>
+      <span class="badge" style="background:var(--ehs-s);color:#fff">ISO 45001</span>
+      <span class="badge" style="background:var(--lab);color:#fff">ISO 17025</span>
+      <span class="badge" style="background:var(--farm);color:#fff">Global GAP</span>
+      <span class="badge" style="background:var(--bap);color:#fff">BAP</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ NAV ══════════════════════════ -->
+<div class="nav-wrap">
+  <div class="nav-groups">
+    <div class="nav-group grp-qfs">
+      <div class="nav-group-label">⚙ QFS Core</div>
+      <div class="nav-tabs">
+        <div class="tab active" onclick="show('map',this)">🗺 System Map</div>
+        <div class="tab" onclick="show('ps',this)">📋 PS 7818</div>
+        <div class="tab" onclick="show('ghp',this)">🦠 GHPs/HACCP</div>
+        <div class="tab" onclick="show('q',this)">🔵 ISO 9001</div>
+        <div class="tab" onclick="show('iso22',this)">🟠 ISO 22000</div>
+      </div>
+    </div>
+    <div class="nav-group grp-fs">
+      <div class="nav-group-label">🛡 Food Safety</div>
+      <div class="nav-tabs">
+        <div class="tab" onclick="show('brc',this)">🔵 BRCGS</div>
+      </div>
+    </div>
+    <div class="nav-group grp-ehs">
+      <div class="nav-group-label">🌿 EHS</div>
+      <div class="nav-tabs">
+        <div class="tab" onclick="show('e',this)">🟢 ISO 14001</div>
+        <div class="tab" onclick="show('s',this)">🟡 ISO 45001</div>
+      </div>
+    </div>
+    <div class="nav-group grp-lab">
+      <div class="nav-group-label">🔬 LAB</div>
+      <div class="nav-tabs">
+        <div class="tab" onclick="show('l',this)">🔴 ISO 17025</div>
+      </div>
+    </div>
+    <div class="nav-group grp-farm">
+      <div class="nav-group-label">🌾 Farm</div>
+      <div class="nav-tabs">
+        <div class="tab" onclick="show('ggap',this)">🌿 Global GAP</div>
+        <div class="tab" onclick="show('bap',this)">🐟 BAP</div>
+      </div>
+    </div>
+    <div class="nav-group grp-mgmt">
+      <div class="nav-group-label">📁 IMS Mgmt</div>
+      <div class="nav-tabs">
+        <div class="tab" onclick="show('docs',this)">📄 Documents</div>
+        <div class="tab" onclick="show('wf',this)">⚙ Workflow</div>
+        <div class="tab" onclick="show('res',this)">📊 Results</div>
+      </div>
+    </div>
+    <div class="nav-group grp-man">
+      <div class="nav-group-label">📘 Manuals</div>
+      <div class="nav-tabs">
+        <div class="tab" onclick="show('impl',this)">🚀 Implement</div>
+        <div class="tab" onclick="show('aud',this)">🔍 Audit</div>
+        <div class="tab" onclick="show('trn',this)">🎓 Training</div>
+      </div>
+    </div>
+    <div class="nav-group grp-imap">
+      <div class="nav-group-label">🔗 Integration</div>
+      <div class="nav-tabs">
+        <div class="tab" onclick="show('imap',this)">🗂 Integration Master Map</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: SYSTEM MAP -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="map" class="sec active">
+  <div class="st">IMS System Map</div>
+  <div class="ss">SATHIT'S IMS MASTER — One Policy · One System · 10 Standards · 6 Groups · PDCA Cycle</div>
+  <div class="ims-core">
+    <h3>SATHIT'S IMS MASTER — Integrated Management System</h3>
+    <p>Food Manufacturing · Farm Upstream · Lab · EHS · Unified Framework</p>
+  </div>
+  <div style="background:var(--man-l);border:1px solid var(--man);border-radius:var(--rl);padding:14px 20px;margin-bottom:14px">
+    <div style="font-size:12px;font-weight:700;color:var(--man);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Top Management — Leadership &amp; Strategic Direction</div>
+    <div style="font-size:14px;color:var(--ink2)">Integrated IMS Policy · Objectives · Management Review · Risk-based Thinking</div>
+    <div style="font-size:12px;color:var(--ink3);margin-top:5px;font-style:italic">Common HLS Framework (Annex SL / ISO High Level Structure) — PDCA Cycle</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px">
+    <div style="border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.05)">
+      <div style="background:var(--qfs);color:#fff;padding:12px 16px;font-weight:700;font-size:14px">⚙ GROUP 1 — QFS Core (PS 7818 Framework)</div>
+      <div style="background:#fff;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--qfs);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">4 Integrated Standards</div>
+        <ul style="list-style:none">
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ PS 7818:2018 — Internal QFS Framework</li>
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ Codex GHPs/HACCP 2023</li>
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ ISO 9001:2015 — QMS</li>
+          <li style="font-size:13px;padding:4px 0;color:var(--ink2)">→ ISO 22000:2018 — FSMS</li>
+        </ul>
+      </div>
+      <div style="background:var(--qfs-l);padding:7px 16px;font-size:11px;font-style:italic;color:var(--qfs-b)">Foundation of food quality &amp; safety management</div>
+    </div>
+    <div style="border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.05)">
+      <div style="background:var(--fs);color:#fff;padding:12px 16px;font-weight:700;font-size:14px">🛡 GROUP 2 — Food Safety Advanced</div>
+      <div style="background:#fff;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--fs);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">GFSI Benchmark Standard</div>
+        <ul style="list-style:none">
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ BRCGS Issue 9 — Global Standard for Food Safety</li>
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ Sections 1–9 integrated requirements</li>
+          <li style="font-size:13px;padding:4px 0;color:var(--ink2)">→ Grading AA / A / B / C</li>
+        </ul>
+      </div>
+      <div style="background:var(--fs-l);padding:7px 16px;font-size:11px;font-style:italic;color:var(--fs)">Overlaps strongly with ISO 22000 &amp; GHPs</div>
+    </div>
+    <div style="border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.05)">
+      <div style="background:var(--ehs-e);color:#fff;padding:12px 16px;font-weight:700;font-size:14px">🌿 GROUP 3 — EHS</div>
+      <div style="background:#fff;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--ehs-e);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">2 Integrated Standards</div>
+        <ul style="list-style:none">
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ ISO 14001:2015 — Environmental MS</li>
+          <li style="font-size:13px;padding:4px 0;color:var(--ink2)">→ ISO 45001:2018 — OH&amp;S MS</li>
+        </ul>
+      </div>
+      <div style="background:var(--ehs-e-l);padding:7px 16px;font-size:11px;font-style:italic;color:var(--ehs-e)">Shared: context, legal register, risk, audit, MR</div>
+    </div>
+    <div style="border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.05)">
+      <div style="background:var(--lab);color:#fff;padding:12px 16px;font-weight:700;font-size:14px">🔬 GROUP 4 — LAB</div>
+      <div style="background:#fff;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--lab);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Accreditation Standard</div>
+        <ul style="list-style:none">
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ ISO/IEC 17025:2017</li>
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ Method validation &amp; calibration</li>
+          <li style="font-size:13px;padding:4px 0;color:var(--ink2)">→ Measurement traceability</li>
+        </ul>
+      </div>
+      <div style="background:var(--lab-l);padding:7px 16px;font-size:11px;font-style:italic;color:var(--lab)">Technically distinct from HLS management standards</div>
+    </div>
+    <div style="border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.05)">
+      <div style="background:var(--farm);color:#fff;padding:12px 16px;font-weight:700;font-size:14px">🌾 GROUP 5 — Farm / Upstream Supply Chain</div>
+      <div style="background:#fff;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--farm);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">2 Farm Standards</div>
+        <ul style="list-style:none">
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ Global G.A.P. IFA v5.2</li>
+          <li style="font-size:13px;padding:4px 0;color:var(--ink2)">→ BAP Farm Standard Issue 3.1</li>
+        </ul>
+      </div>
+      <div style="background:var(--farm-l);padding:7px 16px;font-size:11px;font-style:italic;color:var(--farm)">Upstream control only — supplier approval &amp; monitoring</div>
+    </div>
+    <div style="border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.05)">
+      <div style="background:var(--cpf-dark);color:#fff;padding:12px 16px;font-weight:700;font-size:14px">📁 SHARED — IMS Common Elements</div>
+      <div style="background:#fff;padding:14px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--mgmt);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Apply to ALL Standards</div>
+        <ul style="list-style:none">
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ IMS Policy &amp; Objectives</li>
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ Risk Register · Legal Register</li>
+          <li style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--paper3);color:var(--ink2)">→ Internal Audit · CAPA · MR</li>
+          <li style="font-size:13px;padding:4px 0;color:var(--ink2)">→ Document Control · Competence Matrix</li>
+        </ul>
+      </div>
+      <div style="background:var(--cpf-light);padding:7px 16px;font-size:11px;font-style:italic;color:var(--cpf-dark)">Write once — apply across all 10 standards</div>
+    </div>
+  </div>
+  <div class="shared">
+    <h4>Shared IMS Elements — One Set of Documents for ALL Standards</h4>
+    <div class="spills">
+      <span class="sp">IMS Policy</span><span class="sp">Context &amp; Interested Parties</span><span class="sp">Risk Register</span>
+      <span class="sp">Legal &amp; Compliance Register</span><span class="sp">Objectives &amp; KPIs</span><span class="sp">Competence Matrix</span>
+      <span class="sp">Document Control</span><span class="sp">Communication Plan</span><span class="sp">Internal Audit Program</span>
+      <span class="sp">NCR &amp; CAPA Procedure</span><span class="sp">Management Review</span><span class="sp">Supplier Evaluation</span>
+      <span class="sp">Emergency Preparedness</span><span class="sp">Change Management</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: PS 7818 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="ps" class="sec">
+  <div class="st">PS 7818:2018 — Internal QFS Framework</div>
+  <div class="ss">Integrates Codex GHPs/HACCP + ISO 9001 + ISO 22000 into one unified system</div>
+  <div class="chero ch-qfs"><div class="num">7818</div><div><h2>PS 7818:2018 — Quality &amp; Food Safety Framework</h2><p>Internal standard that integrates Codex GHPs/HACCP, ISO 9001:2015 and ISO 22000:2018 into a single operational framework. Acts as the umbrella standard — all food safety and quality requirements are managed through PS 7818 deployment. Simplifies compliance by eliminating duplication across 3 international standards.</p></div></div>
+  <div class="notebox"><strong>Core Concept:</strong> PS 7818 is the integration master — it maps requirements from Codex, ISO 9001, and ISO 22000 into one coherent system. Compliance with PS 7818 implies compliance with all three underlying standards simultaneously.</div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--qfs)">4 Pillars of PS 7818</h4><ul>
+      <li><strong>Management System (ISO 9001 base)</strong> — PDCA, process approach, risk-based thinking, leadership commitment</li>
+      <li><strong>Food Safety Management (ISO 22000)</strong> — FSMS, PRPs, oPRPs, CCPs, HACCP plan</li>
+      <li><strong>Prerequisite Programs (Codex GHPs)</strong> — 15 PRP categories covering infrastructure, hygiene, pest, allergen, traceability</li>
+      <li><strong>HACCP System (Codex 2023)</strong> — 12 steps, 7 principles, CCP decision tree, monitoring &amp; verification</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--qfs)">How PS 7818 Eliminates Duplication</h4>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;margin-top:6px">
+        <tr style="background:var(--qfs);color:#fff"><th style="padding:6px 9px;text-align:left">Requirement</th><th style="padding:6px 9px;text-align:left">Source</th><th style="padding:6px 9px;text-align:left">PS 7818</th></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Context &amp; scope</td><td style="padding:6px 9px">ISO9001 §4 / ISO22000 §4</td><td style="padding:6px 9px">Single context register</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Risk management</td><td style="padding:6px 9px">ISO9001 §6 / ISO22000 §6</td><td style="padding:6px 9px">Combined risk register</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">PRPs</td><td style="padding:6px 9px">Codex GHPs / ISO22000 §8.2</td><td style="padding:6px 9px">PRP master checklist</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">HACCP Plan</td><td style="padding:6px 9px">Codex HACCP / ISO22000 §8.5</td><td style="padding:6px 9px">Integrated HACCP Plan</td></tr>
+        <tr><td style="padding:6px 9px">Internal Audit</td><td style="padding:6px 9px">ISO9001 §9.2 / ISO22000 §9.2</td><td style="padding:6px 9px">One audit program</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--qfs)">PS 7818 Clause vs International Standards Cross-Reference</h4>
+    <table class="rt"><thead><tr><th>PS 7818 §</th><th>Topic</th><th>ISO 9001</th><th>ISO 22000</th><th>Codex</th></tr></thead>
+    <tbody>
+      <tr><td>1–3</td><td>Scope, Terms, Context</td><td>§4</td><td>§4</td><td>Step 1</td></tr>
+      <tr><td>4</td><td>Leadership &amp; Policy</td><td>§5</td><td>§5</td><td>Step 2</td></tr>
+      <tr><td>5</td><td>Planning &amp; Risk</td><td>§6</td><td>§6</td><td>Step 3–4</td></tr>
+      <tr><td>6</td><td>Support (Resources, Competence, Docs)</td><td>§7</td><td>§7</td><td>—</td></tr>
+      <tr><td>7</td><td>PRPs / GHPs</td><td>—</td><td>§8.2</td><td>GHPs All Sections</td></tr>
+      <tr><td>8</td><td>HACCP Plan (oPRP + CCP)</td><td>—</td><td>§8.5–8.9</td><td>Steps 6–12</td></tr>
+      <tr><td>9</td><td>Operation &amp; Production Control</td><td>§8</td><td>§8.4</td><td>—</td></tr>
+      <tr><td>10</td><td>Performance Evaluation</td><td>§9</td><td>§9</td><td>Step 11</td></tr>
+      <tr><td>11</td><td>Improvement &amp; CAPA</td><td>§10</td><td>§10</td><td>—</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: GHPs / HACCP -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="ghp" class="sec">
+  <div class="st">Codex GHPs / HACCP — 2023 Edition</div>
+  <div class="ss">General Principles of Food Hygiene + HACCP System — CXC 1-1969, Rev.2020 (adopted 2023)</div>
+  <div class="chero ch-qfs"><div class="num">GHP</div><div><h2>Codex Alimentarius — GHPs &amp; HACCP System (2023)</h2><p>Foundational international food safety framework. GHPs form the prerequisite foundation; HACCP is the risk-based system layered on top. The 2023 revision integrates GHPs and HACCP more explicitly — PRPs are now formally recognized within the HACCP framework.</p></div></div>
+  <div class="notebox"><strong>Core Concept:</strong> GHPs = the foundation (control the environment). HACCP = the system (control the process). Without solid GHPs, HACCP cannot function effectively.</div>
+  <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--qfs);margin-bottom:10px">PART A — GENERAL HYGIENE PRACTICES (GHPs) — 15 Categories</div>
+  <div class="cgrid3">
+    <div class="cbox"><h4 style="color:var(--qfs)">Infrastructure PRPs</h4><ul>
+      <li>Primary production controls</li><li>Establishment design &amp; layout</li><li>Equipment design &amp; maintenance</li><li>Water &amp; air supply quality</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--qfs)">Process PRPs</h4><ul>
+      <li>Temperature control programs</li><li>Cleaning &amp; disinfection (C&amp;D)</li><li>Pest control program</li><li>Waste &amp; sewage management</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--qfs)">Personnel PRPs</h4><ul>
+      <li>Personal hygiene standards</li><li>Health &amp; illness policy</li><li>Food handler training program</li><li>Visitor &amp; contractor controls</li>
+    </ul></div>
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--qfs)">Product PRPs</h4><ul>
+      <li>Allergen management program</li><li>Traceability system (1 up / 1 down)</li><li>Recall &amp; withdrawal procedure</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--qfs)">GHP vs HACCP Scope</h4>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;margin-top:6px">
+        <tr style="background:var(--qfs);color:#fff"><th style="padding:6px 9px">GHPs</th><th style="padding:6px 9px">HACCP</th></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Control the environment</td><td style="padding:6px 9px">Control the process</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Prevent general contamination</td><td style="padding:6px 9px">Control specific hazards</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Monitored periodically</td><td style="padding:6px 9px">Monitored continuously at CCP</td></tr>
+        <tr><td style="padding:6px 9px">No Critical Limits</td><td style="padding:6px 9px">Critical Limits mandatory</td></tr>
+      </table>
+    </div>
+  </div>
+  <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--qfs);margin:18px 0 10px">PART B — HACCP SYSTEM — 12 STEPS / 7 PRINCIPLES</div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--qfs)">12 Steps of HACCP Implementation</h4>
+    <table class="rt"><thead><tr><th>Step</th><th>Action</th><th>Principle</th><th>Key Output</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Assemble HACCP Team</td><td>—</td><td>Multi-disciplinary team list</td></tr>
+      <tr><td>2</td><td>Describe Product &amp; Intended Use</td><td>—</td><td>Product description sheet</td></tr>
+      <tr><td>3</td><td>Construct Process Flow Diagram</td><td>—</td><td>Verified process flow diagram</td></tr>
+      <tr><td>4</td><td>On-site Verification of Flow Diagram</td><td>—</td><td>Verified &amp; signed flow diagram</td></tr>
+      <tr><td>5</td><td>Conduct Hazard Analysis</td><td>P1</td><td>Hazard Analysis worksheet</td></tr>
+      <tr><td>6</td><td>Determine CCPs</td><td>P2</td><td>CCP Decision Tree results</td></tr>
+      <tr><td>7</td><td>Establish Critical Limits</td><td>P3</td><td>CL per CCP (validated)</td></tr>
+      <tr><td>8</td><td>Establish Monitoring System</td><td>P4</td><td>Monitoring procedure per CCP</td></tr>
+      <tr><td>9</td><td>Establish Corrective Actions</td><td>P5</td><td>CA procedure when CL deviated</td></tr>
+      <tr><td>10</td><td>Establish Verification Procedures</td><td>P6</td><td>Verification plan &amp; frequency</td></tr>
+      <tr><td>11</td><td>Establish Documentation</td><td>P7</td><td>HACCP plan + all records</td></tr>
+      <tr><td>12</td><td>Annual Review &amp; Revalidation</td><td>—</td><td>HACCP review record</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--qfs)">CCP vs oPRP Decision</h4><ul>
+      <li><strong>CCP</strong> — Hazard significant + no subsequent control + critical limit measurable continuously</li>
+      <li><strong>oPRP</strong> — Hazard significant + controlled by operational PRP (not continuous monitoring)</li>
+      <li><strong>PRP</strong> — General prerequisite; hazard not significant at this step</li>
+      <li>Decision Tree: Is control essential? → Can it be monitored continuously? → CCP or oPRP</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--qfs)">Hazard Categories</h4><ul>
+      <li><strong>Biological</strong> — Pathogens (Salmonella, Listeria, E.coli O157), spoilage organisms</li>
+      <li><strong>Chemical</strong> — Pesticides, veterinary drug residues, mycotoxins, allergens, cleaning agents</li>
+      <li><strong>Physical</strong> — Metal, glass, bone, plastic, wood fragments</li>
+      <li><strong>Radiological</strong> — (emerging, location-dependent)</li>
+      <li>Significance = Severity × Likelihood</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: ISO 9001 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="q" class="sec">
+  <div class="chero ch-qfs"><div class="num">9001</div><div><h2>ISO 9001:2015 — Quality Management System</h2><p>World's most widely adopted management standard. Ensures organizations consistently deliver products meeting customer and statutory requirements through 7 Quality Management Principles and PDCA.</p></div></div>
+  <div class="notebox"><strong>Main Concept:</strong> Customer satisfaction through consistent product quality, driven by process approach and risk-based thinking embedded in every operation.</div>
+  <div class="prow">
+    <div class="ppill" style="background:var(--qfs-l);border-color:var(--qfs)"><span>👥</span>Customer Focus</div>
+    <div class="ppill" style="background:var(--mgmt-l);border-color:var(--mgmt)"><span>🎯</span>Leadership</div>
+    <div class="ppill" style="background:var(--ehs-e-l);border-color:var(--ehs-e)"><span>🤝</span>Engagement</div>
+    <div class="ppill" style="background:var(--ehs-s-l);border-color:var(--ehs-s)"><span>⚙</span>Process Approach</div>
+    <div class="ppill" style="background:var(--lab-l);border-color:var(--lab)"><span>📈</span>Improvement</div>
+    <div class="ppill" style="background:var(--man-l);border-color:var(--man)"><span>📊</span>Evidence Decisions</div>
+    <div class="ppill" style="background:var(--paper2)"><span>🔗</span>Relationship Mgmt</div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--qfs)">Clause Requirements</h4>
+    <table class="rt"><thead><tr><th>§</th><th>Clause</th><th>Key Requirement</th><th>Key Output / Record</th></tr></thead>
+    <tbody>
+      <tr><td>4</td><td>Context</td><td>Internal/external issues; interested parties; scope</td><td>Context register; scope statement</td></tr>
+      <tr><td>5</td><td>Leadership</td><td>Top management commitment; quality policy; roles</td><td>Quality policy; role assignments</td></tr>
+      <tr><td>6</td><td>Planning</td><td>Risks &amp; opportunities; measurable quality objectives</td><td>Risk register; quality objectives</td></tr>
+      <tr><td>7</td><td>Support</td><td>Resources; competence; awareness; documented info</td><td>Training records; calibration records; doc register</td></tr>
+      <tr><td>8</td><td>Operation</td><td>Design; production; inspection; NCR control; supplier</td><td>WIs; inspection records; NCR log; supplier register</td></tr>
+      <tr><td>9</td><td>Performance Eval.</td><td>Customer satisfaction; internal audit; management review</td><td>Customer survey; audit report; MR minutes</td></tr>
+      <tr><td>10</td><td>Improvement</td><td>Nonconformity; corrective action; continual improvement</td><td>CAPA register; improvement projects</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--qfs)">Mandatory Documented Information</h4><ul>
+      <li>Quality policy (§5.2)</li><li>Quality objectives (§6.2)</li><li>Competence evidence (§7.2)</li>
+      <li>Monitoring &amp; measurement results (§9.1)</li><li>Internal audit results (§9.2)</li>
+      <li>Management review outputs (§9.3)</li><li>NCR &amp; CAPA records (§10.2)</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--qfs)">ISO 9001 Unique Strengths in IMS</h4><ul>
+      <li>Strongest customer focus among all standards</li><li>Design &amp; development control (§8.3)</li>
+      <li>External provider (supplier) control framework</li><li>Customer-specific requirements management</li>
+      <li>Post-delivery activities control</li><li>Best foundation for integrating other HLS standards</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: ISO 22000 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="iso22" class="sec">
+  <div class="chero ch-qfs"><div class="num">22000</div><div><h2>ISO 22000:2018 — Food Safety Management System</h2><p>Integrates HACCP with the ISO management system framework. Uses HLS structure plus food safety-specific elements: PRPs, oPRPs, HACCP plan, and hazard analysis. PDCA operates at two levels — management system AND HACCP operational level.</p></div></div>
+  <div class="notebox"><strong>Main Concept:</strong> ISO 22000 = ISO 9001 structure + Codex HACCP content. Strongest standalone FSMS standard. 2018 revision added clearer PRPs/oPRPs/CCPs distinction and food safety culture requirement.</div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--qfs)">Dual PDCA Model (ISO 22000 Unique)</h4><ul>
+      <li><strong>Outer PDCA</strong> — Management system level (same as ISO 9001)</li>
+      <li><strong>Inner PDCA</strong> — HACCP operational level (hazard control cycle)</li>
+      <li>Both cycles must be running simultaneously and linked</li>
+      <li>Management review covers both cycles</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--qfs)">3 Control Measure Categories</h4><ul>
+      <li><strong>PRPs</strong> — General hygiene controls; manage general contamination; monitored periodically (GHPs)</li>
+      <li><strong>oPRPs</strong> — Operational PRPs; control specific food safety hazards; monitored by procedure</li>
+      <li><strong>CCPs</strong> — Critical Control Points; Critical Limits; continuous monitoring; deviation = corrective action</li>
+    </ul></div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--qfs)">ISO 22000:2018 Clause Map</h4>
+    <table class="rt"><thead><tr><th>§</th><th>Clause</th><th>Key Requirement</th><th>Codex Link</th></tr></thead>
+    <tbody>
+      <tr><td>4</td><td>Context</td><td>Organization context; FSMS scope; interested parties</td><td>Step 1</td></tr>
+      <tr><td>5</td><td>Leadership</td><td>Food safety policy; FSMS team; food safety culture</td><td>Step 2</td></tr>
+      <tr><td>6</td><td>Planning</td><td>Risks &amp; opportunities; food safety objectives</td><td>Step 3</td></tr>
+      <tr><td>7</td><td>Support</td><td>Resources; competence; documented info; communication</td><td>—</td></tr>
+      <tr><td>8.2</td><td>PRPs</td><td>Prerequisite programs — 15 GHP categories</td><td>GHPs</td></tr>
+      <tr><td>8.4</td><td>Hazard Analysis</td><td>Identify, evaluate &amp; select control measures</td><td>P1 + Steps 5–6</td></tr>
+      <tr><td>8.5</td><td>HACCP / oPRP Plan</td><td>CCP &amp; oPRP; CLs; monitoring; CA</td><td>P2–P7</td></tr>
+      <tr><td>8.9</td><td>NCR of Products</td><td>Potentially unsafe product; withdrawal &amp; recall</td><td>Steps 11–12</td></tr>
+      <tr><td>9</td><td>Performance Eval.</td><td>Verification; internal audit; management review</td><td>Step 11</td></tr>
+      <tr><td>10</td><td>Improvement</td><td>NCR; CAPA; continual improvement; FSMS update</td><td>—</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: BRCGS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="brc" class="sec">
+  <div class="chero ch-fs"><div class="num">BRC</div><div><h2>BRCGS Issue 9 — Global Standard for Food Safety</h2><p>GFSI-benchmarked standard. Issue 9 (2022) focuses on food safety culture, environmental monitoring, and supply chain transparency. Grading: AA / A / B / C / D / Fail. Widely required by UK, EU, and global retailers.</p></div></div>
+  <div class="notebox nb-fs"><strong>Main Concept:</strong> BRCGS is more prescriptive than ISO 22000. It specifies HOW to implement — not just what to achieve. Fundamental clauses = auto-fail if absent regardless of other scores.</div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--fs)">BRCGS Issue 9 — 9 Sections</h4>
+    <table class="rt"><thead><tr><th>§</th><th>Section</th><th>Key Requirements</th><th>Overlap</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Senior Management Commitment</td><td>Food safety culture; management review; resources</td><td>ISO 9001 §5; ISO 22000 §5</td></tr>
+      <tr><td>2</td><td>Food Safety Plan (HACCP)</td><td>Full Codex HACCP; hazard analysis; CCPs</td><td>Codex HACCP; ISO 22000 §8.4–8.5</td></tr>
+      <tr><td>3</td><td>Food Safety &amp; QMS</td><td>Document control; internal audit; NCR; CAPA</td><td>ISO 9001 §7–9; ISO 22000 §9</td></tr>
+      <tr><td>4</td><td>Site Standards</td><td>Facility design; segregation; equipment; maintenance</td><td>Codex GHPs — Infrastructure</td></tr>
+      <tr><td>5</td><td>Product Control</td><td>Allergen mgmt; traceability; recall</td><td>ISO 22000 §8.2; Codex GHPs</td></tr>
+      <tr><td>6</td><td>Process Control</td><td>Process validation; CCP monitoring; foreign body</td><td>Codex Steps 7–10; ISO 22000 §8.5</td></tr>
+      <tr><td>7</td><td>Personnel</td><td>Training; hygiene; PPE; medical screening</td><td>Codex GHPs — Personnel</td></tr>
+      <tr><td>8</td><td>High-Risk / High-Care / Ambient</td><td>Zoning; environmental monitoring program (EMP)</td><td>ISO 22000 §8.2 (oPRPs)</td></tr>
+      <tr><td>9</td><td>Traded Products</td><td>Supplier approval; specification; labelling</td><td>ISO 9001 §8.4</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--fs)">★ Fundamental Clauses (Auto-Fail if Missing)</h4><ul>
+      <li>§1.1 Senior management commitment &amp; food safety culture</li>
+      <li>§2.1 HACCP-based food safety plan</li>
+      <li>§3.4 Internal audit program</li>
+      <li>§3.5.1 Supplier &amp; raw material approval</li>
+      <li>§3.7 Corrective action procedure</li>
+      <li>§3.8 Control of nonconforming product</li>
+      <li>§3.9 Traceability system</li>
+      <li>§4.3 Pest control</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--fs)">Grading System</h4>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;margin-top:6px">
+        <tr style="background:var(--fs);color:#fff"><th style="padding:6px 9px">Grade</th><th style="padding:6px 9px">Score</th><th style="padding:6px 9px">Audit Frequency</th></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px;font-weight:700">AA</td><td style="padding:6px 9px">≥ 95% + unannounced</td><td style="padding:6px 9px">Every 12 months</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px;font-weight:700">A</td><td style="padding:6px 9px">≥ 95%</td><td style="padding:6px 9px">Every 12 months</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px;font-weight:700">B</td><td style="padding:6px 9px">≥ 80%</td><td style="padding:6px 9px">Every 12 months</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px;font-weight:700">C</td><td style="padding:6px 9px">≥ 70%</td><td style="padding:6px 9px">Every 6 months</td></tr>
+        <tr><td style="padding:6px 9px;font-weight:700">D / Fail</td><td style="padding:6px 9px">&lt; 70%</td><td style="padding:6px 9px">Suspension / Re-audit</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: ISO 14001 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="e" class="sec">
+  <div class="chero ch-ehs-e"><div class="num">14001</div><div><h2>ISO 14001:2015 — Environmental Management System</h2><p>Framework to protect the environment with a life-cycle perspective. 2015 revision: stronger HLS alignment, life cycle thinking, leadership commitment, strategic environmental objectives.</p></div></div>
+  <div class="notebox nb-ehs"><strong>Main Concept:</strong> Identify what your operations do to the environment (aspects → impacts), control the significant ones, comply with all legal requirements, and improve continuously.</div>
+  <div class="hstrip">
+    <div class="hbox" style="background:var(--ehs-e-l);border-color:var(--ehs-e);color:var(--ehs-e)">Env. Policy<small>Commitment</small></div>
+    <div class="hbox">Aspects &amp; Impacts<small>Identify &amp; rate</small></div>
+    <div class="hbox">Legal Compliance<small>All requirements</small></div>
+    <div class="hbox">Risks &amp; Objectives<small>Plan improvement</small></div>
+    <div class="hbox">Operational Controls<small>Prevent pollution</small></div>
+    <div class="hbox">Monitor &amp; Audit<small>Measure KPIs</small></div>
+    <div class="hbox" style="background:var(--ehs-e-l);border-color:var(--ehs-e);color:var(--ehs-e)">Continual Improvement<small>Act &amp; repeat</small></div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--ehs-e)">ISO 14001 Clause Requirements</h4>
+    <table class="rt"><thead><tr><th>§</th><th>Clause</th><th>Key Requirement</th><th>Key Output</th></tr></thead>
+    <tbody>
+      <tr><td>4</td><td>Context</td><td>Internal/external issues; interested parties; EMS scope</td><td>Context register; scope</td></tr>
+      <tr><td>5.2</td><td>Env. Policy</td><td>Top management signs environmental policy</td><td>Signed environmental policy</td></tr>
+      <tr><td>6.1.2</td><td>Env. Aspects</td><td>Identify &amp; rate significant aspects; life cycle perspective</td><td>Aspect &amp; Impact register</td></tr>
+      <tr><td>6.1.3</td><td>Compliance Obligations</td><td>Identify all legal &amp; other requirements</td><td>Legal compliance register</td></tr>
+      <tr><td>6.2</td><td>Env. Objectives</td><td>Measurable environmental objectives &amp; programs</td><td>Env. objectives &amp; action plan</td></tr>
+      <tr><td>8.1</td><td>Operational Control</td><td>Control processes with significant aspects</td><td>SOPs for significant aspects</td></tr>
+      <tr><td>8.2</td><td>Emergency Prep.</td><td>Respond to environmental emergencies</td><td>Emergency response plan</td></tr>
+      <tr><td>9.1.2</td><td>Compliance Eval.</td><td>Periodically evaluate legal compliance</td><td>Compliance evaluation records</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--ehs-e)">3 Intended Outcomes</h4><ul>
+      <li><strong>Enhancement of environmental performance</strong> — Measurable improvement over time</li>
+      <li><strong>Fulfilment of compliance obligations</strong> — Meet all legal and other requirements</li>
+      <li><strong>Achievement of environmental objectives</strong> — Specific, measurable targets achieved</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--ehs-e)">Aspect → Impact Framework</h4>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;margin-top:6px">
+        <tr style="background:var(--ehs-e);color:#fff"><th style="padding:6px 9px;text-align:left">Aspect (Activity)</th><th style="padding:6px 9px;text-align:left">Impact (Effect)</th></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Wastewater discharge</td><td style="padding:6px 9px">Water body contamination</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Chemical use</td><td style="padding:6px 9px">Soil/groundwater pollution</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:6px 9px">Energy consumption</td><td style="padding:6px 9px">GHG emissions / climate change</td></tr>
+        <tr><td style="padding:6px 9px">Organic waste</td><td style="padding:6px 9px">Land contamination / GHG</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: ISO 45001 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="s" class="sec">
+  <div class="chero ch-ehs-s"><div class="num">45001</div><div><h2>ISO 45001:2018 — Occupational Health &amp; Safety</h2><p>First international OH&S standard (2018). Replaces OHSAS 18001. Most distinctive requirement: mandatory worker participation and consultation. Safety culture — not just compliance.</p></div></div>
+  <div class="notebox nb-ehs"><strong>Main Concept:</strong> Eliminate hazards through proactive prevention — with workers actively involved. Management does not impose safety from above; workers co-own the process.</div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--ehs-s)">Hierarchy of Controls (§8.1.2) — Priority Order</h4><ul>
+      <li><strong>1. Elimination</strong> — Remove the hazard entirely (highest priority)</li>
+      <li><strong>2. Substitution</strong> — Replace with less hazardous alternative</li>
+      <li><strong>3. Engineering Controls</strong> — Guarding, ventilation, machine isolation</li>
+      <li><strong>4. Administrative Controls</strong> — WIs, training, job rotation, permits</li>
+      <li><strong>5. PPE</strong> — Last resort; lowest priority</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--ehs-s)">Unique: Worker Participation (§5.4)</h4><ul>
+      <li>Workers MUST be consulted in hazard identification &amp; risk assessment</li>
+      <li>Workers MUST be involved in incident investigations</li>
+      <li>Workers MUST participate in OH&S policy &amp; objectives development</li>
+      <li>Workers MUST report concerns without fear of reprisal</li>
+      <li>Non-managerial worker representative required</li>
+    </ul></div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--ehs-s)">ISO 45001 Clause Requirements</h4>
+    <table class="rt"><thead><tr><th>§</th><th>Clause</th><th>Key Requirement</th><th>Key Output</th></tr></thead>
+    <tbody>
+      <tr><td>4</td><td>Context</td><td>OH&S issues; worker needs; interested parties; scope</td><td>OH&S context register</td></tr>
+      <tr><td>5.4</td><td>Worker Participation</td><td>Consult workers on all OH&S matters</td><td>Participation records; minutes</td></tr>
+      <tr><td>6.1.2</td><td>Hazard ID &amp; HIRA</td><td>Identify hazards; assess risks &amp; opportunities</td><td>HIRA register (risk matrix)</td></tr>
+      <tr><td>6.1.3</td><td>Legal Requirements</td><td>Identify all OH&S legal &amp; other requirements</td><td>OH&S legal register</td></tr>
+      <tr><td>8.1.2</td><td>Hierarchy of Controls</td><td>Eliminate hazards using control hierarchy</td><td>Control measure records</td></tr>
+      <tr><td>8.2</td><td>Emergency Prep.</td><td>Emergency response procedures; drills</td><td>Emergency plan; drill records</td></tr>
+      <tr><td>9.1.2</td><td>Compliance Eval.</td><td>Evaluate compliance with legal requirements</td><td>Compliance evaluation records</td></tr>
+      <tr><td>10.2</td><td>Incident Investigation</td><td>Investigate incidents; near misses; root cause</td><td>Incident report; CAPA</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: ISO 17025 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="l" class="sec">
+  <div class="chero ch-lab"><div class="num">17025</div><div><h2>ISO/IEC 17025:2017 — Testing &amp; Calibration Laboratories</h2><p>Standard for laboratory competence. Not a management standard — a technical competence standard. Accreditation (not certification) granted by national bodies (TISI/NATA/UKAS). Technically distinct from HLS standards.</p></div></div>
+  <div class="notebox nb-lab"><strong>Main Concept:</strong> Demonstrate technical competence to produce valid results. Key concepts: impartiality, measurement traceability, uncertainty of measurement, method validation, proficiency testing.</div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--lab)">5 Unique Requirements</h4><ul>
+      <li><strong>Impartiality</strong> — Lab independent from commercial pressure; conflict of interest declaration</li>
+      <li><strong>Measurement Traceability</strong> — All measurements traceable to SI units via calibration chain</li>
+      <li><strong>Measurement Uncertainty</strong> — Uncertainty budget calculated and reported per test method</li>
+      <li><strong>Method Validation</strong> — Performance characteristics verified before use</li>
+      <li><strong>Proficiency Testing</strong> — Interlaboratory comparison; ongoing competence demonstration</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--lab)">5 Requirement Sections</h4><ul>
+      <li><strong>General Requirements (§4–5)</strong> — Impartiality; confidentiality; legal entity; scope</li>
+      <li><strong>Resource Requirements (§6)</strong> — Personnel; equipment; environment; external services</li>
+      <li><strong>Process Requirements (§7)</strong> — Method validation; calibration; uncertainty; test reports</li>
+      <li><strong>Management Requirements (§8)</strong> — Document control; NCR; data integrity; internal audit; MR</li>
+      <li><strong>Proficiency Testing (§7.7)</strong> — Annual PT plan per test method in scope</li>
+    </ul></div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--lab)">ISO 17025 Clause Map</h4>
+    <table class="rt"><thead><tr><th>§</th><th>Clause</th><th>Key Requirement</th><th>Key Record</th></tr></thead>
+    <tbody>
+      <tr><td>4</td><td>General Requirements</td><td>Impartiality; confidentiality; conflict of interest</td><td>Impartiality statement</td></tr>
+      <tr><td>5</td><td>Structural Requirements</td><td>Legal entity; management structure; defined scope</td><td>Org chart; scope of accreditation</td></tr>
+      <tr><td>6.2</td><td>Personnel</td><td>Technical authorization per test method</td><td>Technical authorization matrix</td></tr>
+      <tr><td>6.4</td><td>Equipment</td><td>Calibration; identification; maintenance</td><td>Equipment register; calibration certs</td></tr>
+      <tr><td>7.2</td><td>Method Selection</td><td>Validated/verified methods; fitness for purpose</td><td>Method validation report</td></tr>
+      <tr><td>7.6</td><td>Measurement Uncertainty</td><td>Uncertainty budget per method; reported in results</td><td>Uncertainty budget worksheet</td></tr>
+      <tr><td>7.7</td><td>Ensuring Validity</td><td>Proficiency testing; internal QC; blind samples</td><td>PT participation records</td></tr>
+      <tr><td>7.8</td><td>Reporting Results</td><td>Test/calibration report requirements; opinion statements</td><td>Test reports (controlled)</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: GLOBAL GAP -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="ggap" class="sec">
+  <div class="chero ch-farm"><div class="num">GAP</div><div><h2>Global G.A.P. — IFA v5.2 — Upstream Supply Chain Control</h2><p>Integrated Farm Assurance standard covering crop, aquaculture, and livestock. Applied in this IMS as upstream control only — ensuring farm suppliers hold valid certification before raw material approval.</p></div></div>
+  <div class="notebox nb-farm"><strong>Scope:</strong> Upstream control only. Verify farm suppliers hold valid Global G.A.P. certification via GGN database. Supplier approval, certificate verification, and audit rights form the control framework.</div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--farm)">Key Control Points (KCPs)</h4><ul>
+      <li><strong>Food Safety</strong> — Water quality; pesticide records; MRL compliance; worker hygiene</li>
+      <li><strong>Traceability</strong> — Farm unit to product lot; parallel production control</li>
+      <li><strong>Environment</strong> — Biodiversity; soil management; integrated pest management (IPM)</li>
+      <li><strong>Animal Welfare</strong> — Five freedoms; transport records</li>
+      <li><strong>Worker H&amp;S</strong> — PPE; training; risk assessment; first aid</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--farm)">Upstream Control Framework</h4><ul>
+      <li><strong>Supplier Approval</strong> — Must hold valid Global G.A.P. certificate before approval</li>
+      <li><strong>Certificate Verification</strong> — Check via GLOBALG.A.P. database (GGN number)</li>
+      <li><strong>Annual Renewal Check</strong> — Verify at each annual supplier review</li>
+      <li><strong>Suspension Monitoring</strong> — Alert system if certificate suspended</li>
+      <li><strong>Audit Rights Clause</strong> — Right to audit included in purchase agreement</li>
+      <li><strong>Corrective Action</strong> — Supplier CAPA required if certification lapsed</li>
+    </ul></div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--farm)">Supplier Approval Checklist — Global G.A.P.</h4>
+    <table class="rt"><thead><tr><th>#</th><th>Checkpoint</th><th>Verification Method</th><th>Frequency</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Valid Global G.A.P. certificate (GGN)</td><td>Online database check</td><td>Before approval + annual</td></tr>
+      <tr><td>2</td><td>Certificate scope covers required product</td><td>Certificate review</td><td>Before approval</td></tr>
+      <tr><td>3</td><td>No active suspensions or withdrawals</td><td>Database + CB confirmation</td><td>Quarterly monitoring</td></tr>
+      <tr><td>4</td><td>Pesticide residue test results (MRL)</td><td>Lab report from supplier</td><td>Per lot or annual</td></tr>
+      <tr><td>5</td><td>Farm traceability records (lot coding)</td><td>Document review / on-site visit</td><td>Annual</td></tr>
+      <tr><td>6</td><td>Worker health &amp; safety records</td><td>Document review</td><td>Annual</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: BAP -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="bap" class="sec">
+  <div class="chero ch-farm"><div class="num">BAP</div><div><h2>BAP Farm Standard — Issue 3.1 (Feb 2023) — Upstream Supply Chain Control</h2><p>Best Aquaculture Practices standard for responsible aquaculture. Issue 3.1 covers shrimp, fish, and other aquatic species. Certified by Global Seafood Alliance (GSA). Applied as upstream control only.</p></div></div>
+  <div class="notebox nb-farm"><strong>Scope:</strong> Upstream control only. Verify aquaculture suppliers hold valid BAP certification. Monitor certificate status. BAP 4-star supply chain preferred where possible.</div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--farm)">BAP Issue 3.1 — 5 Core Pillars</h4><ul>
+      <li><strong>Food Safety</strong> — HACCP; chemical use; pathogen control; residue monitoring</li>
+      <li><strong>Environmental Responsibility</strong> — Effluent management; water usage; mangrove protection</li>
+      <li><strong>Social Responsibility</strong> — Worker rights; fair wages; no child/forced labor</li>
+      <li><strong>Animal Health &amp; Welfare</strong> — Disease management; antibiotic stewardship; biosecurity</li>
+      <li><strong>Traceability</strong> — Hatchery → grow-out → processing; lot coding; chain of custody</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--farm)">Upstream Control Framework</h4><ul>
+      <li><strong>BAP Certificate Verification</strong> — Check via GSA/BAP website before approval</li>
+      <li><strong>Star Rating Preference</strong> — 4-star preferred (feed mill + hatchery + farm + processing)</li>
+      <li><strong>Annual Renewal Check</strong> — Verify at each annual supplier review</li>
+      <li><strong>Antibiotic Records</strong> — Request antibiotic records; no prohibited substances</li>
+      <li><strong>Lot Traceability Test</strong> — Verify lot number traces back to certified farm</li>
+      <li><strong>Social Compliance Screening</strong> — Self-declaration + on-site when high risk</li>
+    </ul></div>
+  </div>
+  <div class="cbox" style="margin-bottom:14px"><h4 style="color:var(--farm)">BAP Supplier Approval Checklist</h4>
+    <table class="rt"><thead><tr><th>#</th><th>Checkpoint</th><th>Verification Method</th><th>Frequency</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Valid BAP certificate (from GSA database)</td><td>Online database check</td><td>Before approval + annual</td></tr>
+      <tr><td>2</td><td>BAP star rating (1–4 star)</td><td>Certificate review</td><td>Before approval</td></tr>
+      <tr><td>3</td><td>No active suspension or certification issues</td><td>GSA database + CB confirmation</td><td>Quarterly</td></tr>
+      <tr><td>4</td><td>Antibiotic use records — no prohibited substances</td><td>Supplier records / lab test</td><td>Per lot</td></tr>
+      <tr><td>5</td><td>Lot traceability — farm to delivery</td><td>Lot coding verification</td><td>Per delivery</td></tr>
+      <tr><td>6</td><td>Environmental discharge compliance</td><td>Regulatory permit + declaration</td><td>Annual</td></tr>
+      <tr><td>7</td><td>Social compliance self-declaration</td><td>Questionnaire</td><td>Annual</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: DOCUMENTS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="docs" class="sec">
+  <div class="st">IMS Master Document Register</div>
+  <div class="ss">All documents organized by group — shared documents written once, applied across all standards</div>
+  <div class="dsec">
+    <h3>📁 SHARED IMS Documents <span class="tag" style="background:var(--mgmt-l);color:var(--mgmt)">All Standards</span></h3>
+    <table class="dt"><thead><tr><th>Doc No.</th><th>Title</th><th>Type</th><th>Applies To</th></tr></thead>
+    <tbody>
+      <tr><td>IMS-MAN-001</td><td>IMS Manual</td><td>Manual</td><td>All 10 standards</td></tr>
+      <tr><td>IMS-POL-001</td><td>Integrated IMS Policy</td><td>Policy</td><td>All standards</td></tr>
+      <tr><td>IMS-SOP-001</td><td>Document &amp; Record Control</td><td>SOP</td><td>All standards</td></tr>
+      <tr><td>IMS-SOP-002</td><td>Internal Audit Procedure</td><td>SOP</td><td>All standards</td></tr>
+      <tr><td>IMS-SOP-003</td><td>Nonconformity &amp; CAPA</td><td>SOP</td><td>All standards</td></tr>
+      <tr><td>IMS-SOP-004</td><td>Management Review</td><td>SOP</td><td>All standards</td></tr>
+      <tr><td>IMS-REG-001</td><td>Context &amp; Interested Parties Register</td><td>Register</td><td>ISO 9001/14001/45001/22000</td></tr>
+      <tr><td>IMS-REG-002</td><td>Risk &amp; Opportunity Register</td><td>Register</td><td>All HLS standards</td></tr>
+      <tr><td>IMS-REG-003</td><td>Legal &amp; Compliance Register</td><td>Register</td><td>14001/45001/9001/22000</td></tr>
+      <tr><td>IMS-REG-004</td><td>Competence &amp; Training Matrix</td><td>Register</td><td>All standards</td></tr>
+    </tbody></table>
+  </div>
+  <div class="dsec">
+    <h3>⚙ QFS Core Documents <span class="tag" style="background:var(--qfs-l);color:var(--qfs)">PS7818 / GHPs / ISO9001 / ISO22000</span></h3>
+    <table class="dt"><thead><tr><th>Doc No.</th><th>Title</th><th>Type</th><th>Standard</th></tr></thead>
+    <tbody>
+      <tr><td>QFS-MAN-001</td><td>HACCP Plan</td><td>Plan</td><td>GHPs/HACCP, ISO22000, BRCGS</td></tr>
+      <tr><td>QFS-REG-001</td><td>Hazard Analysis Worksheet</td><td>Register</td><td>GHPs/HACCP, ISO22000</td></tr>
+      <tr><td>QFS-REG-002</td><td>CCP Monitoring &amp; Verification Plan</td><td>Register</td><td>GHPs/HACCP, ISO22000</td></tr>
+      <tr><td>QFS-REG-003</td><td>PRP / GHP Master Checklist</td><td>Checklist</td><td>GHPs, ISO22000, BRCGS</td></tr>
+      <tr><td>QFS-SOP-001</td><td>Allergen Management</td><td>SOP</td><td>ISO22000, BRCGS §5</td></tr>
+      <tr><td>QFS-SOP-002</td><td>Traceability &amp; Recall</td><td>SOP</td><td>ISO22000, BRCGS §5, GHPs</td></tr>
+      <tr><td>QFS-SOP-003</td><td>Cleaning &amp; Disinfection</td><td>SOP</td><td>GHPs, BRCGS §4</td></tr>
+      <tr><td>QFS-SOP-004</td><td>Pest Control</td><td>SOP</td><td>GHPs, BRCGS §4</td></tr>
+      <tr><td>QFS-SOP-005</td><td>Supplier Approval &amp; Control</td><td>SOP</td><td>ISO9001 §8.4, BRCGS §9</td></tr>
+      <tr><td>QFS-SOP-006</td><td>Control of Nonconforming Product</td><td>SOP</td><td>ISO9001, ISO22000, BRCGS</td></tr>
+    </tbody></table>
+  </div>
+  <div class="dsec">
+    <h3>🌿 EHS Documents <span class="tag" style="background:var(--ehs-e-l);color:var(--ehs-e)">ISO 14001 + ISO 45001</span></h3>
+    <table class="dt"><thead><tr><th>Doc No.</th><th>Title</th><th>Type</th><th>Standard</th></tr></thead>
+    <tbody>
+      <tr><td>EHS-REG-001</td><td>Environmental Aspect &amp; Impact Register</td><td>Register</td><td>ISO14001</td></tr>
+      <tr><td>EHS-REG-002</td><td>HIRA Register (Hazard &amp; Risk Assessment)</td><td>Register</td><td>ISO45001</td></tr>
+      <tr><td>EHS-SOP-001</td><td>Environmental Incident Response</td><td>SOP</td><td>ISO14001 §8.2</td></tr>
+      <tr><td>EHS-SOP-002</td><td>OH&amp;S Incident Investigation</td><td>SOP</td><td>ISO45001 §10.2</td></tr>
+      <tr><td>EHS-SOP-003</td><td>Worker Participation &amp; Consultation</td><td>SOP</td><td>ISO45001 §5.4</td></tr>
+      <tr><td>EHS-SOP-004</td><td>Chemical &amp; Hazardous Material Control</td><td>SOP</td><td>ISO14001/45001</td></tr>
+      <tr><td>EHS-SOP-005</td><td>Waste Management</td><td>SOP</td><td>ISO14001</td></tr>
+      <tr><td>EHS-WI-001</td><td>PPE Selection &amp; Use Work Instruction</td><td>WI</td><td>ISO45001</td></tr>
+    </tbody></table>
+  </div>
+  <div class="dsec">
+    <h3>🔬 LAB Documents <span class="tag" style="background:var(--lab-l);color:var(--lab)">ISO 17025</span></h3>
+    <table class="dt"><thead><tr><th>Doc No.</th><th>Title</th><th>Type</th><th>Standard</th></tr></thead>
+    <tbody>
+      <tr><td>LAB-POL-001</td><td>Impartiality &amp; Confidentiality Statement</td><td>Policy</td><td>ISO17025 §4</td></tr>
+      <tr><td>LAB-REG-001</td><td>Equipment &amp; Calibration Register</td><td>Register</td><td>ISO17025 §6.4</td></tr>
+      <tr><td>LAB-REG-002</td><td>Technical Authorization Matrix</td><td>Register</td><td>ISO17025 §6.2</td></tr>
+      <tr><td>LAB-SOP-001</td><td>Method Validation Procedure</td><td>SOP</td><td>ISO17025 §7.2</td></tr>
+      <tr><td>LAB-SOP-002</td><td>Measurement Uncertainty Procedure</td><td>SOP</td><td>ISO17025 §7.6</td></tr>
+      <tr><td>LAB-SOP-003</td><td>Proficiency Testing Program</td><td>SOP</td><td>ISO17025 §7.7</td></tr>
+    </tbody></table>
+  </div>
+  <div class="dsec">
+    <h3>🌾 Farm / Upstream Documents <span class="tag" style="background:var(--farm-l);color:var(--farm)">Global GAP + BAP</span></h3>
+    <table class="dt"><thead><tr><th>Doc No.</th><th>Title</th><th>Type</th><th>Standard</th></tr></thead>
+    <tbody>
+      <tr><td>FRM-SOP-001</td><td>Farm Supplier Approval Procedure</td><td>SOP</td><td>Global GAP / BAP</td></tr>
+      <tr><td>FRM-REG-001</td><td>Farm Supplier Certificate Register</td><td>Register</td><td>Global GAP / BAP</td></tr>
+      <tr><td>FRM-CHK-001</td><td>Global G.A.P. Supplier Audit Checklist</td><td>Checklist</td><td>Global GAP</td></tr>
+      <tr><td>FRM-CHK-002</td><td>BAP Supplier Audit Checklist</td><td>Checklist</td><td>BAP</td></tr>
+      <tr><td>FRM-FRM-001</td><td>Supplier Self-Declaration Form</td><td>Form</td><td>Global GAP / BAP</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: WORKFLOW -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="wf" class="sec">
+  <div class="st">IMS Implementation Workflow</div>
+  <div class="ss">20-step integrated cycle — PDCA framework applied across all 10 standards simultaneously</div>
+  <div class="pdca">
+    <div class="pc pp">
+      <div class="pc-hdr"><div class="pcl">P</div><div class="pc-ht"><h4>PLAN</h4><p>Foundation &amp; Design</p></div></div>
+      <div class="pc-body">
+        <div class="ps"><div class="pn" style="background:var(--mgmt-l);color:var(--mgmt)">1</div><div class="pc-c"><h5>Context &amp; Scope</h5><p>Internal/external issues; interested parties; IMS scope</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--mgmt-l);color:var(--mgmt)">2</div><div class="pc-c"><h5>IMS Policy</h5><p>One integrated policy covering quality, food safety, EHS, lab</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--mgmt-l);color:var(--mgmt)">3</div><div class="pc-c"><h5>Risk &amp; Opportunity Register</h5><p>Identify risks across all standards; prioritize by significance</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--mgmt-l);color:var(--mgmt)">4</div><div class="pc-c"><h5>Legal Register</h5><p>All applicable laws: Food law / EHS law / Lab regulations</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--mgmt-l);color:var(--mgmt)">5</div><div class="pc-c"><h5>IMS Objectives &amp; KPIs</h5><p>Measurable objectives per group; KPI dashboard established</p></div></div>
+      </div>
+    </div>
+    <div class="pc pd">
+      <div class="pc-hdr"><div class="pcl">D</div><div class="pc-ht"><h4>DO</h4><p>Implementation</p></div></div>
+      <div class="pc-body">
+        <div class="ps"><div class="pn" style="background:var(--qfs-l);color:var(--qfs)">6</div><div class="pc-c"><h5>Document System</h5><p>Manual → SOP → WI → Forms; shared docs written once</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--qfs-l);color:var(--qfs)">7</div><div class="pc-c"><h5>GHPs / PRP Program</h5><p>All 15 PRP categories established; verification schedule set</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--qfs-l);color:var(--qfs)">8</div><div class="pc-c"><h5>HACCP Plan</h5><p>12-step HACCP; CCP/oPRP established; CLs validated</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--qfs-l);color:var(--qfs)">9</div><div class="pc-c"><h5>HIRA &amp; Aspect Register</h5><p>ISO45001 HIRA; ISO14001 Aspect register complete</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--qfs-l);color:var(--qfs)">10</div><div class="pc-c"><h5>Training &amp; Competence</h5><p>Training needs matrix; delivered; records maintained</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--qfs-l);color:var(--qfs)">11</div><div class="pc-c"><h5>Supplier Approval</h5><p>Farm supplier (GAP/BAP) approved; all providers qualified</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--qfs-l);color:var(--qfs)">12</div><div class="pc-c"><h5>Lab System</h5><p>Method validation; calibration; uncertainty budgets; PT enrolled</p></div></div>
+      </div>
+    </div>
+    <div class="pc pch">
+      <div class="pc-hdr"><div class="pcl">C</div><div class="pc-ht"><h4>CHECK</h4><p>Monitoring &amp; Audit</p></div></div>
+      <div class="pc-body">
+        <div class="ps"><div class="pn" style="background:var(--ehs-s-l);color:var(--ehs-s)">13</div><div class="pc-c"><h5>CCP &amp; oPRP Monitoring</h5><p>Continuous CCP records; oPRP periodic verification</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--ehs-s-l);color:var(--ehs-s)">14</div><div class="pc-c"><h5>Performance Monitoring</h5><p>KPIs tracked; legal compliance evaluated</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--ehs-s-l);color:var(--ehs-s)">15</div><div class="pc-c"><h5>Internal Audit (Integrated)</h5><p>One audit program; multi-standard teams; integrated NCR</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--ehs-s-l);color:var(--ehs-s)">16</div><div class="pc-c"><h5>Management Review</h5><p>Annual MR covering all 10 standards; inputs/outputs documented</p></div></div>
+      </div>
+    </div>
+    <div class="pc pa">
+      <div class="pc-hdr"><div class="pcl">A</div><div class="pc-ht"><h4>ACT</h4><p>Improvement</p></div></div>
+      <div class="pc-body">
+        <div class="ps"><div class="pn" style="background:var(--lab-l);color:var(--lab)">17</div><div class="pc-c"><h5>NCR &amp; CAPA</h5><p>Root cause analysis; corrective action; verification</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--lab-l);color:var(--lab)">18</div><div class="pc-c"><h5>HACCP Review</h5><p>Annual revalidation; update when process changes</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--lab-l);color:var(--lab)">19</div><div class="pc-c"><h5>Improvement Projects</h5><p>Improvement register linked to KPI gaps; resourced</p></div></div>
+        <div class="ps"><div class="pn" style="background:var(--lab-l);color:var(--lab)">20</div><div class="pc-c"><h5>External Audit Readiness</h5><p>CB surveillance; evidence maintained; gap closure</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: RESULTS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="res" class="sec">
+  <div class="st">IMS Results &amp; Performance Dashboard</div>
+  <div class="ss">Expected outcomes, KPI targets, and implementation roadmap</div>
+  <div class="kgrid">
+    <div class="kpi" style="border-top-color:var(--qfs)"><h5>QFS Target</h5><div class="kv">≥ 98%</div><div class="ks">Product first-pass conformity</div></div>
+    <div class="kpi" style="border-top-color:var(--fs)"><h5>BRCGS Target</h5><div class="kv">Grade A</div><div class="ks">First certification audit</div></div>
+    <div class="kpi" style="border-top-color:var(--ehs-e)"><h5>EHS Target</h5><div class="kv">Zero LTI</div><div class="ks">Lost-time injuries per year</div></div>
+    <div class="kpi" style="border-top-color:var(--lab)"><h5>Lab Target</h5><div class="kv">100%</div><div class="ks">Calibrated equipment on schedule</div></div>
+  </div>
+  <div class="rgrid">
+    <div class="rc">
+      <div class="rc-hdr">Implementation Progress (Estimated Baseline)</div>
+      <div class="rc-body">
+        <div class="ri"><span class="ri-l">PS 7818 / GHPs / HACCP</span><div class="bwrap"><div class="bf" style="width:70%;background:var(--qfs)"></div></div><span class="ri-v" style="color:var(--qfs)">70%</span></div>
+        <div class="ri"><span class="ri-l">ISO 9001:2015</span><div class="bwrap"><div class="bf" style="width:75%;background:var(--qms)"></div></div><span class="ri-v" style="color:var(--qms)">75%</span></div>
+        <div class="ri"><span class="ri-l">ISO 22000:2018</span><div class="bwrap"><div class="bf" style="width:65%;background:var(--qfs)"></div></div><span class="ri-v" style="color:var(--qfs)">65%</span></div>
+        <div class="ri"><span class="ri-l">BRCGS Issue 9</span><div class="bwrap"><div class="bf" style="width:50%;background:var(--fs)"></div></div><span class="ri-v" style="color:var(--fs)">50%</span></div>
+        <div class="ri"><span class="ri-l">ISO 14001:2015</span><div class="bwrap"><div class="bf" style="width:55%;background:var(--ehs-e)"></div></div><span class="ri-v" style="color:var(--ehs-e)">55%</span></div>
+        <div class="ri"><span class="ri-l">ISO 45001:2018</span><div class="bwrap"><div class="bf" style="width:60%;background:var(--ehs-s)"></div></div><span class="ri-v" style="color:var(--ehs-s)">60%</span></div>
+        <div class="ri"><span class="ri-l">ISO 17025:2017</span><div class="bwrap"><div class="bf" style="width:40%;background:var(--lab)"></div></div><span class="ri-v" style="color:var(--lab)">40%</span></div>
+        <div class="ri"><span class="ri-l">Global GAP / BAP (Upstream)</span><div class="bwrap"><div class="bf" style="width:80%;background:var(--farm)"></div></div><span class="ri-v" style="color:var(--farm)">80%</span></div>
+        <div class="ri"><span class="ri-l" style="font-weight:700">Overall IMS</span><div class="bwrap"><div class="bf" style="width:62%;background:var(--cpf-dark)"></div></div><span class="ri-v" style="color:var(--cpf-dark)">62%</span></div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:8px;font-style:italic">* Estimated — pending formal gap analysis</div>
+      </div>
+    </div>
+    <div class="rc">
+      <div class="rc-hdr">IMS Implementation Roadmap</div>
+      <div class="rc-body">
+        <div class="tli"><div class="tld" style="background:var(--cpf-dark)">Q1</div><div class="tlc"><span class="per">Month 1–3</span><h5>Foundation</h5><p>Gap analysis all 10 standards · IMS Manager · Policy · Document control · Context &amp; scope</p></div></div>
+        <div class="tli"><div class="tld" style="background:var(--qfs)">Q2</div><div class="tlc"><span class="per">Month 4–6</span><h5>QFS Core + EHS</h5><p>GHPs / HACCP Plan · ISO 22000 FSMS · Risk register · HIRA · Aspect register · Legal register</p></div></div>
+        <div class="tli"><div class="tld" style="background:var(--ehs-s)">Q3</div><div class="tlc"><span class="per">Month 7–9</span><h5>BRCGS + Lab + Farm</h5><p>BRCGS procedures · Method validation · Calibration · Supplier approval (GAP/BAP) · Training</p></div></div>
+        <div class="tli"><div class="tld" style="background:var(--lab)">Q4</div><div class="tlc"><span class="per">Month 10–12</span><h5>Internal Audit Cycle 1</h5><p>Integrated internal audit · NCR &amp; CAPA · Management review · Improvement actions</p></div></div>
+        <div class="tli"><div class="tld" style="background:var(--fs)">Y2</div><div class="tlc"><span class="per">Year 2 Q1–Q2</span><h5>Certification</h5><p>ISO 9001 + 14001 + 45001 + 22000 simultaneous CB audit · BRCGS audit · Target Grade A</p></div></div>
+        <div class="tli"><div class="tld" style="background:var(--lab)">Y2+</div><div class="tlc"><span class="per">Year 2 Q3–Q4</span><h5>Lab Accreditation</h5><p>ISO/IEC 17025 accreditation application · PT participation · Technical assessment</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: IMPLEMENT MANUAL -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="impl" class="sec">
+  <div class="chero ch-man"><div class="num">IMP</div><div><h2>Implementation Manual</h2><p>Step-by-step implementation guide for all 10 standards across 6 groups. Each phase includes responsible party, key deliverables, and success criteria.</p></div></div>
+  <div class="notebox nb-man"><strong>Approach:</strong> Implement shared IMS elements first (write once), then deploy standard-specific requirements. Start with smallest gaps. Quick wins build organizational confidence before tackling complex standards.</div>
+  <div class="cbox" style="margin-bottom:16px"><h4 style="color:var(--man)">Phase 1 — Foundation (Month 1–3) | Responsible: IMS Manager + Top Management</h4>
+    <table class="rt"><thead><tr><th>Step</th><th>Action</th><th>Deliverable</th><th>Standard Link</th></tr></thead>
+    <tbody>
+      <tr><td>1.1</td><td>Appoint IMS Manager &amp; HACCP Team Leader</td><td>Appointment letter; org chart</td><td>All standards</td></tr>
+      <tr><td>1.2</td><td>Conduct gap analysis — all 10 standards</td><td>Gap analysis report per standard</td><td>All standards</td></tr>
+      <tr><td>1.3</td><td>Define IMS scope statement</td><td>Scope document signed by CEO</td><td>ISO 9001/14001/45001/22000 §4</td></tr>
+      <tr><td>1.4</td><td>Identify context &amp; interested parties</td><td>Context &amp; interested parties register</td><td>All HLS standards</td></tr>
+      <tr><td>1.5</td><td>Issue IMS Policy (all groups)</td><td>Signed IMS Policy</td><td>All standards</td></tr>
+      <tr><td>1.6</td><td>Set up document control system</td><td>Document control SOP + master register</td><td>All standards</td></tr>
+      <tr><td>1.7</td><td>Map all business processes</td><td>Process map (turtle diagrams)</td><td>ISO 9001 §4.4</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cbox" style="margin-bottom:16px"><h4 style="color:var(--man)">Phase 2 — QFS Core + EHS (Month 4–6) | Responsible: QA Manager + EHS Officer</h4>
+    <table class="rt"><thead><tr><th>Step</th><th>Action</th><th>Deliverable</th><th>Standard Link</th></tr></thead>
+    <tbody>
+      <tr><td>2.1</td><td>Establish all 15 PRP/GHP programs</td><td>PRP master checklist + verification schedule</td><td>Codex GHPs, ISO22000 §8.2</td></tr>
+      <tr><td>2.2</td><td>Conduct HACCP study (12 steps)</td><td>HACCP plan; hazard analysis; CCP register</td><td>Codex HACCP, ISO22000 §8.4–8.5</td></tr>
+      <tr><td>2.3</td><td>Validate CCP Critical Limits</td><td>CL validation records (scientific basis)</td><td>Codex Step 7; ISO22000 §8.5.4</td></tr>
+      <tr><td>2.4</td><td>Conduct HIRA (ISO45001)</td><td>HIRA register; control measures implemented</td><td>ISO45001 §6.1.2</td></tr>
+      <tr><td>2.5</td><td>Develop Aspect &amp; Impact register (ISO14001)</td><td>A&amp;I register; significant aspects identified</td><td>ISO14001 §6.1.2</td></tr>
+      <tr><td>2.6</td><td>Build legal &amp; compliance register</td><td>Legal register (QFS + EHS + Lab)</td><td>All standards</td></tr>
+      <tr><td>2.7</td><td>Set IMS objectives &amp; KPI dashboard</td><td>Objectives register; KPI tracking sheet</td><td>All standards §6.2</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cbox" style="margin-bottom:16px"><h4 style="color:var(--man)">Phase 3 — BRCGS + Lab + Farm (Month 7–9) | Responsible: QA + Lab Manager + Procurement</h4>
+    <table class="rt"><thead><tr><th>Step</th><th>Action</th><th>Deliverable</th><th>Standard Link</th></tr></thead>
+    <tbody>
+      <tr><td>3.1</td><td>BRCGS gap analysis &amp; section-by-section implementation</td><td>BRCGS procedure set (§1–9)</td><td>BRCGS Issue 9</td></tr>
+      <tr><td>3.2</td><td>Establish environmental monitoring program (EMP)</td><td>EMP plan + micro sampling schedule</td><td>BRCGS §8</td></tr>
+      <tr><td>3.3</td><td>Lab method validation</td><td>Validation report per test method</td><td>ISO17025 §7.2</td></tr>
+      <tr><td>3.4</td><td>Calibration program + equipment register</td><td>Equipment register; calibration certs</td><td>ISO17025 §6.4</td></tr>
+      <tr><td>3.5</td><td>Enroll in proficiency testing program</td><td>PT enrollment; first round results</td><td>ISO17025 §7.7</td></tr>
+      <tr><td>3.6</td><td>Farm supplier approval (Global GAP + BAP)</td><td>Approved supplier list; certificates verified</td><td>Global GAP / BAP</td></tr>
+      <tr><td>3.7</td><td>Deliver all standard-specific training</td><td>Training records; assessment results</td><td>All standards §7.2</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: AUDIT MANUAL -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="aud" class="sec">
+  <div class="chero ch-man"><div class="num">AUD</div><div><h2>Audit Manual</h2><p>Integrated audit program covering all 10 standards. Multi-standard audit teams assess shared elements once. NCRs graded and linked directly to CAPA. Risk-based frequency.</p></div></div>
+  <div class="notebox nb-man"><strong>Audit Philosophy:</strong> One audit program — not ten separate audits. Shared elements audited once annually. Standard-specific elements audited per group. Higher risk processes audited more frequently.</div>
+  <div class="cbox" style="margin-bottom:16px"><h4 style="color:var(--man)">Annual Integrated Audit Calendar</h4>
+    <table class="audit-cal"><thead><tr><th>Audit Scope</th><th>Group</th><th>Frequency</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Auditor</th></tr></thead>
+    <tbody>
+      <tr><td>Shared IMS Elements</td><td>All</td><td>Annual</td><td></td><td><span class="ac-dot" style="background:var(--cpf-dark)">✓</span></td><td></td><td></td><td>Lead Auditor</td></tr>
+      <tr><td>GHPs / HACCP Verification</td><td>QFS</td><td>Quarterly</td><td><span class="ac-dot" style="background:var(--qfs)">✓</span></td><td><span class="ac-dot" style="background:var(--qfs)">✓</span></td><td><span class="ac-dot" style="background:var(--qfs)">✓</span></td><td><span class="ac-dot" style="background:var(--qfs)">✓</span></td><td>QA Auditor</td></tr>
+      <tr><td>ISO 9001 QMS</td><td>QFS</td><td>Annual</td><td></td><td></td><td><span class="ac-dot" style="background:var(--qfs)">✓</span></td><td></td><td>QA Auditor</td></tr>
+      <tr><td>ISO 22000 FSMS</td><td>QFS</td><td>Annual</td><td></td><td></td><td><span class="ac-dot" style="background:var(--qfs)">✓</span></td><td></td><td>QA Auditor</td></tr>
+      <tr><td>BRCGS §1–9</td><td>Food Safety</td><td>Annual + mock</td><td><span class="ac-dot" style="background:var(--fs)">M</span></td><td></td><td></td><td><span class="ac-dot" style="background:var(--fs)">✓</span></td><td>QA + External</td></tr>
+      <tr><td>ISO 14001 EMS</td><td>EHS</td><td>Annual</td><td></td><td><span class="ac-dot" style="background:var(--ehs-e)">✓</span></td><td></td><td></td><td>EHS Auditor</td></tr>
+      <tr><td>ISO 45001 OH&amp;S</td><td>EHS</td><td>Annual + safety walk</td><td><span class="ac-dot" style="background:var(--ehs-s)">W</span></td><td><span class="ac-dot" style="background:var(--ehs-s)">✓</span></td><td><span class="ac-dot" style="background:var(--ehs-s)">W</span></td><td><span class="ac-dot" style="background:var(--ehs-s)">W</span></td><td>EHS Auditor</td></tr>
+      <tr><td>ISO 17025 Lab</td><td>LAB</td><td>Annual</td><td></td><td></td><td></td><td><span class="ac-dot" style="background:var(--lab)">✓</span></td><td>Lab QA</td></tr>
+      <tr><td>Farm Supplier Audit</td><td>Farm</td><td>Annual</td><td></td><td><span class="ac-dot" style="background:var(--farm)">✓</span></td><td></td><td></td><td>Procurement + QA</td></tr>
+    </tbody></table>
+    <div style="font-size:12px;color:var(--ink3);margin-top:8px">✓ = Full audit &nbsp;|&nbsp; M = Mock audit &nbsp;|&nbsp; W = Safety walk-through</div>
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--man)">NCR Grading System</h4>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;margin-top:6px">
+        <tr style="background:var(--man);color:#fff"><th style="padding:7px 9px">Grade</th><th style="padding:7px 9px">Definition</th><th style="padding:7px 9px">CAPA Timeline</th></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:7px 9px;font-weight:700;color:var(--lab)">Critical</td><td style="padding:7px 9px">Food safety risk / regulatory breach</td><td style="padding:7px 9px">24–72 hours</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:7px 9px;font-weight:700;color:var(--ehs-s)">Major</td><td style="padding:7px 9px">Significant system failure; likely recurrence</td><td style="padding:7px 9px">14 days</td></tr>
+        <tr style="border-bottom:1px solid var(--paper3)"><td style="padding:7px 9px;font-weight:700;color:var(--ehs-e)">Minor</td><td style="padding:7px 9px">Isolated deviation; low risk</td><td style="padding:7px 9px">30 days</td></tr>
+        <tr><td style="padding:7px 9px;font-weight:700;color:var(--mgmt)">OFI</td><td style="padding:7px 9px">Opportunity for improvement</td><td style="padding:7px 9px">Next MR cycle</td></tr>
+      </table>
+    </div>
+    <div class="cbox"><h4 style="color:var(--man)">Audit Team Competence Requirements</h4><ul>
+      <li><strong>Lead Auditor</strong> — ISO 19011 trained; at least 2 standards certified; 5+ audit experience</li>
+      <li><strong>QFS Auditor</strong> — HACCP certified; food industry background; ISO 22000/9001 knowledge</li>
+      <li><strong>EHS Auditor</strong> — ISO 14001 + 45001 trained; legal compliance experience</li>
+      <li><strong>Lab Auditor</strong> — ISO 17025 trained; technical laboratory background</li>
+      <li><strong>Independence</strong> — Auditors must not audit their own work area</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: TRAINING MANUAL -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="trn" class="sec">
+  <div class="chero ch-man"><div class="num">TRN</div><div><h2>Training Manual</h2><p>Training needs matrix, curriculum design, assessment methods, and certificate criteria for all 10 standards. Training organized by role — not by standard — to maximize efficiency and minimize duplication.</p></div></div>
+  <div class="notebox nb-man"><strong>Training Philosophy:</strong> Awareness training for all staff. Role-specific deep training for those who operate, maintain, or audit the system. Competency assessed — not just attendance recorded.</div>
+  <div class="cbox" style="margin-bottom:16px"><h4 style="color:var(--man)">Training Needs Matrix by Role</h4>
+    <table class="tmat"><thead><tr><th>Training Topic</th><th>All Staff</th><th>Production</th><th>QA/HACCP</th><th>EHS Officer</th><th>Lab</th><th>Procurement</th><th>Management</th></tr></thead>
+    <tbody>
+      <tr><td>IMS Policy &amp; Objectives Awareness</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+      <tr><td>GHPs / Personal Hygiene</td><td>✅</td><td>✅</td><td>✅</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>HACCP Principles (Awareness)</td><td>—</td><td>✅</td><td>✅</td><td>—</td><td>—</td><td>—</td><td>✅</td></tr>
+      <tr><td>HACCP Advanced (12 Steps)</td><td>—</td><td>—</td><td>✅</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>ISO 9001 Process Approach</td><td>—</td><td>—</td><td>✅</td><td>—</td><td>—</td><td>—</td><td>✅</td></tr>
+      <tr><td>ISO 22000 FSMS</td><td>—</td><td>—</td><td>✅</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>BRCGS Issue 9 Awareness</td><td>—</td><td>✅</td><td>✅</td><td>—</td><td>—</td><td>—</td><td>✅</td></tr>
+      <tr><td>Allergen Management</td><td>—</td><td>✅</td><td>✅</td><td>—</td><td>—</td><td>✅</td><td>—</td></tr>
+      <tr><td>ISO 14001 Environmental Awareness</td><td>✅</td><td>✅</td><td>—</td><td>✅</td><td>—</td><td>—</td><td>✅</td></tr>
+      <tr><td>ISO 45001 Safety Awareness</td><td>✅</td><td>✅</td><td>—</td><td>✅</td><td>✅</td><td>—</td><td>✅</td></tr>
+      <tr><td>HIRA &amp; Hazard Identification</td><td>—</td><td>✅</td><td>—</td><td>✅</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>ISO 17025 Lab Competence</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✅</td><td>—</td><td>—</td></tr>
+      <tr><td>Global GAP / BAP Supplier Standards</td><td>—</td><td>—</td><td>✅</td><td>—</td><td>—</td><td>✅</td><td>—</td></tr>
+      <tr><td>Internal Auditor Training</td><td>—</td><td>—</td><td>✅</td><td>✅</td><td>✅</td><td>—</td><td>—</td></tr>
+      <tr><td>IMS Leadership &amp; Management Review</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✅</td></tr>
+    </tbody></table>
+  </div>
+  <div class="cgrid">
+    <div class="cbox"><h4 style="color:var(--man)">Assessment &amp; Certification Criteria</h4><ul>
+      <li><strong>Awareness Training</strong> — Attendance record; post-test ≥ 70% pass mark</li>
+      <li><strong>Role-Specific Training</strong> — Written test ≥ 80% + practical demonstration</li>
+      <li><strong>HACCP Team</strong> — HACCP study participation + signed HACCP plan</li>
+      <li><strong>Internal Auditor</strong> — 16-hr course + witnessed audit + ISO 19011 criteria</li>
+      <li><strong>Certificate</strong> — Internal certificate; valid 3 years; refresher required</li>
+    </ul></div>
+    <div class="cbox"><h4 style="color:var(--man)">Annual Training Plan Structure</h4><ul>
+      <li><strong>Q1</strong> — Annual GHPs refresher; safety induction (new staff); IMS policy awareness</li>
+      <li><strong>Q2</strong> — HACCP review training; allergen awareness; supplier standard update</li>
+      <li><strong>Q3</strong> — Internal auditor refresher; EHS drills; lab competence verification</li>
+      <li><strong>Q4</strong> — BRCGS pre-audit awareness; management leadership; IMS update briefing</li>
+      <li><strong>On-demand</strong> — New hire induction; process change retraining; post-NCR retraining</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB: INTEGRATION MASTER MAP -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="imap" class="sec">
+  <div class="st">Integration Master Map</div>
+  <div class="ss">11 Standards · Requirement-level classification · Filter by type, level, and standard — 55+ integration elements</div>
+
+  <!-- STATS -->
+  <div class="imap-stats">
+    <div class="imap-stat" style="border-top-color:#14532d">
+      <div class="imap-stat-n" style="color:#14532d" id="c-full">0</div>
+      <div class="imap-stat-l">Fully Shared<br>1 document · all systems</div>
+    </div>
+    <div class="imap-stat" style="border-top-color:#1e3a5f">
+      <div class="imap-stat-n" style="color:#1e3a5f" id="c-partial">0</div>
+      <div class="imap-stat-l">Partially Shared<br>Common base + add-ons</div>
+    </div>
+    <div class="imap-stat" style="border-top-color:#7c2d12">
+      <div class="imap-stat-n" style="color:#7c2d12" id="c-food">0</div>
+      <div class="imap-stat-l">Food Safety Layer<br>GHP / HACCP / BRC / ISO22000</div>
+    </div>
+    <div class="imap-stat" style="border-top-color:var(--lab)">
+      <div class="imap-stat-n" style="color:var(--lab)" id="c-unique">0</div>
+      <div class="imap-stat-l">Standard-Unique<br>Standalone requirements</div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="imap-legend">
+    <div class="ilc" style="background:var(--ps7-l);border-color:var(--ps7)"><div class="ilc-std" style="color:var(--ps7)">PS 7818:2018</div><div class="ilc-name" style="color:var(--ps7)">QFS Framework</div></div>
+    <div class="ilc" style="background:var(--qms-l);border-color:var(--qms)"><div class="ilc-std" style="color:var(--qms)">ISO 9001:2015</div><div class="ilc-name" style="color:var(--qms)">Quality Management</div></div>
+    <div class="ilc" style="background:var(--ems-l);border-color:var(--ems)"><div class="ilc-std" style="color:var(--ems)">ISO 14001:2015</div><div class="ilc-name" style="color:var(--ems)">Environmental MS</div></div>
+    <div class="ilc" style="background:var(--ohs-l);border-color:var(--ohs)"><div class="ilc-std" style="color:var(--ohs)">ISO 45001:2018</div><div class="ilc-name" style="color:var(--ohs)">OH&amp;S Management</div></div>
+    <div class="ilc" style="background:var(--lbc-l);border-color:var(--lbc)"><div class="ilc-std" style="color:var(--lbc)">ISO 17025:2017</div><div class="ilc-name" style="color:var(--lbc)">Lab Accreditation</div></div>
+    <div class="ilc" style="background:var(--ghp-l);border-color:var(--ghp)"><div class="ilc-std" style="color:var(--ghp)">GHP (Codex)</div><div class="ilc-name" style="color:var(--ghp)">Good Hygiene Practices</div></div>
+    <div class="ilc" style="background:var(--hac-l);border-color:var(--hac)"><div class="ilc-std" style="color:var(--hac)">HACCP (Codex)</div><div class="ilc-name" style="color:var(--hac)">7 Principles / 12 Steps</div></div>
+    <div class="ilc" style="background:var(--brc-l);border-color:var(--brc)"><div class="ilc-std" style="color:var(--brc)">BRCGS Issue 9</div><div class="ilc-name" style="color:var(--brc)">Global Food Safety</div></div>
+    <div class="ilc" style="background:var(--i22-l);border-color:var(--i22)"><div class="ilc-std" style="color:var(--i22)">ISO 22000:2018</div><div class="ilc-name" style="color:var(--i22)">Food Safety FSMS</div></div>
+    <div class="ilc" style="background:var(--ggap-l);border-color:var(--ggap)"><div class="ilc-std" style="color:var(--ggap)">Global G.A.P. v5.2</div><div class="ilc-name" style="color:var(--ggap)">Farm Upstream</div></div>
+    <div class="ilc" style="background:var(--bap-l);border-color:var(--bap)"><div class="ilc-std" style="color:var(--bap)">BAP Issue 3.1</div><div class="ilc-name" style="color:var(--bap)">Aquaculture Upstream</div></div>
+    <div class="ilc" style="background:var(--paper2);border-color:var(--border)"><div class="ilc-std" style="color:var(--ink2)">⚑ Fund.</div><div class="ilc-name" style="color:var(--ink3)">BRCGS Fundamental (auto-fail)</div></div>
+  </div>
+
+  <!-- LEVEL LEGEND -->
+  <div class="imap-lv-legend">
+    <span class="lbl">Level:</span>
+    <span class="lv-pill lv-h-pill">▲ High Level — Policy, Leadership, Planning, MR, Audit, CAPA</span>
+    <span class="lv-pill lv-o-pill">● Operational — Process Control, Monitoring, Operations, Training</span>
+    <span class="lv-pill lv-f-pill">◆ Functional / Specific — Standard-unique technical requirements</span>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="imap-filters">
+    <div class="flabel">Filter — Integration Type</div>
+    <div class="frow">
+      <button class="fb on t-all" onclick="setFilter('type','all',this)">All Elements</button>
+      <button class="fb" onclick="setFilter('type','full',this)">✓ Fully Shared</button>
+      <button class="fb" onclick="setFilter('type','partial',this)">~ Partially Shared</button>
+      <button class="fb" onclick="setFilter('type','food',this)">🍽 Food Safety Layer</button>
+      <button class="fb" onclick="setFilter('type','unique',this)">⚡ Standard-Unique</button>
+      <button class="fb" onclick="setFilter('type','farm',this)">🌾 Farm Upstream</button>
+    </div>
+    <div class="flabel">Filter — Requirement Level</div>
+    <div class="frow">
+      <button class="fb on t-all" onclick="setFilter('level','all',this)">All Levels</button>
+      <button class="fb" onclick="setFilter('level','high',this)">▲ High Level</button>
+      <button class="fb" onclick="setFilter('level','operational',this)">● Operational</button>
+      <button class="fb" onclick="setFilter('level','functional',this)">◆ Functional / Specific</button>
+    </div>
+    <div class="flabel">Filter — By Standard</div>
+    <div class="frow">
+      <button class="fb" onclick="setFilter('std','ps7',this)">PS 7818</button>
+      <button class="fb" onclick="setFilter('std','qms',this)">ISO 9001</button>
+      <button class="fb" onclick="setFilter('std','ems',this)">ISO 14001</button>
+      <button class="fb" onclick="setFilter('std','ohs',this)">ISO 45001</button>
+      <button class="fb" onclick="setFilter('std','lab',this)">ISO 17025</button>
+      <button class="fb" onclick="setFilter('std','ghp',this)">GHP</button>
+      <button class="fb" onclick="setFilter('std','hac',this)">HACCP</button>
+      <button class="fb" onclick="setFilter('std','brc',this)">BRCGS</button>
+      <button class="fb" onclick="setFilter('std','i22',this)">ISO 22000</button>
+      <button class="fb" onclick="setFilter('std','ggap',this)">Global GAP</button>
+      <button class="fb" onclick="setFilter('std','bap',this)">BAP</button>
+    </div>
+  </div>
+
+  <div id="imap-ci"></div>
+  <div class="imap-grid" id="imap-grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<button class="print-btn" onclick="window.print()">⬇ Print / Save PDF</button>
+
+<script>
+// ── TAB SWITCHING ──
+function show(id, el) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'imap') renderImap();
+}
+
+// ── INTEGRATION MAP DATA ──
+const SL = {
+  qms:'ISO 9001', ems:'ISO 14001', ohs:'ISO 45001', lab:'ISO 17025',
+  ghp:'GHP', hac:'HACCP', brc:'BRCGS', i22:'ISO 22000',
+  ps7:'PS 7818', ggap:'Global GAP', bap:'BAP'
+};
+const SC = {
+  qms:'#0d6e6e', ems:'#2e6e3a', ohs:'#b8860b', lab:'#c04a2e',
+  ghp:'#be185d', hac:'#c2410c', brc:'#1d4ed8', i22:'#065f46',
+  ps7:'#b85a00', ggap:'#4a7a2e', bap:'#1e5f74'
+};
+
+const D = [
+{type:'full',level:'high',title:'IMS Policy & Senior Management Commitment',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§4',qms:'5.1-5.2',ems:'5.1-5.2',ohs:'5.1-5.2',lab:'5.2',ghp:'Sect.I',hac:'Pre-req',brc:'§1.1 ⚑Fund.',i22:'§5.1-5.2'},doc:'IMS-POL-001: Integrated IMS & Food Safety Policy',desc:'Single policy covering quality, food safety (PS7818 framework), environment, OH&S, and lab impartiality. PS7818 is the umbrella standard — compliance implies alignment with GHP/HACCP/ISO9001/ISO22000. BRC §1.1 is Fundamental — auto-fail if absent. One policy, all commitments.'},
+{type:'full',level:'high',title:'Organizational Roles, Responsibilities & Authorities',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§4',qms:'5.3',ems:'5.3',ohs:'5.3',lab:'5.5-5.6',ghp:'Sect.I',hac:'Step 1',brc:'§1.1.7',i22:'§5.3'},doc:'IMS-PRO-002: Roles & Responsibilities Matrix + Org Chart',desc:'One RACI matrix covering all 11 standards. HACCP Step 1 = designate HACCP Team + Team Leader. ISO22000 §5.3 requires Food Safety Team Leader. Lab adds Authorized Signatories per method. PS7818 defines IMS Manager role. Global GAP/BAP: define supplier relationship owner.'},
+{type:'full',level:'high',title:'Documented Information & Records Control',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22','ggap','bap'],refs:{ps7:'§6',qms:'7.5',ems:'7.5',ohs:'7.5',lab:'8.2',ghp:'§5',hac:'Principle 7',brc:'§3.2-3.3',i22:'§7.5',ggap:'implied',bap:'implied'},doc:'IMS-PRO-007: Document & Records Control Procedure',desc:'"Maintain" (procedures) vs "Retain" (records) distinction throughout. HACCP Principle 7 mandates all HACCP records. BRC §3.2 = version control, obsolete document handling. Global GAP / BAP = farm supplier certificate records and audit trail. One master procedure covers all 11 standards.'},
+{type:'full',level:'high',title:'Competence, Training & Awareness',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§6',qms:'7.2-7.3',ems:'7.2-7.3',ohs:'7.2-7.3',lab:'6.4',ghp:'Sect.X',hac:'Step 1',brc:'§7.1',i22:'§7.2-7.3'},doc:'IMS-PRO-005: Competence & Training Procedure + Training Matrix (11 standards)',desc:'One training framework. GHP Sect.X = food hygiene training before handling food. BRC §7.1 = induction before entering production. HACCP Step 1 = HACCP team training. Lab adds method-specific authorization matrix. PS7818 defines training standards across QFS.'},
+{type:'full',level:'high',title:'Internal Audit Program',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§10',qms:'9.2',ems:'9.2',ohs:'9.2',lab:'8.8',ghp:'implied',hac:'Principle 6',brc:'§3.4 ⚑Fund.',i22:'§9.2'},doc:'IMS-PRO-009: Internal Audit Procedure + Integrated Annual Audit Calendar',desc:'One integrated audit program. BRC §3.4 = audit frequency by risk. HACCP Principle 6 verification = audits of CCP monitoring records. Lab audits include technical competency checks. PS7818 = integrated QFS audit. Global GAP/BAP supplier audits governed separately under FRM-SOP-001.'},
+{type:'full',level:'high',title:'Management Review',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§10',qms:'9.3',ems:'9.3',ohs:'9.3',lab:'8.9',ghp:'implied',hac:'Principle 6',brc:'§1.1.4-1.1.5',i22:'§9.3'},doc:'IMS-PRO-010: Management Review Procedure + Combined Agenda Template',desc:'BRC §1.1.4 = annual MR minimum; §1.1.5 = monthly senior management food safety meetings. ISO22000 §9.3.2 inputs include HACCP verification results. Farm upstream review: annual Global GAP / BAP supplier certification status included as MR input.'},
+{type:'full',level:'high',title:'Risk Management & Risk-Based Thinking',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§5',qms:'6.1',ems:'6.1',ohs:'6.1',lab:'8.5',hac:'Principle 1',brc:'risk-based',i22:'§6.1+§8.5.2'},doc:'IMS-PRO-003: Integrated Risk Register (Management + Food Safety)',desc:'Two-tier risk: (1) IMS management risks per HLS §6.1 — 5×5 matrix; (2) Food safety hazard risk per HACCP Principle 1 — severity × likelihood for B/C/P hazards. PS7818 integrates both tiers. Farm risk: supplier certification lapse, contaminant risk from non-compliant farm.'},
+{type:'full',level:'high',title:'IMS Objectives & KPI Planning',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§5',qms:'6.2',ems:'6.2',ohs:'6.2',lab:'implied',brc:'§1.1.3',i22:'§6.2'},doc:'IMS-PRO-004: IMS Objectives & KPI Dashboard',desc:'BRC §1.1.3 = objectives communicated to all staff, monitored quarterly. ISO22000 §6.2 aligns with HLS. GHP/HACCP objectives embedded in food safety KPIs. One dashboard: QFS / EHS / Lab / Farm sections.'},
+{type:'full',level:'high',title:'Corrective Action & CAPA System',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§11',qms:'10.2',ems:'10.2',ohs:'10.2',lab:'8.7',hac:'Principle 5',brc:'§3.7 ⚑Fund.',i22:'§10.1'},doc:'IMS-PRO-011: Nonconformance & CAPA Procedure + CAR Form FM-NC-001',desc:'HACCP Principle 5 = pre-defined corrective actions for each CCP deviation. BRC §3.7 = root cause analysis required (Fundamental). ISO22000 §10.1 = corrections (immediate) separate from corrective actions (root cause). Lab covers nonconforming test work.'},
+{type:'full',level:'high',title:'Communication — Internal & External',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§7',qms:'7.4',ems:'7.4',ohs:'7.4',lab:'8.3',ghp:'implied',brc:'§1.1.5-1.1.6',i22:'§7.4.2-7.4.3'},doc:'IMS-PRO-006: Communication Procedure (Internal & External)',desc:'BRC §1.1.6 = confidential whistleblowing system for food safety. ISO22000 §7.4.2 = external communication channels. OH&S = worker consultation. Lab = communicate deviations to customers. Farm: Global GAP/BAP certification change notification to procurement.'},
+{type:'full',level:'operational',title:'Supplier & External Provider Control',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22','ggap','bap'],refs:{ps7:'§9',qms:'8.4',ohs:'8.1.4',lab:'6.6',ghp:'Sect.III',hac:'Step 6',brc:'§3.5 ⚑Fund.',i22:'§7.1.6',ggap:'KCP',bap:'§5'},doc:'IMS-PRO-016: Supplier Qualification & Approved Supplier List (ASL)',desc:'One supplier framework with 11-column evaluation: QMS=quality; EMS=environmental; OH&S=contractor safety; GHP=hygiene; HACCP Step 6=raw material hazard; BRC §3.5=risk-based approval; ISO22000=FSMS externally provided; Lab=accredited calibration; Global GAP=GGN certificate; BAP=GSA certificate + star rating; PS7818=QFS supplier category.'},
+{type:'full',level:'high',title:'Continual Improvement',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§11',qms:'10.3',ems:'10.3',ohs:'10.3',lab:'8.9.6',brc:'§1.1',i22:'§10.2-10.3'},doc:'IMS-PRO-012: Continual Improvement Register & Procedure',desc:'ISO22000 §10.3 = update of FSMS — periodic review of hazard analysis, PRPs, HACCP plan. BRC §1.1 = food safety culture plan drives improvement. One improvement register; all 11 standards feed into it.'},
+{type:'partial',level:'high',title:'Context of the Organization & Interested Parties',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§4',qms:'4.1-4.2',ems:'4.1-4.2',ohs:'4.1-4.2',lab:'4.1',ghp:'implied',hac:'implied',brc:'§1.1.8',i22:'§4.1-4.2'},doc:'IMS-PRO-001: Context & Interested Parties Register (base + food safety addendum)',desc:'ISO22000 §4.1-4.2 mirrors HLS context. BRC §1.1.8 = monitoring scientific/technical/regulatory changes. GHP/HACCP context = food chain position, consumer groups. PS7818 = includes farm-to-fork supply chain context. One context register + food safety addendum + farm supply chain addendum.'},
+{type:'partial',level:'high',title:'Legal & Regulatory Requirements Register',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22','ggap','bap'],refs:{ps7:'§5',qms:'4.2+8.2',ems:'6.1.3',ohs:'6.1.3',lab:'4.1',ghp:'Sect.I',hac:'implied',brc:'§1.1.8',i22:'§4.2+§8.5.1.2',ggap:'national farm law',bap:'GSA requirements'},doc:'IMS-PRO-013: Legal Register + Food Safety Legal Annex + Farm Regulatory Annex',desc:'ISO22000 §8.5.1.2 = food safety statutory requirements per raw material. BRC §1.1.8 = legislation in all export markets. Global GAP = national pesticide regulations + MRL limits. BAP = environmental discharge permits + labor law. One register, 3 annexes: EHS / Food Safety / Farm.'},
+{type:'partial',level:'operational',title:'Operational Planning & Process Control',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§8-9',qms:'8.1',ems:'8.1',ohs:'8.1',lab:'7.1',ghp:'Sect.IV-IX',hac:'Steps 6-12',brc:'§4-6',i22:'§8.1'},doc:'IMS-PRO-014: Operational Control Procedure (framework) + Standard-specific WIs',desc:'Same framework clause, radically different content: QMS=product quality; EMS=environmental aspect controls; OH&S=hazard hierarchy; Lab=method procedures; GHP=hygiene operational controls; HACCP=CCP control measures; BRC §4=site, §5=product, §6=process; ISO22000=FSMS operational integration.'},
+{type:'partial',level:'high',title:'Change Management',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§9',qms:'6.3',ems:'6.3',ohs:'6.1.4+8.1.3',lab:'8.1.3',hac:'Principle 6',brc:'implied',i22:'§6.3+§10.3'},doc:'IMS-PRO-017: Management of Change Procedure',desc:'ISO22000 §10.3 = FSMS must be updated when changes occur to raw materials, processes, products, or equipment — triggers HACCP review. OH&S = risk assessment before any change. HACCP Principle 6 = re-verification after significant changes. PS7818 = change trigger for full QFS review.'},
+{type:'partial',level:'operational',title:'Monitoring, Measurement & Performance Evaluation',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§10',qms:'9.1',ems:'9.1',ohs:'9.1',lab:'8.6',hac:'Principle 4',brc:'§3.4+§6.4',i22:'§9.1+§8.7'},doc:'IMS-PRO-008: Monitoring & Measurement Procedure + KPI Dashboard FM-KPI-001',desc:'HACCP Principle 4 = CCP monitoring system (who, what, how, when). ISO22000 §8.7 = food safety monitoring equipment. BRC §6.4 = calibration of process control equipment. Lab = uncertainty and QC data. One procedure; CCP monitoring as critical sub-section.'},
+{type:'partial',level:'operational',title:'Emergency Preparedness & Response',stds:['ems','ohs','lab','ghp','hac','brc','i22'],refs:{ems:'8.2',ohs:'8.2',ghp:'Sect.IX',hac:'implied',brc:'§3.11',i22:'§8.4'},doc:'IMS-PRO-015: Emergency Preparedness & Response Plan',desc:'ISO22000 §8.4.2 = food safety emergencies: contamination, tampering, environmental incidents. BRC §3.11 = product incident management and recall. EMS = environmental spill/pollution. OH&S = injury/evacuation. One emergency plan: 3 sections.'},
+{type:'partial',level:'operational',title:'Infrastructure, Facilities & Work Environment',stds:['ps7','qms','ems','ohs','lab','ghp','hac','brc','i22'],refs:{ps7:'§8',qms:'7.1.3',ohs:'work env.',lab:'6.3',ghp:'Sect.IV-V',hac:'Step 4-5',brc:'§4.3-4.8',i22:'§7.1.3+§8.2'},doc:'IMS-PRO-018: Infrastructure & Facilities Management Procedure',desc:'GHP Sections IV-V = site location, building design, layout for food safety. HACCP Steps 4-5 = flow diagram + on-site verification. BRC §4.3-4.8 = layout, segregation, building fabric, utilities, maintenance. ISO22000 §8.2 PRPs = construction and layout.'},
+{type:'partial',level:'operational',title:'Equipment Calibration & Maintenance',stds:['ps7','qms','lab','ghp','hac','brc','i22'],refs:{ps7:'§8',qms:'7.1.5',lab:'6.4.3',ghp:'Sect.VI',hac:'Principle 4',brc:'§6.4',i22:'§8.7'},doc:'IMS-PRO-019: Equipment Calibration & Maintenance Procedure',desc:'QMS = monitoring/measuring equipment calibration. Lab = metrological traceability (SI units via accredited calibration lab). BRC §6.4 = calibration of process control equipment. ISO22000 §8.7 = food safety monitoring equipment. HACCP Principle 4 = CCP monitoring equipment calibrated.'},
+{type:'partial',level:'high',title:'Product / Service Requirements & Customer Focus',stds:['ps7','qms','ghp','hac','brc','i22'],refs:{ps7:'§8',qms:'5.1.2+8.2',ghp:'Sect.IX',hac:'Step 3',brc:'§5.1+§5.2',i22:'§8.5.1.3-8.5.1.4'},doc:'QMS-PRO-001: Customer Requirements | FSS-PRO-001: Product Description & Intended Use',desc:'HACCP Step 3 = intended use including vulnerable populations. ISO22000 §8.5.1.3 = end product characteristics; §8.5.1.4 = reasonably expected misuse. BRC §5.1 = product design; §5.2 = labelling. PS7818 = integrates customer and product spec requirements.'},
+{type:'food',level:'operational',title:'Prerequisite Programmes (PRPs) — GHP Foundation',stds:['ps7','ghp','hac','brc','i22'],refs:{ps7:'§7',ghp:'Full Standard',hac:'Pre-requisite',brc:'§2.2+§4',i22:'§8.2'},doc:'FSS-PRO-001: PRP Procedure + PRP Monitoring Checklist',desc:'ISO22000 §8.2 formalizes PRPs as the foundation layer before HACCP. BRC §2.2 = defined and documented PRPs. GHP = the content of PRPs (the "what"). PS7818 §7 maps GHP sections to operational PRP requirements. One PRP document covering all Codex GHP sections.'},
+{type:'food',level:'operational',title:'HACCP Food Safety Team (Multidisciplinary)',stds:['ps7','ghp','hac','brc','i22'],refs:{ps7:'§8',ghp:'implied',hac:'Step 1',brc:'§2.1 ⚑Fund.',i22:'§8.5.1.1'},doc:'FSS-PRO-002: HACCP Food Safety Team Charter + Competency Records',desc:'BRC §2.1 = Fundamental — auto-fail if no documented HACCP team. HACCP Step 1 = assemble multidisciplinary team. ISO22000 §8.5.1.1 = Food Safety Team with documented competency. PS7818 = defines minimum team composition. Team: food technologist, production, QA, maintenance, lab.'},
+{type:'food',level:'operational',title:'Product Description & Intended Use Sheets',stds:['hac','brc','i22'],refs:{hac:'Step 2-3',brc:'§5.1',i22:'§8.5.1.2-8.5.1.4'},doc:'FSS-FM-001: Product Description Sheet Template (per SKU)',desc:'HACCP Steps 2-3: product characteristics, composition, intended use, consumer groups. ISO22000 §8.5.1.2 = biological/chemical/physical characteristics. ISO22000 §8.5.1.4 = reasonably expected misuse scenarios. BRC §5.1 = product design specifications. One template per product group.'},
+{type:'food',level:'operational',title:'Process Flow Diagram & On-Site Verification',stds:['hac','brc','i22'],refs:{hac:'Step 4-5',brc:'§2.5-2.6 ⚑Fund.',i22:'§8.5.1.5'},doc:'FSS-PRO-003: Process Flow Diagram Procedure + Flow Diagrams (per product)',desc:'BRC §2.5-2.6 = Fundamental — documented flow diagrams confirmed on-site. HACCP Steps 4-5 = construct diagram, walk the line to verify. ISO22000 §8.5.1.5 = flow diagrams with process steps, inputs/outputs, rework loops, CCPs and OPRPs marked.'},
+{type:'food',level:'functional',title:'Hazard Analysis (Biological, Chemical, Physical)',stds:['hac','brc','i22'],refs:{hac:'Principle 1/Step 6 ⚑Fund.',brc:'§2.7 ⚑Fund.',i22:'§8.5.2'},doc:'FSS-PRO-004: Hazard Analysis Procedure + Hazard Register (per product)',desc:'BRC §2.7 = Fundamental — complete documented hazard analysis. HACCP Principle 1/Step 6: list all hazards, assess significance (severity × likelihood). ISO22000 §8.5.2 = "reasonably foreseeable" hazard concept + acceptable levels. Output = hazard register.'},
+{type:'food',level:'functional',title:'CCP Determination & Critical Limits',stds:['hac','brc','i22'],refs:{hac:'Principle 2+3/Step 7-8 ⚑Fund.',brc:'§2.8-2.9 ⚑Fund.',i22:'§8.5.4'},doc:'FSS-PRO-005: CCP Determination (Decision Tree) + HACCP Plan',desc:'BRC §2.8-2.9 = Fundamental. HACCP Principles 2+3: decision tree → identify CCPs → validated critical limits. ISO22000 §8.5.4 = Hazard Control Plan: hazard, control measure, CCP/OPRP designation, critical limits, monitoring, corrective actions. ISO22000 adds OPRP concept.'},
+{type:'food',level:'functional',title:'OPRP Plan — Operational Prerequisite Programmes',stds:['i22'],refs:{i22:'§8.5.4+§3.30'},doc:'FSS-PRO-006: OPRP Plan',desc:'ISO22000-unique: OPRPs control hazards through action criteria — not critical limits. Examples: allergen cleaning validation, supplier approval for high-risk ingredients. Managed through action criteria + monitoring. Not a concept in classic HACCP or GHP.'},
+{type:'food',level:'functional',title:'CCP Monitoring System',stds:['hac','brc','i22'],refs:{hac:'Principle 4/Step 9 ⚑Fund.',brc:'§2.10 ⚑Fund.',i22:'§8.5.4'},doc:'FSS-PRO-007: CCP Monitoring Procedure + CCP Records FM-CCP-001',desc:'BRC §2.10 = Fundamental. HACCP Principle 4: for each CCP define what, how, frequency, who, records. ISO22000 §8.5.4 = monitoring results retained as documented information. Must show: parameter, measured value, time, operator signature, critical limit comparison.'},
+{type:'food',level:'functional',title:'Corrective Actions for CCP Deviations',stds:['hac','brc','i22'],refs:{hac:'Principle 5/Step 10 ⚑Fund.',brc:'§2.11 ⚑Fund.',i22:'§8.9.2-8.9.3'},doc:'FSS-PRO-007 + FSS-FM-002: CCP Deviation Report',desc:'BRC §2.11 = Fundamental. HACCP Principle 5: pre-defined corrective actions for each CCP. ISO22000 §8.9.2 = corrections (immediate); §8.9.3 = corrective actions (root cause); §8.9.4 = handling potentially unsafe products. Separate CCP deviation form from general CAPA form.'},
+{type:'food',level:'functional',title:'HACCP Verification & Validation',stds:['hac','brc','i22'],refs:{hac:'Principle 6/Step 11 ⚑Fund.',brc:'§2.12 ⚑Fund.',i22:'§8.5.3+§8.8'},doc:'FSS-PRO-008: HACCP Verification & Validation Procedure',desc:'BRC §2.12 = Fundamental. HACCP Principle 6: validate HACCP plan controls identified hazards; verify system is working. ISO22000 §8.5.3 = validation of control measures before implementation. ISO22000 §8.8 = ongoing verification. Annual HACCP review mandatory.'},
+{type:'food',level:'operational',title:'Traceability System (One-Up / One-Down)',stds:['ps7','ghp','hac','brc','i22'],refs:{ps7:'§9',ghp:'Sect.IX',hac:'implied',brc:'§3.9 ⚑Fund.',i22:'§8.3'},doc:'FSS-PRO-009: Traceability Procedure + Traceability Test Protocol',desc:'BRC §3.9 = Fundamental — trace raw material to finished product to customer within 4 hours (tested at audit). ISO22000 §8.3 = lot of received materials → intermediate → end products → distribution. PS7818 = traceability as core QFS requirement. Farm lot traceability must link to this system.'},
+{type:'food',level:'functional',title:'Allergen Management Program',stds:['ghp','brc','i22'],refs:{ghp:'implied',brc:'§5.3',i22:'§8.2 (PRP)'},doc:'FSS-PRO-010: Allergen Management Procedure',desc:'BRC §5.3: raw material allergen declarations, cross-contact risk assessment, segregation, cleaning validation, labelling control, staff training. ISO22000 §8.2 = allergen control as PRP. 14 major allergens (EU) / top 9 (US FDA). Includes: allergen inventory, risk assessment, cleaning validation records.'},
+{type:'food',level:'operational',title:'Product Withdrawal & Recall Procedure',stds:['ps7','ghp','brc','i22'],refs:{ps7:'§9',ghp:'Sect.IX',brc:'§3.11',i22:'§8.9.5'},doc:'FSS-PRO-011: Product Withdrawal & Recall Procedure + Contact List',desc:'ISO22000 §8.9.5 = recall procedure: responsible persons, authorities, product retrieval, records. BRC §3.11 = mock recall annually. PS7818 = recall as core QFS requirement. Withdrawal (trade) vs recall (consumers) distinction. Includes regulatory notification protocol.'},
+{type:'food',level:'functional',title:'Food Defence (TACCP) & Product Authenticity',stds:['brc','i22'],refs:{brc:'§4.2',i22:'§8.2 (implied)'},doc:'FSS-PRO-012: Food Defence (TACCP) & Authenticity Procedure',desc:'BRC §4.2 = Food Defence: site security, access control, TACCP for intentional contamination. BRC §5.4 = Product authenticity, anti-fraud, ingredient origin verification. ISO22000 = food defence implied under hazard control. GFSI benchmark requires vulnerability assessment.'},
+{type:'food',level:'operational',title:'Cleaning & Disinfection Programme',stds:['ps7','ghp','brc','i22'],refs:{ps7:'§8',ghp:'Sect.VII',brc:'§4.11',i22:'§8.2 (PRP)'},doc:'FSS-PRO-013: Cleaning & Disinfection Programme (Master Cleaning Schedule)',desc:'GHP Sect.VII = cleaning and disinfection requirements. BRC §4.11 = validated methods, chemicals, concentrations, contact times, frequency. ISO22000 §8.2 = C&D as PRP. PS7818 = C&D as operational requirement. Master Cleaning Schedule: every surface/equipment, method, chemical, frequency, verification.'},
+{type:'food',level:'operational',title:'Pest Control Programme',stds:['ps7','ghp','brc','i22'],refs:{ps7:'§8',ghp:'Sect.VII',brc:'§4.14 ⚑Fund.',i22:'§8.2 (PRP)'},doc:'FSS-PRO-014: Pest Control Procedure + Pest Control Map',desc:'GHP Sect.VII = pest control principles. BRC §4.14 = Fundamental: documented pest control with trained contractor, bait station map, inspection records, trend analysis. ISO22000 §8.2 = pest control as PRP. PS7818 = pest control as operational requirement. Monthly inspection records.'},
+{type:'food',level:'operational',title:'Personal Hygiene & Health Screening',stds:['ps7','ghp','brc','i22'],refs:{ps7:'§8',ghp:'Sect.VIII',brc:'§7.2-7.3',i22:'§8.2 (PRP)'},doc:'FSS-PRO-015: Personal Hygiene & Medical Screening Procedure',desc:'GHP Sect.VIII = personal hygiene: handwashing, illness reporting, jewellery, PPE. BRC §7.2 = production area hygiene rules; §7.3 = medical screening, health questionnaire, return-to-work protocols. ISO22000 §8.2 = personnel hygiene as PRP. PS7818 = personnel hygiene standard.'},
+{type:'food',level:'functional',title:'Food Safety Culture Plan',stds:['brc','i22'],refs:{brc:'§1.1.2',i22:'§5.1 (implied)'},doc:'FSS-PRO-016: Food Safety Culture Plan',desc:'BRC §1.1.2 = documented food safety culture plan: activities, communication, training, employee feedback, behavior measurement, action plan, annual review. ISO22000 §5.1 references food safety culture. GFSI-required for BRCGS. Demonstrates leadership beyond compliance.'},
+{type:'food',level:'functional',title:'Production Risk Zones (High Risk / High Care)',stds:['brc'],refs:{brc:'§8'},doc:'FSS-PRO-017: Production Risk Zone Classification & Controls Procedure',desc:'BRCGS-unique: formal classification of production areas as High Risk (ready-to-eat / pathogen-free zone), High Care (enhanced hygiene), Ambient High Care, or Standard. Different hygiene entry requirements, air filtration, drainage, and traffic flow controls per zone.'},
+{type:'unique',level:'functional',title:'PS 7818 — QFS Integration Framework',stds:['ps7'],refs:{ps7:'§1-11 (full)'},doc:'IMS-MAN-PS7818: PS7818 Implementation Framework + Clause Cross-reference Matrix',desc:'PS7818 is the umbrella QFS standard integrating GHP/HACCP + ISO9001 + ISO22000 into one operational framework. Compliance with PS7818 implies alignment with all four underlying standards. Unique requirement: cross-reference matrix showing how each PS7818 clause maps to GHP/HACCP, ISO9001, and ISO22000 clauses.'},
+{type:'unique',level:'high',title:'PS 7818 — QFS Gap Analysis & Compliance Review',stds:['ps7'],refs:{ps7:'§10'},doc:'PS7818-PRO-001: PS7818 Annual Compliance Review Procedure + Gap Matrix',desc:'Annual review of PS7818 compliance status across all 4 integrated standards. Identifies gaps in GHP implementation, HACCP effectiveness, ISO9001 QMS, and ISO22000 FSMS simultaneously. Output: prioritized gap closure plan with responsible parties and timelines.'},
+{type:'unique',level:'functional',title:'Environmental Aspects & Impacts Register',stds:['ems'],refs:{ems:'§6.1.2'},doc:'EMS-PRO-001: Environmental Aspects & Impacts Procedure + Register',desc:'Core unique EMS requirement. Identify activities/products that interact with the environment, assess impacts, determine significance. Life cycle perspective. Food manufacturing aspects: wastewater discharge, chemical use, energy consumption, organic waste, refrigerant use, packaging waste.'},
+{type:'unique',level:'functional',title:'Environmental Operational Controls (per Significant Aspect)',stds:['ems'],refs:{ems:'§8.1'},doc:'EMS-PRO-002: Environmental Operational Controls (per aspect)',desc:'Procedures specific to each significant environmental aspect: wastewater management, chemical storage/handling, waste segregation, energy conservation, emission controls. Links to environmental permits and legal register.'},
+{type:'unique',level:'functional',title:'Hazard Identification & Risk Assessment (HIRA)',stds:['ohs'],refs:{ohs:'§6.1.2'},doc:'OHS-PRO-001: HIRA Procedure + Hazard Register',desc:'Core unique OH&S requirement. Systematic identification of workplace hazards: physical (machinery, noise, heat), chemical (cleaning agents), ergonomic, psychosocial. Risk assessment using 5×5 matrix. Links to hierarchy of controls. Food manufacturing specific: line speed, repetitive motion, cold storage, chemical handling.'},
+{type:'unique',level:'high',title:'Worker Participation & Consultation',stds:['ohs'],refs:{ohs:'§5.4'},doc:'OHS-PRO-002: Worker Participation & Consultation Procedure',desc:'ISO45001 uniquely mandates workers MUST be consulted in OH&S decisions — not just informed. Safety committee charter, consultation records, mechanisms for workers to raise OH&S concerns without reprisal. No equivalent in other 10 standards.'},
+{type:'unique',level:'functional',title:'Hierarchy of Controls Application',stds:['ohs'],refs:{ohs:'§8.1.2'},doc:'OHS-PRO-003: Hierarchy of Controls Application Procedure',desc:'Documented evidence that controls selected in order: Elimination → Substitution → Engineering → Administrative → PPE. Must show higher-order controls were considered before defaulting to PPE. Unique to ISO45001.'},
+{type:'unique',level:'operational',title:'Incident Investigation & Reporting',stds:['ohs'],refs:{ohs:'§9.1.1+§10.2'},doc:'OHS-PRO-004: Incident Investigation Procedure',desc:'Work-related injury/near-miss/ill-health investigation. Root cause analysis, regulatory reporting, corrective actions, communication to workers. Separate from nonconforming product or food safety incident procedures.'},
+{type:'unique',level:'functional',title:'Measurement Uncertainty Estimation',stds:['lab'],refs:{lab:'§7.6'},doc:'LAB-PRO-003: Measurement Uncertainty Procedure (GUM-compliant)',desc:'ISO17025-unique: quantify uncertainty for each test method per GUM. Must be reported on test certificates. Requires uncertainty budget, Type A and Type B evaluations. No equivalent in other 10 standards.'},
+{type:'unique',level:'functional',title:'Metrological Traceability',stds:['lab'],refs:{lab:'§6.4.6+§7.6.2'},doc:'LAB-PRO-004: Metrological Traceability Procedure',desc:'Unbroken calibration chain from test results to SI units via accredited calibration labs. Calibration certificates must show traceability. Extends shared equipment calibration with traceability-specific requirements.'},
+{type:'unique',level:'functional',title:'Method Validation & Verification',stds:['lab'],refs:{lab:'§7.2'},doc:'LAB-PRO-002: Method Validation & Verification Procedure',desc:'Validation of non-standard methods; verification of standard methods before first use. Performance characteristics: linearity, accuracy, precision, LOD/LOQ, robustness. Unique to laboratory accreditation.'},
+{type:'unique',level:'functional',title:'Proficiency Testing & Interlaboratory Comparisons',stds:['lab'],refs:{lab:'§7.7'},doc:'LAB-PRO-005: Proficiency Testing Procedure + Annual PT Plan',desc:'Participation in PT schemes to demonstrate technical competence. Z-score analysis, corrective action for unsatisfactory results. Annual PT plan per test method in accreditation scope. No equivalent in other 10 standards.'},
+{type:'unique',level:'functional',title:'Test Report / Certificate of Analysis Format',stds:['lab'],refs:{lab:'§7.8'},doc:'LAB-PRO-007: Test Report Procedure + Report Template',desc:'ISO17025-specific test report requirements: lab name, unique report ID, customer details, sample description, method reference, results with units, measurement uncertainty, conformity statement, authorized signature.'},
+{type:'unique',level:'functional',title:'Personnel Authorization Matrix (per Test Method)',stds:['lab'],refs:{lab:'§6.2.5'},doc:'LAB-FM-001: Personnel Authorization Matrix',desc:'Each person must be authorized for each specific test method — not just generally competent. Matrix: person × method × authorization date × review date. No equivalent in other 10 standards.'},
+{type:'unique',level:'high',title:'Lab Impartiality Management',stds:['lab'],refs:{lab:'§4.1-4.2'},doc:'LAB-PRO-001: Impartiality Management Procedure',desc:'ISO17025-unique: identify risks to impartiality, policy to safeguard it, confidentiality of customer information. Management commitment to impartiality separate from general IMS policy. Conflict of interest declaration required.'},
+{type:'unique',level:'functional',title:'BRCGS Product Labelling Compliance',stds:['brc'],refs:{brc:'§5.2'},doc:'FSS-PRO-018: Product Labelling Procedure + Label Control Form',desc:'BRC §5.2: label management: artwork approval, legal review per market, allergen declaration, country of origin, date coding verification. Linked to regulatory requirements per export market. No direct equivalent in GHP/HACCP/ISO22000.'},
+{type:'unique',level:'functional',title:'Quantity Control (Weight / Volume / Count)',stds:['brc'],refs:{brc:'§6.3'},doc:'FSS-PRO-019: Quantity Control Procedure',desc:'BRC §6.3: statistical weight/volume/count control to meet legal requirements (Weights & Measures). Sampling plans, AQL, line checks, records. Quality-specific BRCGS requirement not covered by other food safety standards.'},
+{type:'farm',level:'operational',title:'Farm Supplier Approval & Approved Supplier List',stds:['ggap','bap'],refs:{ggap:'KCP — All Modules',bap:'§5 Supplier Control'},doc:'FRM-SOP-001: Farm Supplier Approval Procedure + Farm ASL (FRM-REG-001)',desc:'Two-track approval: (1) Global GAP — verify GGN number via GLOBALG.A.P. database; confirm certificate scope; no active suspension. (2) BAP — verify via GSA/BAP website; confirm star rating (4-star preferred); no active suspension. Both: certificate on file, annual renewal check, right-to-audit clause in purchase agreement.'},
+{type:'farm',level:'functional',title:'Global GAP — Certificate Verification & GGN Monitoring',stds:['ggap'],refs:{ggap:'GGN — GLOBALG.A.P. Number'},doc:'FRM-PRO-001: Global GAP Certificate Verification Procedure',desc:'Step-by-step: (1) Request GGN number; (2) Verify on GLOBALG.A.P. database; (3) Confirm scope covers required product; (4) Confirm expiry date > delivery date + buffer; (5) Check for active sanctions; (6) Record in Farm ASL with screenshot + date. Quarterly monitoring. Suspension = halt orders + supplier NCR.'},
+{type:'farm',level:'functional',title:'Global GAP — Key Control Points Upstream Checklist',stds:['ggap'],refs:{ggap:'KCP AF/CB/FV/AB'},doc:'FRM-CHK-001: Global GAP Upstream KCP Audit Checklist',desc:'Annual supplier audit: Food Safety — water quality, pesticide records, PPE; Traceability — lot coding, parallel production records; Environment — biodiversity plan, IPM; Worker H&S — risk assessment, first aid, PPE; Product Integrity — harvest hygiene, post-harvest chemical records. Covers Major Must, Minor Must, Recommended KCPs.'},
+{type:'farm',level:'functional',title:'Global GAP — Pesticide & MRL Compliance Records',stds:['ggap'],refs:{ggap:'KCP FV 5 / CB 7'},doc:'FRM-REG-002: Pesticide Use & MRL Compliance Register',desc:'Request from certified suppliers: pesticide application records (active ingredient, rate, date, PHI compliance); MRL test results per lot (minimum annual). Cross-check: Thai FDA MRL list, Codex MRL, EU MRL (if export to EU), Japan Positive List. Non-compliance: hold lot, issue supplier NCR, escalate to procurement.'},
+{type:'farm',level:'functional',title:'BAP — Certificate Verification & Star Rating Monitoring',stds:['bap'],refs:{bap:'GSA Certification Database'},doc:'FRM-PRO-002: BAP Certificate Verification Procedure',desc:'Step-by-step: (1) Request BAP certificate; (2) Verify via GSA/BAP database; (3) Confirm star rating — 4-star preferred (feed mill + hatchery + farm + processing), minimum 2-star; (4) Confirm species scope; (5) Check expiry + no active suspensions; (6) Record in Farm ASL. Quarterly monitoring calendar. Star rating downgrade = procurement review trigger.'},
+{type:'farm',level:'functional',title:'BAP — Antibiotic & Veterinary Drug Records',stds:['bap'],refs:{bap:'§4.9 Animal Health'},doc:'FRM-REG-003: Antibiotic Use & Withdrawal Period Register (Supplier-provided)',desc:'Request from BAP suppliers: antibiotic use records per production cycle (active ingredient, dose, date, withdrawal period); veterinary drug list; confirmation no prohibited substances (Chloramphenicol, Nitrofurans, Malachite Green, others per Thai FDA list). Verification: lab residue test per lot for high-risk substances.'},
+{type:'farm',level:'functional',title:'BAP — Chain of Custody & Lot Traceability Test',stds:['bap'],refs:{bap:'§3 Traceability'},doc:'FRM-PRO-003: BAP Chain of Custody Verification Procedure',desc:'Verify lot number traces back to BAP-certified farm. Steps: (1) Receive delivery note with BAP lot code; (2) Request Chain of Custody document; (3) Verify lot code links to certified hatchery → farm → processing plant → delivery; (4) Annual traceability test exercise within 4 hours. Supports ISO22000 §8.3 traceability system.'},
+{type:'farm',level:'operational',title:'BAP — Social Compliance Screening',stds:['bap'],refs:{bap:'§2 Social Responsibility'},doc:'FRM-SOP-002: Farm Supplier Social Compliance Screening Procedure',desc:'Annual social compliance assessment: (1) Supplier self-declaration questionnaire — labor law compliance, no forced/child labor, fair wages, grievance mechanism; (2) Risk scoring: high-risk suppliers = on-site verification audit; (3) BAP certificate inherently covers social requirements — verify last audit included social module.'},
+{type:'farm',level:'high',title:'Farm Supplier Certificate Monitoring Register',stds:['ggap','bap'],refs:{ggap:'Annual renewal',bap:'Annual renewal'},doc:'FRM-REG-001: Farm Supplier Certificate Register + Monitoring Calendar',desc:'Master register: supplier name, standard (Global GAP/BAP), certificate number (GGN/BAP cert no.), star rating (BAP), scope, issue date, expiry date, last verified, status (active/suspended/expired), next review date. Auto-flagged 90 days before expiry. Any suspension triggers immediate procurement hold.'},
+{type:'farm',level:'high',title:'Farm Upstream Risk Assessment',stds:['ggap','bap'],refs:{ggap:'risk-based',bap:'risk-based'},doc:'FRM-PRO-004: Farm Supplier Risk Assessment Procedure',desc:'Annual risk assessment: certification status, previous audit findings, product risk category, geographic risk (country food safety profile), supplier tenure, volume. Risk score determines audit frequency: High risk = annual on-site audit; Medium = document review + annual; Low = certificate check only.'},
+]; // end D
+
+// ── STATE ──
+let activeType = 'all';
+let activeLevel = 'all';
+let activeStd = 'all';
+let imapRendered = false;
+
+function setFilter(dim, val, btn) {
+  const typeRowBtns = btn.closest('.imap-filters').querySelectorAll('.frow:nth-child(2) .fb');
+  const levelRowBtns = btn.closest('.imap-filters').querySelectorAll('.frow:nth-child(4) .fb');
+  const stdRowBtns = btn.closest('.imap-filters').querySelectorAll('.frow:nth-child(6) .fb');
+
+  if (dim === 'type') {
+    activeType = val;
+    typeRowBtns.forEach(b => b.classList.remove('on','t-all','t-full','t-partial','t-food','t-unique','t-farm'));
+    btn.classList.add('on', 't-' + (val === 'all' ? 'all' : val));
+  } else if (dim === 'level') {
+    activeLevel = val;
+    levelRowBtns.forEach(b => b.classList.remove('on','t-all','lv-high','lv-ops','lv-func'));
+    const lvMap = {all:'t-all', high:'lv-high', operational:'lv-ops', functional:'lv-func'};
+    btn.classList.add('on', lvMap[val]);
+  } else if (dim === 'std') {
+    activeStd = val;
+    stdRowBtns.forEach(b => b.classList.remove('on','s-qms','s-ems','s-ohs','s-lab','s-ghp','s-hac','s-brc','s-i22','s-ps7','s-ggap','s-bap','t-all'));
+    btn.classList.add('on', val === 'all' ? 't-all' : 's-' + val);
+  }
+  renderImap();
+}
+
+function renderImap() {
+  const grid = document.getElementById('imap-grid');
+  grid.innerHTML = '';
+  let cf=0, cp=0, cfd=0, cu=0;
+
+  D.forEach(item => {
+    if (activeType !== 'all' && item.type !== activeType) return;
+    if (activeLevel !== 'all' && item.level !== activeLevel) return;
+    if (activeStd !== 'all' && !item.stds.includes(activeStd)) return;
+
+    if (item.type==='full') cf++;
+    else if (item.type==='partial') cp++;
+    else if (item.type==='food') cfd++;
+    else cu++;
+
+    const bClass = item.type==='full'?'ib-full':item.type==='partial'?'ib-partial':item.type==='food'?'ib-food':item.type==='farm'?'ib-farm':'ib-unique';
+    const bText = item.type==='full'?'✓ FULLY SHARED':item.type==='partial'?'~ PARTIAL':item.type==='food'?'🍽 FOOD SAFETY':item.type==='farm'?'🌾 FARM UPSTREAM':'⚡ UNIQUE';
+    const hdClass = item.type==='full'?'hd-full':item.type==='partial'?'hd-partial':item.type==='food'?'hd-food':item.type==='farm'?'hd-full':'hd-unique';
+
+    const lvLabel = item.level==='high'?'▲ High Level':item.level==='operational'?'● Operational':'◆ Functional / Specific';
+    const lvClass = item.level==='high'?'lv-h-pill':item.level==='operational'?'lv-o-pill':'lv-f-pill';
+
+    const stags = item.stds.map(s=>`<span class="istag t-${s}">${SL[s]}</span>`).join('');
+    const rchips = Object.entries(item.refs).map(([s,r])=>
+      `<span class="rchip" style="border-color:${SC[s]}55;color:${SC[s]}">${SL[s]}: ${r}</span>`
+    ).join('');
+
+    const div = document.createElement('div');
+    div.className = 'icard';
+    div.innerHTML = `
+      <div class="icard-hd ${hdClass}">
+        <div class="icard-title">${item.title}</div>
+        <span class="ibadge ${bClass}">${bText}</span>
+      </div>
+      <div class="icard-bd">
+        <span class="level-tag ${lvClass}">${lvLabel}</span>
+        <div class="istrow">${stags}</div>
+        <div class="irefrow">${rchips}</div>
+        <div class="idesc">${item.desc}</div>
+        <div class="idocref">📄 <span>${item.doc}</span></div>
+      </div>`;
+    grid.appendChild(div);
+  });
+
+  document.getElementById('c-full').textContent = D.filter(x=>x.type==='full').length;
+  document.getElementById('c-partial').textContent = D.filter(x=>x.type==='partial').length;
+  document.getElementById('c-food').textContent = D.filter(x=>x.type==='food').length;
+  document.getElementById('c-unique').textContent = D.filter(x=>x.type==='unique'||x.type==='farm').length;
+
+  const showing = cf+cp+cfd+cu;
+  document.getElementById('imap-ci').textContent = `Showing ${showing} of ${D.length} elements · Type: ${activeType} · Level: ${activeLevel} · Standard: ${activeStd}`;
+}
+</script>
+</body>
+</html>
