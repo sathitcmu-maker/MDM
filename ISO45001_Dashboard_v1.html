@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISO 45001:2018 OH&S Management System Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lavender:    #C0B0C1;
+    --blush:       #E6C8C6;
+    --dusty-blue:  #859EAC;
+    --sage:        #97AC9F;
+    --olive:       #6E8175;
+    --olive-dark:  #4d6157;
+    --olive-mid:   #5c7268;
+    --lavender-dark: #8a7a8b;
+    --blush-dark:  #c8a09d;
+    --dusty-dark:  #5d7a88;
+    --text-dark:   #1e2a24;
+    --text-mid:    #3d5247;
+    --text-light:  #6e8175;
+    --white:       #ffffff;
+    --warm-white:  #f0ede9;
+    --card-bg:     rgba(255,255,255,0.88);
+    --shadow:      0 4px 24px rgba(110,129,117,0.13);
+    --shadow-lg:   0 8px 40px rgba(110,129,117,0.20);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--text-dark);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--olive-dark);
+    color: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 4px solid var(--blush-dark);
+    width: 100%;
+  }
+  .header-left { display: flex; align-items: center; gap: 24px; }
+  .logo-badge {
+    background: var(--blush-dark);
+    color: var(--olive-dark);
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+  .logo-badge small { display:block; font-size: 12px; letter-spacing: 2px; font-family: 'DM Mono', monospace; }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--lavender);
+    letter-spacing: 0.3px;
+    line-height: 1.1;
+  }
+  .header-subtitle {
+    font-size: 13.5px;
+    color: var(--sage);
+    margin-top: 4px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+  .header-right { text-align: right; flex-shrink: 0; }
+  .header-creator { font-size: 14px; color: var(--lavender); font-weight: 600; letter-spacing: 0.5px; }
+  #liveClock { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--blush-dark); margin-top: 5px; }
+
+  /* ── TAB BAR ── */
+  .tab-bar {
+    background: var(--olive-dark);
+    display: flex;
+    overflow-x: auto;
+    padding: 0 48px;
+    gap: 2px;
+    scrollbar-width: none;
+    border-top: 1px solid rgba(192,176,193,0.15);
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 15px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--sage);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    border-bottom: 4px solid transparent;
+    transition: all 0.25s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tab-btn:hover { color: var(--lavender); background: rgba(192,176,193,0.08); }
+  .tab-btn.active { color: var(--blush); border-bottom: 4px solid var(--blush-dark); background: rgba(230,200,198,0.12); }
+
+  /* ── MAIN ── */
+  main { padding: 36px 48px; max-width: 100%; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── SECTION TITLE ── */
+  .section-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--olive-dark); margin-bottom: 6px; }
+  .section-desc { color: var(--text-light); font-size: 15px; margin-bottom: 28px; }
+
+  /* ── CARDS ── */
+  .card { background: var(--card-bg); border-radius: 14px; padding: 28px; box-shadow: var(--shadow); border: 1px solid rgba(151,172,159,0.2); }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--olive-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .card-title .badge { background: var(--olive-dark); color: var(--lavender); font-family: 'DM Mono', monospace; font-size: 11px; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+
+  /* ── TAB 1: FRAMEWORK ── */
+  .concept-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 28px; }
+  @media (max-width: 1200px) { .concept-grid { grid-template-columns: repeat(2,1fr); } }
+
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 22px 18px;
+    border-left: 5px solid var(--olive-dark);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+  }
+  .concept-card:hover { transform: translateY(-3px); }
+  .concept-card.blush { border-left-color: var(--blush-dark); }
+  .concept-card.dusty { border-left-color: var(--dusty-dark); }
+  .concept-card.lav   { border-left-color: var(--lavender-dark); }
+  .concept-card h3 { font-size: 15px; font-weight: 700; color: var(--olive-dark); margin-bottom: 8px; }
+  .concept-card p  { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+  /* PDCA Block */
+  .pdca-wrapper {
+    background: var(--olive-dark);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-lg);
+  }
+  .pdca-wrapper h2 { font-family: 'Playfair Display', serif; color: var(--lavender); font-size: 20px; margin-bottom: 6px; }
+  .pdca-wrapper > p { color: var(--sage); font-size: 14px; margin-bottom: 24px; }
+  .pdca-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+  @media (max-width: 900px) { .pdca-grid { grid-template-columns: repeat(2,1fr); } }
+
+  .pdca-col { background: rgba(255,255,255,0.07); border-radius: 10px; padding: 20px; }
+  .pdca-col-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+  .pdca-letter { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; flex-shrink: 0; }
+  .pdca-letter.plan  { background: #5c7268; color: var(--lavender); }
+  .pdca-letter.do-c  { background: var(--blush-dark); color: var(--olive-dark); }
+  .pdca-letter.check { background: var(--dusty-dark); color: var(--white); }
+  .pdca-letter.act   { background: var(--lavender-dark); color: var(--white); }
+  .pdca-col-title { color: var(--white); font-weight: 700; font-size: 15px; }
+  .pdca-col-sub   { color: var(--sage); font-size: 12px; }
+  .pdca-step { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .pdca-step:last-child { border-bottom: none; }
+  .pdca-step-num { background: rgba(192,176,193,0.18); color: var(--lavender); font-family: 'DM Mono', monospace; font-size: 11px; min-width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .pdca-step-text { color: var(--warm-white); font-size: 13.5px; font-weight: 500; }
+  .pdca-step-sub  { color: var(--sage); font-size: 12px; margin-top: 2px; }
+
+  /* Annex SL Clause Map */
+  .clause-map {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(151,172,159,0.2);
+    margin-bottom: 28px;
+  }
+  .clause-map h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--olive-dark); margin-bottom: 20px; }
+  .annex-flow { display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; }
+  .annex-phase { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+  .annex-phase-label { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-align: center; padding: 6px 8px; border-radius: 6px 6px 0 0; }
+  .annex-phase-label.plan  { background: #5c7268; color: var(--lavender); }
+  .annex-phase-label.do-c  { background: var(--blush-dark); color: var(--olive-dark); }
+  .annex-phase-label.check { background: var(--dusty-dark); color: var(--white); }
+  .annex-phase-label.act   { background: var(--lavender-dark); color: var(--white); }
+  .annex-clause {
+    background: var(--warm-white);
+    border: 1px solid rgba(110,129,117,0.25);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--olive-dark);
+    text-align: center;
+    line-height: 1.4;
+  }
+  .annex-clause small { display: block; font-weight: 400; color: var(--text-light); font-size: 11px; }
+  .annex-arrow { display: flex; align-items: center; justify-content: center; padding: 0 6px; color: var(--text-light); font-size: 20px; align-self: center; flex-shrink: 0; }
+
+  /* OH&S Key Concepts */
+  .principles-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 0; }
+  @media (max-width: 1100px) { .principles-grid { grid-template-columns: repeat(2,1fr); } }
+  .principle-item {
+    background: linear-gradient(135deg, var(--olive-dark) 0%, var(--olive-mid) 100%);
+    color: var(--white);
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .principle-icon { font-size: 22px; }
+
+  /* Image frame */
+  .img-frame { background: var(--card-bg); border-radius: 14px; padding: 16px; box-shadow: var(--shadow); border: 1px solid rgba(151,172,159,0.2); margin-bottom: 28px; }
+  .img-frame img { width: 100%; border-radius: 10px; display: block; }
+
+  .framework-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  @media (max-width: 1100px) { .framework-2col { grid-template-columns: 1fr; } }
+
+  /* ── TAB 2: REQUIREMENTS ── */
+  .req-download-bar { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  .btn-download {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--olive-dark);
+    color: var(--lavender);
+    padding: 14px 26px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-download:hover { background: #3a4f46; border-color: var(--blush-dark); color: var(--blush); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--olive-dark); border: 2px solid var(--olive-dark); }
+  .btn-outline:hover { background: var(--olive-dark); color: var(--lavender); }
+
+  .clauses-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .clause-btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: 2px solid var(--sage);
+    background: transparent;
+    color: var(--text-mid);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .clause-btn:hover { background: var(--lavender); color: var(--olive-dark); border-color: var(--olive-dark); }
+  .clause-btn.active { background: var(--olive-dark); color: var(--lavender); border-color: var(--olive-dark); }
+
+  .clause-detail { display: none; }
+  .clause-detail.active { display: block; }
+
+  .clause-header-block { background: var(--olive-dark); color: var(--white); border-radius: 12px 12px 0 0; padding: 22px 28px; }
+  .clause-header-block h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--lavender); margin-bottom: 6px; }
+  .clause-header-block p  { color: var(--sage); font-size: 14px; }
+
+  .req-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid rgba(151,172,159,0.3); border-radius: 0 0 12px 12px; overflow: hidden; }
+  .req-col-header { background: #3a4f46; color: var(--blush); padding: 14px 22px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-right: 1px solid rgba(255,255,255,0.08); }
+  .req-col-header:last-child { border-right: none; }
+
+  .req-cell { padding: 18px 22px; background: var(--card-bg); border-bottom: 1px solid rgba(151,172,159,0.15); border-right: 1px solid rgba(151,172,159,0.15); font-size: 14px; vertical-align: top; color: var(--text-dark); line-height: 1.65; }
+  .req-cell:last-child { border-right: none; }
+  .req-cell:nth-child(3n+1) { font-weight: 600; color: var(--olive-dark); font-size: 13.5px; }
+  .req-cell ul { padding-left: 18px; }
+  .req-cell ul li { margin-bottom: 5px; color: var(--text-mid); font-size: 13.5px; }
+  .req-cell .kpi-tag { display: inline-block; background: var(--lavender); color: var(--olive-dark); font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 4px; margin: 2px 2px 2px 0; }
+
+  /* ── TAB 3: DOCUMENTS ── */
+  .doc-filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .doc-filter-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 2px solid var(--sage);
+    background: transparent;
+    color: var(--text-mid);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .doc-filter-btn:hover, .doc-filter-btn.active { background: var(--olive-dark); color: var(--lavender); border-color: var(--olive-dark); }
+
+  .doc-table-wrapper { background: var(--card-bg); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid rgba(151,172,159,0.2); }
+  .doc-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .doc-table thead { background: var(--olive-dark); }
+  .doc-table thead th { color: var(--lavender); padding: 15px 16px; text-align: left; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; border-right: 1px solid rgba(255,255,255,0.08); }
+  .doc-table thead th:last-child { border-right: none; }
+  .doc-table tbody tr { border-bottom: 1px solid rgba(151,172,159,0.15); transition: background 0.15s; }
+  .doc-table tbody tr:hover { background: rgba(192,176,193,0.18); }
+  .doc-table tbody td { padding: 13px 16px; vertical-align: top; border-right: 1px solid rgba(151,172,159,0.12); font-size: 13.5px; line-height: 1.55; }
+  .doc-table tbody td:last-child { border-right: none; }
+  .doc-table .clause-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--olive-dark); font-weight: 600; white-space: nowrap; }
+  .tier-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 4px; }
+  .tier-1 { background: var(--olive-dark); color: var(--lavender); }
+  .tier-2 { background: var(--dusty-blue); color: var(--white); }
+  .tier-3 { background: var(--sage); color: var(--olive-dark); }
+  .tier-4 { background: var(--blush); color: var(--olive-dark); }
+  .tier-5 { background: var(--lavender); color: var(--olive-dark); }
+  .doc-name { font-weight: 600; color: var(--text-dark); }
+  .doc-list { list-style: none; padding: 0; margin: 0; }
+  .doc-list li { padding: 2px 0; color: var(--text-mid); font-size: 13px; }
+  .doc-list li::before { content: "› "; color: var(--olive-mid); font-weight: 700; }
+
+  /* ── TAB 4: IMPLEMENT ── */
+  .steps-timeline { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 28px; }
+  @media (max-width: 1200px) { .steps-timeline { grid-template-columns: repeat(3,1fr); } }
+
+  .step-card { background: var(--card-bg); border-radius: 12px; padding: 22px 18px; box-shadow: var(--shadow); border: 1px solid rgba(151,172,159,0.2); position: relative; cursor: pointer; transition: all 0.2s; border-top: 4px solid var(--olive-dark); }
+  .step-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .step-card.ph2 { border-top-color: var(--olive-mid); }
+  .step-card.ph3 { border-top-color: var(--sage); }
+  .step-card.ph4 { border-top-color: var(--dusty-dark); }
+  .step-card.ph5 { border-top-color: var(--lavender-dark); }
+
+  .step-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--lavender); background: var(--olive-dark); width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .step-card.ph2 .step-num { background: var(--olive-mid); }
+  .step-card.ph3 .step-num { background: var(--sage); color: var(--olive-dark); }
+  .step-card.ph4 .step-num { background: var(--dusty-dark); }
+  .step-card.ph5 .step-num { background: var(--lavender-dark); }
+  .step-title { font-weight: 700; font-size: 14px; color: var(--olive-dark); margin-bottom: 8px; }
+  .step-body  { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .step-duration { margin-top: 12px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--sage); font-weight: 500; }
+
+  .impl-detail-box { background: var(--card-bg); border-radius: 14px; padding: 28px; box-shadow: var(--shadow); border: 1px solid rgba(151,172,159,0.2); margin-top: 20px; display: none; }
+  .impl-detail-box h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--olive-dark); margin-bottom: 18px; }
+  .impl-checklist { list-style: none; padding: 0; }
+  .impl-checklist li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(151,172,159,0.15); font-size: 14.5px; color: var(--text-dark); }
+  .impl-checklist li:last-child { border-bottom: none; }
+  .impl-checklist .chk { color: var(--olive-mid); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── TAB 5: AUDIT ── */
+  .audit-btn-bar { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  .audit-cycle { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+  @media (max-width: 1000px) { .audit-cycle { grid-template-columns: repeat(2,1fr); } }
+  .audit-phase { background: var(--card-bg); border-radius: 12px; padding: 22px; box-shadow: var(--shadow); border: 1px solid rgba(151,172,159,0.2); border-top: 5px solid var(--olive-dark); }
+  .audit-phase.p2 { border-top-color: var(--sage); }
+  .audit-phase.p3 { border-top-color: var(--dusty-dark); }
+  .audit-phase.p4 { border-top-color: var(--blush-dark); }
+  .audit-phase-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .audit-phase h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--olive-dark); margin-bottom: 14px; }
+  .audit-list { list-style: none; padding: 0; }
+  .audit-list li { display: flex; align-items: flex-start; gap: 9px; padding: 7px 0; border-bottom: 1px solid rgba(151,172,159,0.12); font-size: 13.5px; color: var(--text-mid); }
+  .audit-list li:last-child { border-bottom: none; }
+  .audit-list .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--olive-mid); flex-shrink: 0; margin-top: 7px; }
+  .audit-phase.p2 .dot { background: var(--sage); }
+  .audit-phase.p3 .dot { background: var(--dusty-dark); }
+  .audit-phase.p4 .dot { background: var(--blush-dark); }
+
+  .audit-types { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
+  @media (max-width: 900px) { .audit-types { grid-template-columns: 1fr; } }
+  .audit-type-card { background: var(--olive-dark); color: var(--white); border-radius: 12px; padding: 22px; }
+  .audit-type-card h4 { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--lavender); margin-bottom: 10px; }
+  .audit-type-card p { font-size: 13.5px; color: var(--sage); line-height: 1.6; }
+
+  /* ── TAB 6: TRAINING ── */
+  .training-table-wrapper { background: var(--card-bg); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid rgba(151,172,159,0.2); }
+  .training-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .training-table thead { background: var(--olive-dark); }
+  .training-table thead th { color: var(--lavender); padding: 14px 12px; text-align: center; font-size: 12.5px; font-weight: 700; letter-spacing: 0.5px; border-right: 1px solid rgba(255,255,255,0.08); }
+  .training-table thead th:first-child, .training-table thead th:nth-child(2) { text-align: left; }
+  .training-table thead th:last-child { border-right: none; }
+  .training-table tbody tr { border-bottom: 1px solid rgba(151,172,159,0.15); transition: background 0.15s; }
+  .training-table tbody tr:hover { background: rgba(192,176,193,0.2); }
+  .training-table tbody td { padding: 12px 12px; vertical-align: middle; border-right: 1px solid rgba(151,172,159,0.12); text-align: center; font-size: 13.5px; color: var(--text-dark); }
+  .training-table tbody td:first-child, .training-table tbody td:nth-child(2) { text-align: left; }
+  .training-table tbody td:last-child { border-right: none; }
+  .training-table .clause-ref { font-family: 'DM Mono', monospace; font-size: 11.5px; color: var(--olive-dark); font-weight: 600; }
+  .training-legend { display: flex; gap: 24px; flex-wrap: wrap; padding: 16px 20px; background: #3a4f46; border-radius: 0 0 14px 14px; font-size: 13.5px; color: var(--sage); }
+  .training-legend span { display: flex; align-items: center; gap: 7px; }
+
+  /* ── UTILITIES ── */
+  .tag { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 5px; background: var(--lavender); color: var(--olive-dark); margin: 2px 2px 2px 0; letter-spacing: 0.3px; }
+  .tag.blush  { background: var(--blush); color: var(--olive-dark); }
+  .tag.olive  { background: var(--olive-dark); color: var(--lavender); }
+  .divider { height: 1px; background: rgba(151,172,159,0.25); margin: 24px 0; }
+  .info-banner { background: linear-gradient(135deg, var(--olive-dark) 0%, var(--olive-mid) 100%); color: var(--white); border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px; font-size: 15px; }
+  .info-banner .icon { font-size: 28px; flex-shrink: 0; }
+  .info-banner strong { color: var(--lavender); }
+  .scroll-x { overflow-x: auto; }
+  .row-group-a td { background: rgba(255,255,255,0.92); }
+  .row-group-b td { background: rgba(192,176,193,0.10); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="logo-badge">ISO 45001<small>: 2018</small></div>
+      <div>
+        <div class="header-title">Occupational Health and Safety Management Systems [OH&amp;S]</div>
+        <div class="header-subtitle">Interactive Master Reference Dashboard — OH&S Management Edition</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-creator">Created by MR. SATHIT CHOBPIMAI</div>
+      <div id="liveClock">--</div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('framework',this)">① Framework</button>
+    <button class="tab-btn" onclick="showTab('requirements',this)">② Requirements</button>
+    <button class="tab-btn" onclick="showTab('documents',this)">③ Document Register</button>
+    <button class="tab-btn" onclick="showTab('implement',this)">④ Implement Guide</button>
+    <button class="tab-btn" onclick="showTab('audit',this)">⑤ Audit Guide</button>
+    <button class="tab-btn" onclick="showTab('training',this)">⑥ Training Matrix</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════ TAB 1: FRAMEWORK -->
+<div id="tab-framework" class="tab-panel active">
+  <div class="section-title">ISO 45001:2018 — Framework &amp; Concept</div>
+  <div class="section-desc">Occupational Health &amp; Safety Management System — PDCA Cycle | Annex SL High Level Structure | Core OH&S Principles</div>
+
+  <!-- Key Concept Cards -->
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h3>🏗️ Annex SL Structure</h3>
+      <p>ISO 45001 adopts the common 10-clause Annex SL (HLS) framework — enabling seamless integration with ISO 9001:2015 and ISO 14001:2015. Replaces OHSAS 18001 as the primary international OH&S standard.</p>
+    </div>
+    <div class="concept-card blush">
+      <h3>🔄 PDCA Cycle</h3>
+      <p>Plan-Do-Check-Act is the operating engine of ISO 45001. Applied at both system and process level. <strong>Top Management</strong> is the core driver at every stage, ensuring OH&S is embedded in business strategy — not treated as an add-on.</p>
+    </div>
+    <div class="concept-card dusty">
+      <h3>⚠️ Risk-Based Thinking</h3>
+      <p>Hazard identification and OH&S risk assessment are fundamental. The <strong>Hierarchy of Controls</strong> (Eliminate → Substitute → Engineer → Admin → PPE) guides risk reduction to a reasonably practicable level across all operations.</p>
+    </div>
+    <div class="concept-card lav">
+      <h3>👷 Worker Participation</h3>
+      <p>A key differentiator of ISO 45001: <strong>consultation and participation of workers</strong> (§5.4) is a standalone requirement. Workers must be involved in hazard identification, risk assessment, incident investigation, and OH&S objective setting.</p>
+    </div>
+  </div>
+
+  <!-- PDCA Diagram Image -->
+  <div class="img-frame">
+    <img src="https://i.imgur.com/placeholder.png"
+         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'background:linear-gradient(135deg,#4d6157,#6E8175);border-radius:10px;padding:40px;color:#C0B0C1;font-family:DM Sans,sans-serif;\'><div style=\'font-family:Playfair Display,serif;font-size:28px;font-weight:700;margin-bottom:16px;\'>ISO 45001:2018 — PDCA Cycle</div><div style=\'display:grid;grid-template-columns:1fr 1fr;gap:20px;\'><div style=\'background:rgba(255,255,255,0.1);border-radius:10px;padding:20px;\'><div style=\'font-size:22px;font-weight:700;color:#E6C8C6;margin-bottom:10px;\'>📋 PLAN (§4,5,6)</div><p style=\'font-size:13.5px;line-height:1.7;color:#97AC9F;\'>Understand context · OH&S risks & opportunities · Establish objectives · Hazard identification · Legal requirements</p></div><div style=\'background:rgba(255,255,255,0.1);border-radius:10px;padding:20px;\'><div style=\'font-size:22px;font-weight:700;color:#E6C8C6;margin-bottom:10px;\'>⚙️ DO (§7,8)</div><p style=\'font-size:13.5px;line-height:1.7;color:#97AC9F;\'>Resources & competence · Worker participation · Hazard controls · Emergency preparedness · Procurement controls</p></div><div style=\'background:rgba(255,255,255,0.1);border-radius:10px;padding:20px;\'><div style=\'font-size:22px;font-weight:700;color:#E6C8C6;margin-bottom:10px;\'>🔍 CHECK (§9)</div><p style=\'font-size:13.5px;line-height:1.7;color:#97AC9F;\'>Monitoring & measurement · Compliance evaluation · Internal audit · Management review · Incident analysis</p></div><div style=\'background:rgba(255,255,255,0.1);border-radius:10px;padding:20px;\'><div style=\'font-size:22px;font-weight:700;color:#E6C8C6;margin-bottom:10px;\'>🔁 ACT (§10)</div><p style=\'font-size:13.5px;line-height:1.7;color:#97AC9F;\'>Incident & nonconformity · Corrective actions · Root cause analysis · Continual improvement · Safety culture</p></div></div></div>'"
+         alt="ISO 45001:2018 PDCA Cycle Diagram"
+         style="width:100%; border-radius:10px; display:block;" />
+  </div>
+
+  <!-- PDCA Workflow Detail -->
+  <div class="pdca-wrapper">
+    <h2>ISO 45001:2018 — PDCA Operating Cycle</h2>
+    <p>OH&S Management System full-cycle framework | Clause reference mapping | Top Management at the core of every stage</p>
+    <div class="pdca-grid">
+      <div class="pdca-col">
+        <div class="pdca-col-header">
+          <div class="pdca-letter plan">P</div>
+          <div><div class="pdca-col-title">PLAN</div><div class="pdca-col-sub">Context, Risk & Objectives</div></div>
+        </div>
+        <div class="pdca-step"><div class="pdca-step-num">§4</div><div><div class="pdca-step-text">Context of Organization</div><div class="pdca-step-sub">Internal/external issues · Interested parties · Scope · OH&S MS design</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§5</div><div><div class="pdca-step-text">Leadership &amp; Commitment</div><div class="pdca-step-sub">OH&S Policy signed · Roles assigned · Worker participation process</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§6.1</div><div><div class="pdca-step-text">Hazard ID &amp; Risk Assessment</div><div class="pdca-step-sub">Hazard register · Risk matrix · Legal register · Opportunity assessment</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§6.2</div><div><div class="pdca-step-text">OH&S Objectives &amp; KPIs</div><div class="pdca-step-sub">SMART objectives · Process owners · Measurement criteria · Timeline</div></div></div>
+      </div>
+      <div class="pdca-col">
+        <div class="pdca-col-header">
+          <div class="pdca-letter do-c">D</div>
+          <div><div class="pdca-col-title">DO</div><div class="pdca-col-sub">Implement &amp; Operate</div></div>
+        </div>
+        <div class="pdca-step"><div class="pdca-step-num">§7</div><div><div class="pdca-step-text">Resources &amp; Competence</div><div class="pdca-step-sub">Training matrix · Awareness programme · Communication plan · Document control</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§8.1</div><div><div class="pdca-step-text">Operational Controls</div><div class="pdca-step-sub">Hierarchy of controls · Safe systems of work · Permit-to-work · MOC process</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§8.1.4</div><div><div class="pdca-step-text">Procurement &amp; Contractors</div><div class="pdca-step-sub">Contractor competence check · Risk assessments · Method statements · Induction</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§8.2</div><div><div class="pdca-step-text">Emergency Preparedness</div><div class="pdca-step-sub">Emergency response plans · Drill records · First aid · Evacuation procedures</div></div></div>
+      </div>
+      <div class="pdca-col">
+        <div class="pdca-col-header">
+          <div class="pdca-letter check">C</div>
+          <div><div class="pdca-col-title">CHECK</div><div class="pdca-col-sub">Monitor &amp; Evaluate</div></div>
+        </div>
+        <div class="pdca-step"><div class="pdca-step-num">§9.1</div><div><div class="pdca-step-text">Monitoring &amp; Measurement</div><div class="pdca-step-sub">KPI tracking · Calibrated equipment · Leading &amp; lagging indicators</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§9.1.2</div><div><div class="pdca-step-text">Compliance Evaluation</div><div class="pdca-step-sub">Legal register review · Compliance evidence · Audit of obligations</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§9.2</div><div><div class="pdca-step-text">Internal Audit</div><div class="pdca-step-sub">Annual programme · All clauses covered · Impartial auditors · NC tracking</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§9.3</div><div><div class="pdca-step-text">Management Review</div><div class="pdca-step-sub">Top management inputs · Performance data · Resource decisions · Minutes</div></div></div>
+      </div>
+      <div class="pdca-col">
+        <div class="pdca-col-header">
+          <div class="pdca-letter act">A</div>
+          <div><div class="pdca-col-title">ACT</div><div class="pdca-col-sub">Improve &amp; Correct</div></div>
+        </div>
+        <div class="pdca-step"><div class="pdca-step-num">§10.1</div><div><div class="pdca-step-text">Continual Improvement</div><div class="pdca-step-sub">Safety culture development · Proactive improvement initiatives</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§10.2</div><div><div class="pdca-step-text">Incident &amp; Nonconformity</div><div class="pdca-step-sub">Near-miss reporting · Root cause analysis · CAPA with effectiveness check</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§10.2</div><div><div class="pdca-step-text">Corrective Action</div><div class="pdca-step-sub">Temporary &amp; permanent fixes · Risk hierarchy applied · Re-assessment</div></div></div>
+        <div class="pdca-step"><div class="pdca-step-num">§10.3</div><div><div class="pdca-step-text">Continual Improvement</div><div class="pdca-step-sub">OH&S performance trends · Benchmarking · Worker wellbeing integration</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Annex SL Clause Map -->
+  <div class="clause-map">
+    <h3>Annex SL Clause Structure — ISO 45001:2018</h3>
+    <div class="annex-flow">
+      <div class="annex-phase">
+        <div class="annex-phase-label plan">PLAN</div>
+        <div class="annex-clause">§4<small>Context of Org</small></div>
+        <div class="annex-clause">§5<small>Leadership</small></div>
+        <div class="annex-clause">§6<small>Planning</small></div>
+      </div>
+      <div class="annex-arrow">→</div>
+      <div class="annex-phase">
+        <div class="annex-phase-label do-c">DO</div>
+        <div class="annex-clause">§7<small>Support</small></div>
+        <div class="annex-clause">§8<small>Operation</small></div>
+      </div>
+      <div class="annex-arrow">→</div>
+      <div class="annex-phase">
+        <div class="annex-phase-label check">CHECK</div>
+        <div class="annex-clause">§9.1<small>Monitoring</small></div>
+        <div class="annex-clause">§9.2<small>Internal Audit</small></div>
+        <div class="annex-clause">§9.3<small>Mgmt Review</small></div>
+      </div>
+      <div class="annex-arrow">→</div>
+      <div class="annex-phase">
+        <div class="annex-phase-label act">ACT</div>
+        <div class="annex-clause">§10.1<small>General</small></div>
+        <div class="annex-clause">§10.2<small>Incident/NC</small></div>
+        <div class="annex-clause">§10.3<small>Improvement</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OH&S Key Principles -->
+  <div class="card">
+    <div class="card-title"><span class="badge">KEY PRINCIPLES</span> ISO 45001:2018 — Core OH&S Principles</div>
+    <div class="principles-grid">
+      <div class="principle-item"><span class="principle-icon">🎯</span>Top management leadership &amp; accountability for OH&S outcomes</div>
+      <div class="principle-item"><span class="principle-icon">👷</span>Worker consultation &amp; participation at all levels and functions</div>
+      <div class="principle-item"><span class="principle-icon">⚖️</span>Legal compliance &amp; fulfilment of other OH&S requirements</div>
+      <div class="principle-item"><span class="principle-icon">🔍</span>Proactive hazard identification &amp; risk assessment (not reactive)</div>
+      <div class="principle-item"><span class="principle-icon">🛡️</span>Hierarchy of controls — eliminate hazards before using PPE</div>
+      <div class="principle-item"><span class="principle-icon">📊</span>Performance monitoring with leading &amp; lagging indicators</div>
+      <div class="principle-item"><span class="principle-icon">🔁</span>Continual improvement of OH&S performance culture</div>
+      <div class="principle-item"><span class="principle-icon">🌐</span>Integration with ISO 9001 &amp; ISO 14001 via Annex SL HLS</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ TAB 2: REQUIREMENTS -->
+<div id="tab-requirements" class="tab-panel">
+  <div class="section-title">ISO 45001:2018 — Requirements</div>
+  <div class="section-desc">10-Clause structure | Click any clause to view Requirement · Objective · Key Results</div>
+
+  <div style="background:rgba(230,200,198,0.25); border:3px dashed var(--blush-dark); border-radius:14px; padding:20px 24px; margin-bottom:28px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; justify-content:center;">
+      <span style="font-size:22px;">⬇️</span>
+      <span style="font-size:16px; font-weight:800; color:var(--olive-dark);">DOWNLOAD STANDARD &amp; REFERENCE</span>
+      <span style="font-size:22px;">⬇️</span>
+    </div>
+    <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+      <a class="btn-download" href="https://drive.google.com/file/d/12LAgjxCYOJDli4jBf89AOb86nRgxZeG6/view?usp=drive_link" target="_blank">
+        ⬇ DOWNLOAD FULL TEXT REQUIREMENT (PDF)
+      </a>
+      <a class="btn-download btn-outline" href="https://www.iso.org/obp/ui/#iso:std:iso:45001:ed-1:v1:en" target="_blank">
+        🌐 Official ISO 45001 Standard Site
+      </a>
+    </div>
+  </div>
+
+  <div class="clauses-nav">
+    <button class="clause-btn active" onclick="showClause('c4',this)">§4 Context</button>
+    <button class="clause-btn" onclick="showClause('c5',this)">§5 Leadership</button>
+    <button class="clause-btn" onclick="showClause('c6',this)">§6 Planning</button>
+    <button class="clause-btn" onclick="showClause('c7',this)">§7 Support</button>
+    <button class="clause-btn" onclick="showClause('c8',this)">§8 Operation</button>
+    <button class="clause-btn" onclick="showClause('c9',this)">§9 Performance Eval</button>
+    <button class="clause-btn" onclick="showClause('c10',this)">§10 Improvement</button>
+  </div>
+
+  <!-- CLAUSE 4 -->
+  <div id="clause-c4" class="clause-detail active">
+    <div class="clause-header-block">
+      <h2>Clause 4 — Context of the Organization</h2>
+      <p>Establish strategic foundation | Identify internal/external issues | Define scope | Climate change consideration added</p>
+    </div>
+    <div class="scroll-x"><div class="req-3col">
+      <div class="req-col-header">Requirement</div><div class="req-col-header">Objective</div><div class="req-col-header">Key Results / Evidence Required</div>
+      <div class="req-cell">4.1 Understanding the organization and its context</div>
+      <div class="req-cell">Identify internal &amp; external issues that affect OH&S system outcomes. Determine whether climate change is a relevant issue. Review at planned intervals and when significant changes occur.</div>
+      <div class="req-cell"><span class="kpi-tag">Context Register</span><span class="kpi-tag">SWOT/PESTLE</span><span class="kpi-tag">Issue Log</span> Documented analysis retained. Updated at Management Review. Climate change relevance determined and recorded.</div>
+
+      <div class="req-cell">4.2 Needs &amp; expectations of workers and other interested parties</div>
+      <div class="req-cell">Identify workers and stakeholders who can affect or be affected by OH&S decisions. Determine their relevant requirements. Some requirements become compliance obligations (legal/regulatory).</div>
+      <div class="req-cell"><span class="kpi-tag">Interested Party Register</span><span class="kpi-tag">Stakeholder Map</span><span class="kpi-tag">Compliance Obligations List</span> Workers listed explicitly. Requirements reviewed when changes occur.</div>
+
+      <div class="req-cell">4.3 Determining the scope of the OH&S management system</div>
+      <div class="req-cell">Define boundaries — activities, locations, workers covered. Cannot exclude areas to avoid OH&S obligations. Scope must account for 4.1 &amp; 4.2 outputs and organizational control.</div>
+      <div class="req-cell"><span class="kpi-tag">Scope Statement</span> Available as documented information. Declared to CB at certification. Areas excluded must be justifiable. On-change review required.</div>
+
+      <div class="req-cell">4.4 OH&S management system</div>
+      <div class="req-cell">Establish, implement, maintain and continually improve the OH&S MS including its processes and their interactions per this standard.</div>
+      <div class="req-cell"><span class="kpi-tag">OH&S MS Manual/Framework</span><span class="kpi-tag">Process Map</span> All processes and interactions documented. System integrated into business processes.</div>
+    </div></div>
+  </div>
+
+  <!-- CLAUSE 5 -->
+  <div id="clause-c5" class="clause-detail">
+    <div class="clause-header-block">
+      <h2>Clause 5 — Leadership &amp; Worker Participation</h2>
+      <p>Top management must be champions — not delegates | OH&S Policy | Worker consultation is a standalone requirement</p>
+    </div>
+    <div class="scroll-x"><div class="req-3col">
+      <div class="req-col-header">Requirement</div><div class="req-col-header">Objective</div><div class="req-col-header">Key Results / Evidence Required</div>
+      <div class="req-cell">5.1 Leadership and commitment</div>
+      <div class="req-cell">Top management must take overall accountability for OH&S outcomes — not delegate. Must integrate OH&S into business processes, promote culture, protect workers from reprisal when reporting incidents.</div>
+      <div class="req-cell"><span class="kpi-tag">Leadership Evidence</span><span class="kpi-tag">Safety Committee Records</span><span class="kpi-tag">Management Walk-Throughs</span> Auditor will interview top management directly. Evidence of active participation required.</div>
+
+      <div class="req-cell">5.2 OH&S policy</div>
+      <div class="req-cell">Signed by CEO. Must commit to: safe &amp; healthy workplaces, hazard elimination, legal compliance, worker consultation, continual improvement. Must be communicated to all workers and available to interested parties.</div>
+      <div class="req-cell"><span class="kpi-tag">Signed OH&S Policy</span><span class="kpi-tag">Communication Records</span><span class="kpi-tag">Display Evidence</span> Policy displayed, included in induction. Reviewed periodically for continued suitability.</div>
+
+      <div class="req-cell">5.3 Roles, responsibilities and authorities</div>
+      <div class="req-cell">Define and communicate OH&S roles throughout the organization. Top management retains ultimate responsibility. Each role must have documented responsibilities for their OH&S area.</div>
+      <div class="req-cell"><span class="kpi-tag">Org Chart with OH&S Roles</span><span class="kpi-tag">Job Descriptions</span><span class="kpi-tag">Authority Matrix</span> Communicated to all workers. Reviewed when structure changes.</div>
+
+      <div class="req-cell">5.4 Consultation and participation of workers</div>
+      <div class="req-cell">Establish, implement and maintain process for worker consultation and participation. Workers must be involved in: hazard ID, risk assessment, incident investigation, objective setting, NC identification. Non-managerial workers must participate in all OH&S decisions.</div>
+      <div class="req-cell"><span class="kpi-tag">Safety Committee Minutes</span><span class="kpi-tag">Toolbox Talk Records</span><span class="kpi-tag">Worker Feedback System</span><span class="kpi-tag">Near-Miss Reports</span> Documented process. Evidence that workers at all levels are engaged.</div>
+    </div></div>
+  </div>
+
+  <!-- CLAUSE 6 -->
+  <div id="clause-c6" class="clause-detail">
+    <div class="clause-header-block">
+      <h2>Clause 6 — Planning</h2>
+      <p>Risk-based planning | Hazard identification is the foundation | Legal register mandatory | SMART objectives required</p>
+    </div>
+    <div class="scroll-x"><div class="req-3col">
+      <div class="req-col-header">Requirement</div><div class="req-col-header">Objective</div><div class="req-col-header">Key Results / Evidence Required</div>
+      <div class="req-cell">6.1.1 General — Actions to address risks &amp; opportunities</div>
+      <div class="req-cell">Determine OH&S risks, OH&S opportunities, other risks and other opportunities. Plan actions proportionate to impact on OH&S performance. Consider organizational risks from 4.1 and interested party requirements from 4.2.</div>
+      <div class="req-cell"><span class="kpi-tag">Risk &amp; Opportunity Register</span><span class="kpi-tag">Action Plan</span> Risks rated and prioritized. Opportunities for improvement documented. Linked to objectives.</div>
+
+      <div class="req-cell">6.1.2 Hazard identification and risk assessment</div>
+      <div class="req-cell">Systematic, proactive, ongoing process. Must consider: routine/non-routine activities, emergency situations, human factors, infrastructure, contractor activities, design changes. Apply Hierarchy of Controls. Workers must participate.</div>
+      <div class="req-cell"><span class="kpi-tag">Hazard Register</span><span class="kpi-tag">Risk Assessments</span><span class="kpi-tag">HIRA Matrix</span><span class="kpi-tag">Worker Sign-off</span> All significant hazards documented. Risk scores assigned. Control measures specified and implemented.</div>
+
+      <div class="req-cell">6.1.3 Determination of legal and other requirements</div>
+      <div class="req-cell">Establish, implement and maintain process to determine all applicable legal requirements (national/local OH&S law, regulations) and other requirements (industry standards, customer requirements, collective agreements).</div>
+      <div class="req-cell"><span class="kpi-tag">Legal Register</span><span class="kpi-tag">Compliance Obligations List</span> Updated at defined frequency. Source identified. Compliance status tracked. Linked to risk assessments.</div>
+
+      <div class="req-cell">6.1.4 Planning action</div>
+      <div class="req-cell">Plan how to integrate and implement actions addressing risks, opportunities and legal requirements into OH&S management system processes. Evaluate effectiveness of these actions.</div>
+      <div class="req-cell"><span class="kpi-tag">Action Plan</span><span class="kpi-tag">Integration Evidence</span> Actions embedded in operational procedures, not standalone lists. Effectiveness reviewed at management review.</div>
+
+      <div class="req-cell">6.2 OH&S objectives and planning to achieve them</div>
+      <div class="req-cell">Set SMART OH&S objectives consistent with OH&S policy. Must be measurable, monitored, communicated, updated as needed. Planning must specify: what/who/when/how/how evaluated. Resources identified.</div>
+      <div class="req-cell"><span class="kpi-tag">Objectives Matrix</span><span class="kpi-tag">KPI Dashboard</span><span class="kpi-tag">Performance Data</span> Objectives tracked and reported to management review. Trend analysis maintained.</div>
+    </div></div>
+  </div>
+
+  <!-- CLAUSE 7 -->
+  <div id="clause-c7" class="clause-detail">
+    <div class="clause-header-block">
+      <h2>Clause 7 — Support</h2>
+      <p>Resources, competence, awareness, communication, documented information — the enabling infrastructure of the OH&S MS</p>
+    </div>
+    <div class="scroll-x"><div class="req-3col">
+      <div class="req-col-header">Requirement</div><div class="req-col-header">Objective</div><div class="req-col-header">Key Results / Evidence Required</div>
+      <div class="req-cell">7.1 Resources</div>
+      <div class="req-cell">Provide resources needed to establish, implement, maintain and improve OH&S MS — human, natural, infrastructure, technology and financial resources. Top management must authorize resource allocation.</div>
+      <div class="req-cell"><span class="kpi-tag">Resource Plan</span><span class="kpi-tag">Budget Allocation</span><span class="kpi-tag">Equipment Records</span> Resources linked to risk assessment findings and objectives. Adequacy reviewed at management review.</div>
+
+      <div class="req-cell">7.2 Competence</div>
+      <div class="req-cell">Determine competence requirements for workers affecting OH&S performance. Ensure workers are competent on the basis of education, training or experience. Include contractors and agency workers within organizational control.</div>
+      <div class="req-cell"><span class="kpi-tag">Competence Matrix</span><span class="kpi-tag">Training Records</span><span class="kpi-tag">Certification Copies</span> Training gaps identified and closed. Records retained as evidence. Contractor competence verified.</div>
+
+      <div class="req-cell">7.3 Awareness</div>
+      <div class="req-cell">All workers must be aware of: OH&S policy, OH&S risks relevant to their work, their contribution to OH&S MS effectiveness, consequences of not conforming, right to remove themselves from imminent danger without reprisal.</div>
+      <div class="req-cell"><span class="kpi-tag">Induction Records</span><span class="kpi-tag">Toolbox Talks</span><span class="kpi-tag">Awareness Test Results</span> Evidence that all workers — including contractors — received awareness training before work commencement.</div>
+
+      <div class="req-cell">7.4 Communication</div>
+      <div class="req-cell">Establish internal and external communication processes. Determine: what to communicate, when, to whom, how, who communicates. Internal: all levels. External: regulatory bodies, contractors, emergency services, public.</div>
+      <div class="req-cell"><span class="kpi-tag">Communication Plan</span><span class="kpi-tag">Notice Board Evidence</span><span class="kpi-tag">Meeting Records</span><span class="kpi-tag">External Communication Log</span> OH&S information flows documented. No barriers to worker OH&S reporting.</div>
+
+      <div class="req-cell">7.5 Documented information</div>
+      <div class="req-cell">Create and update documented information required by standard AND determined necessary by organization. Control all documented information: storage, access, distribution, protection, version control, retention and disposal.</div>
+      <div class="req-cell"><span class="kpi-tag">Document Master List</span><span class="kpi-tag">Document Control Procedure</span><span class="kpi-tag">Version Control System</span> All mandatory documented information present. External documents identified and controlled.</div>
+    </div></div>
+  </div>
+
+  <!-- CLAUSE 8 -->
+  <div id="clause-c8" class="clause-detail">
+    <div class="clause-header-block">
+      <h2>Clause 8 — Operation</h2>
+      <p>Operational planning &amp; control | Hierarchy of controls | Change management | Procurement | Emergency preparedness</p>
+    </div>
+    <div class="scroll-x"><div class="req-3col">
+      <div class="req-col-header">Requirement</div><div class="req-col-header">Objective</div><div class="req-col-header">Key Results / Evidence Required</div>
+      <div class="req-cell">8.1.1 Operational planning and control — General</div>
+      <div class="req-cell">Plan, implement, control, maintain and review processes needed to meet OH&S requirements. Establish criteria, implement controls according to criteria, retain documented information as evidence. Adapt work environment to workers.</div>
+      <div class="req-cell"><span class="kpi-tag">Safe Systems of Work</span><span class="kpi-tag">Work Instructions</span><span class="kpi-tag">Permit-to-Work Records</span><span class="kpi-tag">Operational Procedures</span></div>
+
+      <div class="req-cell">8.1.2 Eliminating hazards and reducing OH&S risks</div>
+      <div class="req-cell">Apply hierarchy of controls: 1) Eliminate, 2) Substitute, 3) Engineering controls, 4) Administrative controls, 5) PPE. Higher-order controls preferred. Worker involvement in control selection mandatory.</div>
+      <div class="req-cell"><span class="kpi-tag">Hierarchy of Controls Documentation</span><span class="kpi-tag">Risk Assessment Updates</span><span class="kpi-tag">PPE Register</span><span class="kpi-tag">Engineering Control Records</span></div>
+
+      <div class="req-cell">8.1.3 Management of change</div>
+      <div class="req-cell">Establish process for evaluating OH&S consequences of planned and unplanned temporary and permanent changes. Includes: new equipment, new processes, organization changes, new personnel, new legal requirements.</div>
+      <div class="req-cell"><span class="kpi-tag">Change Control Procedure</span><span class="kpi-tag">MOC Forms</span><span class="kpi-tag">Pre-change Risk Assessment</span> Changes communicated to workers. Controls implemented before change goes live.</div>
+
+      <div class="req-cell">8.1.4 Procurement (including contractors)</div>
+      <div class="req-cell">Coordinate procurement process with contractors to identify hazards and assess risks from their activities. Ensure contractor work complies with OH&S MS requirements. Define controls for contractors within organizational control.</div>
+      <div class="req-cell"><span class="kpi-tag">Contractor Management Procedure</span><span class="kpi-tag">Contractor Questionnaire</span><span class="kpi-tag">Induction Records</span><span class="kpi-tag">Method Statements</span></div>
+
+      <div class="req-cell">8.2 Emergency preparedness and response</div>
+      <div class="req-cell">Establish, implement and maintain processes for potential emergency situations. Plan response actions, provide training, periodically test and exercise, review and revise plans. Communicate to all workers and relevant interested parties.</div>
+      <div class="req-cell"><span class="kpi-tag">Emergency Response Plan</span><span class="kpi-tag">Drill Records</span><span class="kpi-tag">First Aid Register</span><span class="kpi-tag">Emergency Equipment Inspection</span></div>
+    </div></div>
+  </div>
+
+  <!-- CLAUSE 9 -->
+  <div id="clause-c9" class="clause-detail">
+    <div class="clause-header-block">
+      <h2>Clause 9 — Performance Evaluation</h2>
+      <p>Monitoring &amp; measurement | Compliance evaluation | Internal audit programme | Management review agenda requirements</p>
+    </div>
+    <div class="scroll-x"><div class="req-3col">
+      <div class="req-col-header">Requirement</div><div class="req-col-header">Objective</div><div class="req-col-header">Key Results / Evidence Required</div>
+      <div class="req-cell">9.1.1 Monitoring, measurement, analysis and evaluation</div>
+      <div class="req-cell">Determine: what to monitor/measure, methods, criteria for evaluation, when to perform, when to analyze results. Equipment must be calibrated. Both leading indicators (proactive) and lagging indicators (reactive) should be used.</div>
+      <div class="req-cell"><span class="kpi-tag">KPI Report</span><span class="kpi-tag">Incident Statistics</span><span class="kpi-tag">Near-Miss Trend</span><span class="kpi-tag">Calibration Records</span> Data analyzed for trends. Results communicated to relevant functions and workers.</div>
+
+      <div class="req-cell">9.1.2 Evaluation of compliance</div>
+      <div class="req-cell">Establish, implement and maintain process to evaluate fulfillment of legal and other requirements. Determine frequency and method of evaluation. Maintain knowledge of compliance status. Take action on non-compliance found.</div>
+      <div class="req-cell"><span class="kpi-tag">Compliance Evaluation Record</span><span class="kpi-tag">Legal Register with Status</span><span class="kpi-tag">Action Register</span> Compliance status documented and reported to management review. Non-compliances treated as NCs.</div>
+
+      <div class="req-cell">9.2 Internal audit</div>
+      <div class="req-cell">Conduct internal audits at planned intervals. Audit programme must consider: importance of processes, results of previous audits, risk-based approach. Auditors must not audit their own work. Results reported to management.</div>
+      <div class="req-cell"><span class="kpi-tag">Audit Programme</span><span class="kpi-tag">Audit Plan</span><span class="kpi-tag">Audit Reports</span><span class="kpi-tag">NC Log</span><span class="kpi-tag">CA Evidence</span> All clauses 4–10 covered annually. Auditors trained and competent. NCs tracked to closure.</div>
+
+      <div class="req-cell">9.3 Management review</div>
+      <div class="req-cell">Top management must review OH&S MS at planned intervals. Specific inputs required per §9.3a–g including: previous actions status, context/interested party changes, OH&S performance, audit results, consultation outcomes, resources, improvement opportunities.</div>
+      <div class="req-cell"><span class="kpi-tag">Management Review Minutes</span><span class="kpi-tag">Action Register</span><span class="kpi-tag">Decision Records</span> Minutes communicate to workers. Actions with owners and timelines. Minimum annual — semi-annual recommended.</div>
+    </div></div>
+  </div>
+
+  <!-- CLAUSE 10 -->
+  <div id="clause-c10" class="clause-detail">
+    <div class="clause-header-block">
+      <h2>Clause 10 — Improvement</h2>
+      <p>Incident reporting | NC &amp; CAPA | Corrective actions | Continual improvement — the closing loop of the PDCA cycle</p>
+    </div>
+    <div class="scroll-x"><div class="req-3col">
+      <div class="req-col-header">Requirement</div><div class="req-col-header">Objective</div><div class="req-col-header">Key Results / Evidence Required</div>
+      <div class="req-cell">10.1 General</div>
+      <div class="req-cell">Determine opportunities for improvement and implement necessary actions to achieve intended outcomes of OH&S MS. Includes proactive opportunities — not just reactive responses to incidents.</div>
+      <div class="req-cell"><span class="kpi-tag">Improvement Register</span><span class="kpi-tag">Safety Culture Initiatives</span> Evidence of proactive improvement beyond incident response. Worker suggestions captured and acted upon.</div>
+
+      <div class="req-cell">10.2 Incident, nonconformity and corrective action</div>
+      <div class="req-cell">Establish process to report, investigate and act on incidents and NCs. Must include: timely response, investigation with root cause analysis, determine if similar hazards exist elsewhere, review effectiveness of existing risk controls, CAPA implementation, workers involved in investigation.</div>
+      <div class="req-cell"><span class="kpi-tag">Near-Miss Report Forms</span><span class="kpi-tag">Incident Investigation Reports</span><span class="kpi-tag">CAPA Register</span><span class="kpi-tag">RCA Documentation</span><span class="kpi-tag">Effectiveness Verification</span> All incidents including near misses investigated. Root cause identified. CAs verified effective before closing.</div>
+
+      <div class="req-cell">10.3 Continual improvement</div>
+      <div class="req-cell">Continually improve suitability, adequacy and effectiveness of OH&S MS. Promote worker participation in improvement activities. Communicate relevant results of continual improvement to workers.</div>
+      <div class="req-cell"><span class="kpi-tag">OH&S Trend Analysis</span><span class="kpi-tag">Year-on-Year Comparison</span><span class="kpi-tag">Safety Culture Survey</span> Demonstrable improvement over time. Shared with workers. Recognized as organizational priority.</div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ TAB 3: DOCUMENTS -->
+<div id="tab-documents" class="tab-panel">
+  <div class="section-title">ISO 45001:2018 — Document Register</div>
+  <div class="section-desc">Complete document hierarchy from Policy (Tier 1) to Records (Tier 5) | Filter by tier level | Key concept for each document</div>
+
+  <div class="info-banner">
+    <span class="icon">📋</span>
+    <div>ISO 45001:2018 requires both <strong>mandatory documented information</strong> (explicitly stated in standard) and <strong>organization-determined documented information</strong> (needed for effective OH&S MS operation). This register covers both categories in a full hierarchy.</div>
+  </div>
+
+  <div class="doc-filter-bar">
+    <button class="doc-filter-btn active" onclick="filterDocs('all',this)">All Documents</button>
+    <button class="doc-filter-btn" onclick="filterDocs('tier-1',this)">Tier 1 — Policy</button>
+    <button class="doc-filter-btn" onclick="filterDocs('tier-2',this)">Tier 2 — Procedures</button>
+    <button class="doc-filter-btn" onclick="filterDocs('tier-3',this)">Tier 3 — Work Instructions</button>
+    <button class="doc-filter-btn" onclick="filterDocs('tier-4',this)">Tier 4 — Forms &amp; Plans</button>
+    <button class="doc-filter-btn" onclick="filterDocs('tier-5',this)">Tier 5 — Records</button>
+  </div>
+
+  <div class="doc-table-wrapper">
+  <div class="scroll-x">
+  <table class="doc-table">
+    <thead>
+      <tr>
+        <th style="width:80px">Clause</th>
+        <th style="width:200px">Requirement</th>
+        <th style="width:280px">Required Documents</th>
+        <th>Key Concept / What to Include</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- TIER 1 -->
+      <tr class="doc-row tier-1 row-group-a">
+        <td><span class="clause-num">§5.2</span></td>
+        <td><span class="tier-badge tier-1">TIER 1</span><br><span class="doc-name">OH&S Policy</span></td>
+        <td><ul class="doc-list"><li>OH&S Policy Statement (signed by CEO)</li></ul></td>
+        <td>Must commit to: safe &amp; healthy workplaces, hazard elimination, legal compliance, worker consultation, continual improvement. Signed by top management. Communicated to all workers. Available to interested parties. Reviewed periodically.</td>
+      </tr>
+      <tr class="doc-row tier-1 row-group-b">
+        <td><span class="clause-num">§4.3</span></td>
+        <td><span class="tier-badge tier-1">TIER 1</span><br><span class="doc-name">OH&S MS Scope</span></td>
+        <td><ul class="doc-list"><li>Scope Statement</li></ul></td>
+        <td>Define organizational boundaries — sites, activities, processes, workers covered. Must include factors from 4.1 and 4.2. Cannot exclude activities to avoid OH&S obligations. Declared to certification body.</td>
+      </tr>
+      <tr class="doc-row tier-1 row-group-a">
+        <td><span class="clause-num">§4.4</span></td>
+        <td><span class="tier-badge tier-1">TIER 1</span><br><span class="doc-name">OH&S MS Manual / Framework</span></td>
+        <td><ul class="doc-list"><li>OH&S Management System Manual</li><li>Process Map / Turtle Diagram</li></ul></td>
+        <td>High-level description of OH&S MS processes and their interactions. Shows how clauses 4–10 are implemented. Not mandatory by standard but strongly recommended as master reference. Links all procedures.</td>
+      </tr>
+
+      <!-- TIER 2 -->
+      <tr class="doc-row tier-2 row-group-b">
+        <td><span class="clause-num">§6.1.2</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Hazard Identification &amp; Risk Assessment Procedure</span></td>
+        <td><ul class="doc-list"><li>HIRA Procedure</li><li>Risk Assessment Methodology Document</li></ul></td>
+        <td>Define: scope of hazard ID, methodology (HIRA, JSA, FMEA), risk scoring matrix (likelihood × severity), who participates (workers must be involved), frequency of review, trigger for re-assessment. Apply hierarchy of controls.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-a">
+        <td><span class="clause-num">§6.1.3</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Legal &amp; Other Requirements Procedure</span></td>
+        <td><ul class="doc-list"><li>Legal Register Procedure</li><li>Compliance Obligations Procedure</li></ul></td>
+        <td>How to identify, access, and evaluate applicable OH&S laws, regulations, industry standards, and other requirements. Define: source of information, review frequency, who responsible, how linked to risk assessments, compliance evaluation method.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-b">
+        <td><span class="clause-num">§7.2</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Competence &amp; Training Procedure</span></td>
+        <td><ul class="doc-list"><li>Training &amp; Competence Procedure</li></ul></td>
+        <td>Define competence requirements per role, gap analysis process, training delivery methods, evaluation of training effectiveness, record keeping. Must cover internal workers, contractors, agency workers. Include statutory and mandatory training.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-a">
+        <td><span class="clause-num">§7.4</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Communication Procedure</span></td>
+        <td><ul class="doc-list"><li>Internal &amp; External Communication Procedure</li></ul></td>
+        <td>Who communicates, what is communicated, to whom, when, and how for both internal (all levels) and external (regulators, contractors, emergency services) audiences. Must ensure workers can report OH&S concerns freely.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-b">
+        <td><span class="clause-num">§7.5</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Document Control Procedure</span></td>
+        <td><ul class="doc-list"><li>Document &amp; Records Control Procedure</li></ul></td>
+        <td>Document numbering, version control, approval, distribution, access control, retention periods, archive and disposal. Applies to both internal documents and controlled external documents (e.g., regulations, supplier data sheets).</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-a">
+        <td><span class="clause-num">§8.1.3</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Management of Change Procedure</span></td>
+        <td><ul class="doc-list"><li>MOC Procedure</li></ul></td>
+        <td>Process to evaluate OH&S consequences before implementing planned/unplanned changes. Scope: new equipment, process changes, personnel changes, contractor changes, regulatory changes. Pre-change risk assessment required. Communication to workers.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-b">
+        <td><span class="clause-num">§8.1.4</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Contractor &amp; Procurement Procedure</span></td>
+        <td><ul class="doc-list"><li>Contractor Management Procedure</li><li>Procurement OH&S Procedure</li></ul></td>
+        <td>Contractor pre-qualification, competence verification, site induction, method statement review, permit-to-work system, ongoing monitoring. Products/services assessed for OH&S impacts before purchase. Material Safety Data Sheets controlled.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-a">
+        <td><span class="clause-num">§8.2</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Emergency Preparedness Procedure</span></td>
+        <td><ul class="doc-list"><li>Emergency Response Procedure</li><li>Evacuation Procedure</li></ul></td>
+        <td>Identify potential emergencies (fire, chemical spill, medical emergency, bomb threat, flood). Define response actions, roles, contact lists, communication to emergency services. Test procedures through drills at defined intervals. Revise after drills.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-b">
+        <td><span class="clause-num">§9.2</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Internal Audit Procedure</span></td>
+        <td><ul class="doc-list"><li>Internal Audit Procedure</li></ul></td>
+        <td>Audit programme planning, auditor selection (impartiality), audit plan preparation, audit conduct (opening/closing meetings, evidence gathering), reporting, NC classification, CAPA follow-up. Risk-based frequency determination.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-a">
+        <td><span class="clause-num">§10.2</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Incident, NC &amp; CAPA Procedure</span></td>
+        <td><ul class="doc-list"><li>Incident Reporting &amp; Investigation Procedure</li><li>Nonconformity &amp; CAPA Procedure</li></ul></td>
+        <td>How to report incidents (including near misses), investigation process (root cause analysis), corrective action development and implementation, effectiveness verification, escalation to management. Workers must be protected from reprisal for reporting.</td>
+      </tr>
+      <tr class="doc-row tier-2 row-group-b">
+        <td><span class="clause-num">§5.4</span></td>
+        <td><span class="tier-badge tier-2">TIER 2</span><br><span class="doc-name">Worker Consultation &amp; Participation Procedure</span></td>
+        <td><ul class="doc-list"><li>Worker Participation Procedure</li></ul></td>
+        <td>Mechanisms for non-managerial workers to participate in: hazard ID, risk assessment, determination of controls, training needs, incident investigation, policy development, NC identification, objectives setting. Safety committee structure.</td>
+      </tr>
+
+      <!-- TIER 3 -->
+      <tr class="doc-row tier-3 row-group-a">
+        <td><span class="clause-num">§6.1.2</span></td>
+        <td><span class="tier-badge tier-3">TIER 3</span><br><span class="doc-name">Job Safety Analysis / Task Risk Assessment</span></td>
+        <td><ul class="doc-list"><li>JSA / Task-Based Risk Assessments</li><li>HIRA by area/activity</li></ul></td>
+        <td>Detailed hazard identification for each work task or area. Include: task steps, hazards at each step, existing controls, residual risk rating, additional controls needed. Workers who perform the task must participate in development. Reviewed when changes occur.</td>
+      </tr>
+      <tr class="doc-row tier-3 row-group-b">
+        <td><span class="clause-num">§8.1.1</span></td>
+        <td><span class="tier-badge tier-3">TIER 3</span><br><span class="doc-name">Safe Systems of Work / Work Instructions</span></td>
+        <td><ul class="doc-list"><li>Safe Operating Procedures (SOPs)</li><li>Work Instructions (WIs)</li><li>One-Point Lessons</li></ul></td>
+        <td>Step-by-step operational instructions incorporating safety controls. Reference relevant risk assessments. Include: PPE requirements, emergency actions, competence prerequisites. Written at appropriate literacy level. Available at point of use.</td>
+      </tr>
+      <tr class="doc-row tier-3 row-group-a">
+        <td><span class="clause-num">§8.1.1</span></td>
+        <td><span class="tier-badge tier-3">TIER 3</span><br><span class="doc-name">Permit-to-Work System</span></td>
+        <td><ul class="doc-list"><li>PTW Procedure</li><li>Hot Work Permit</li><li>Confined Space Entry Permit</li><li>Electrical Isolation Permit</li></ul></td>
+        <td>Control high-risk activities through formal authorization. Define: who can issue/receive permits, conditions for issue, simultaneous operations management, shift handover, permit cancellation. Test system periodically.</td>
+      </tr>
+      <tr class="doc-row tier-3 row-group-b">
+        <td><span class="clause-num">§8.2</span></td>
+        <td><span class="tier-badge tier-3">TIER 3</span><br><span class="doc-name">Emergency Response Plans (Site Specific)</span></td>
+        <td><ul class="doc-list"><li>Site Evacuation Plan</li><li>Chemical Spill Response Plan</li><li>Medical Emergency Plan</li><li>Fire Response Plan</li></ul></td>
+        <td>Site-specific actions for each identified emergency scenario. Include: assembly points, warden roles, communication tree, emergency services contacts, first aid locations. Displayed prominently. Reviewed after each drill and after any emergency.</td>
+      </tr>
+      <tr class="doc-row tier-3 row-group-a">
+        <td><span class="clause-num">§7.2</span></td>
+        <td><span class="tier-badge tier-3">TIER 3</span><br><span class="doc-name">Training Materials &amp; Presentations</span></td>
+        <td><ul class="doc-list"><li>Induction Training Pack</li><li>Toolbox Talk Presentations</li><li>OH&S Awareness Materials</li></ul></td>
+        <td>Induction covers: OH&S policy, site rules, hazards relevant to work area, emergency procedures, reporting channels. Toolbox talks address specific hazards or incidents. Awareness materials reinforce ongoing safety culture.</td>
+      </tr>
+
+      <!-- TIER 4 -->
+      <tr class="doc-row tier-4 row-group-b">
+        <td><span class="clause-num">§6.1.2</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">Hazard Register &amp; Risk Assessment Forms</span></td>
+        <td><ul class="doc-list"><li>Hazard Identification Form</li><li>Risk Assessment Worksheet</li><li>Risk Matrix Template</li></ul></td>
+        <td>Structured template for recording hazards, risk scores, existing controls, residual risk, additional controls. Likelihood × Severity matrix. Worker sign-off column. Review date field. Control measures referenced to SOPs/WIs.</td>
+      </tr>
+      <tr class="doc-row tier-4 row-group-a">
+        <td><span class="clause-num">§6.1.3</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">Legal Register</span></td>
+        <td><ul class="doc-list"><li>Legal &amp; Compliance Register (spreadsheet)</li></ul></td>
+        <td>Columns: regulation name/reference, jurisdiction, requirements, applicable organizational area, compliance status (compliant/partially/non-compliant), evidence reference, review date, responsible person. Updated at minimum annually and when changes notified.</td>
+      </tr>
+      <tr class="doc-row tier-4 row-group-b">
+        <td><span class="clause-num">§6.2</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">OH&S Objectives &amp; Action Plan</span></td>
+        <td><ul class="doc-list"><li>OH&S Objectives Matrix</li><li>KPI Tracking Sheet</li></ul></td>
+        <td>SMART objectives aligned to OH&S policy commitments. Columns: objective, metric/KPI, baseline, target, responsible person, resources, timeline, current status, progress notes. Reviewed at management review. Communicated to all workers.</td>
+      </tr>
+      <tr class="doc-row tier-4 row-group-a">
+        <td><span class="clause-num">§7.2</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">Training Matrix &amp; Competence Plan</span></td>
+        <td><ul class="doc-list"><li>Training Needs Analysis Matrix</li><li>Competence Framework</li></ul></td>
+        <td>Rows: training topics/competences. Columns: job roles/positions. Cells: required (mandatory), recommended, awareness only. Training gap identification. Refresher training intervals noted. Links to external certification requirements.</td>
+      </tr>
+      <tr class="doc-row tier-4 row-group-b">
+        <td><span class="clause-num">§8.1.3</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">Management of Change Form</span></td>
+        <td><ul class="doc-list"><li>MOC Request Form</li><li>Pre-Change Risk Assessment Template</li></ul></td>
+        <td>Capture: nature of change, reason, affected processes/workers, hazards introduced, risk assessment reference, controls implemented, approval chain, effective date, communication confirmation. Archive after change implemented.</td>
+      </tr>
+      <tr class="doc-row tier-4 row-group-a">
+        <td><span class="clause-num">§9.1</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">Inspection &amp; Monitoring Forms</span></td>
+        <td><ul class="doc-list"><li>Workplace Inspection Checklist</li><li>Safety Walk-Through Form</li><li>Equipment Safety Inspection Form</li></ul></td>
+        <td>Structured checklists for routine safety inspections. Include: item inspected, pass/fail/action, responsible person, target date, completed date. Trend analysis on findings. Near-miss trigger when safety concern identified during inspection.</td>
+      </tr>
+      <tr class="doc-row tier-4 row-group-b">
+        <td><span class="clause-num">§9.2</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">Audit Programme &amp; Audit Plan</span></td>
+        <td><ul class="doc-list"><li>Annual Audit Programme</li><li>Audit Plan Template</li><li>Audit Checklist (clause-based)</li></ul></td>
+        <td>Annual programme covers all clauses 4–10. Audit plan includes: scope, criteria, objectives, methods, team, schedule. Clause-based checklists ensure complete coverage. Risk-based frequency — higher risk areas audited more frequently.</td>
+      </tr>
+      <tr class="doc-row tier-4 row-group-a">
+        <td><span class="clause-num">§10.2</span></td>
+        <td><span class="tier-badge tier-4">TIER 4</span><br><span class="doc-name">Incident Report &amp; Investigation Form</span></td>
+        <td><ul class="doc-list"><li>Near-Miss / Incident Report Card</li><li>Incident Investigation Form</li><li>CAPA Form</li></ul></td>
+        <td>Near-miss card: simple, quick, accessible to all workers. Investigation form: timeline, root cause analysis (5-Why or fishbone), contributing factors, immediate and systemic CAs, effectiveness check date. CAPA form: action, owner, target date, close-out verification.</td>
+      </tr>
+
+      <!-- TIER 5 -->
+      <tr class="doc-row tier-5 row-group-b">
+        <td><span class="clause-num">§7.2</span></td>
+        <td><span class="tier-badge tier-5">TIER 5</span><br><span class="doc-name">Training Records</span></td>
+        <td><ul class="doc-list"><li>Individual Training Records</li><li>Attendance Sheets</li><li>Competence Assessment Results</li><li>External Certification Copies</li></ul></td>
+        <td>Evidence of what was trained, when, by whom, and that the worker understood (assessment result or sign-off). Retained for duration of employment + defined period. Includes contractor training records. Auditor will request specific worker records.</td>
+      </tr>
+      <tr class="doc-row tier-5 row-group-a">
+        <td><span class="clause-num">§9.2</span></td>
+        <td><span class="tier-badge tier-5">TIER 5</span><br><span class="doc-name">Audit Records</span></td>
+        <td><ul class="doc-list"><li>Audit Reports</li><li>NC Logs</li><li>CA Evidence</li><li>Effectiveness Verification Records</li></ul></td>
+        <td>Audit reports retained as documented information. NC log tracks all findings from open to closed. CA evidence (photos, records, updated documents) attached. Effectiveness verification documented. Management review receives audit summary.</td>
+      </tr>
+      <tr class="doc-row tier-5 row-group-b">
+        <td><span class="clause-num">§9.3</span></td>
+        <td><span class="tier-badge tier-5">TIER 5</span><br><span class="doc-name">Management Review Records</span></td>
+        <td><ul class="doc-list"><li>Management Review Minutes</li><li>Actions &amp; Decisions Register</li></ul></td>
+        <td>Minutes must evidence all §9.3 inputs were reviewed. Decisions and actions documented with owners and timelines. Communicated to workers. Retained as mandatory documented information. Minimum annually — semi-annual recommended.</td>
+      </tr>
+      <tr class="doc-row tier-5 row-group-a">
+        <td><span class="clause-num">§8.2</span></td>
+        <td><span class="tier-badge tier-5">TIER 5</span><br><span class="doc-name">Emergency Drill Records</span></td>
+        <td><ul class="doc-list"><li>Drill Exercise Reports</li><li>Drill Observations &amp; Improvement Actions</li></ul></td>
+        <td>Record: date, type of drill, participants, scenario, findings, improvement actions identified, timelines for correction. Frequency per organization risk and regulatory requirements. Results communicated to workers. Emergency plan updated after each exercise.</td>
+      </tr>
+      <tr class="doc-row tier-5 row-group-b">
+        <td><span class="clause-num">§10.2</span></td>
+        <td><span class="tier-badge tier-5">TIER 5</span><br><span class="doc-name">Incident &amp; Near-Miss Records</span></td>
+        <td><ul class="doc-list"><li>Incident Register / Log</li><li>Completed Investigation Reports</li><li>Statutory Notification Records (RIDDOR etc.)</li></ul></td>
+        <td>All incidents including near misses recorded in central log. Investigation reports retained. Statutory reporting obligations met and documented. Trend analysis performed. Data presented at management review. Workers receive feedback on investigations.</td>
+      </tr>
+      <tr class="doc-row tier-5 row-group-a">
+        <td><span class="clause-num">§9.1.2</span></td>
+        <td><span class="tier-badge tier-5">TIER 5</span><br><span class="doc-name">Compliance Evaluation Records</span></td>
+        <td><ul class="doc-list"><li>Compliance Evaluation Report</li><li>Legal Register (with status &amp; evidence)</li></ul></td>
+        <td>Evidence of compliance status for each requirement. Includes: evaluation method, date, evaluator, compliance evidence (inspection reports, certificates, test results), non-compliances identified and actioned. Retained for defined period.</td>
+      </tr>
+      <tr class="doc-row tier-5 row-group-b">
+        <td><span class="clause-num">§9.1.1</span></td>
+        <td><span class="tier-badge tier-5">TIER 5</span><br><span class="doc-name">OH&S Performance Data &amp; KPI Records</span></td>
+        <td><ul class="doc-list"><li>KPI Monthly/Quarterly Reports</li><li>Leading &amp; Lagging Indicator Data</li><li>Calibration Records</li></ul></td>
+        <td>Track both leading indicators (inspections completed, toolbox talks delivered, near misses reported, training coverage %) and lagging indicators (LTIFR, incident rate, days lost). Calibration records for all monitoring/measuring equipment. Trend charts for management review.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ TAB 4: IMPLEMENT -->
+<div id="tab-implement" class="tab-panel">
+  <div class="section-title">ISO 45001:2018 — Implementation Guideline</div>
+  <div class="section-desc">10-Step full implementation cycle | Click each step for detailed action list | Estimated timeline: 6–18 months depending on organization size and complexity</div>
+
+  <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:28px; align-items:center;">
+    <a class="btn-download" href="https://drive.google.com/file/d/1Joi6IuIV20lvt9A7NXIz1JsIUKKYuu2j/view?usp=drive_link" target="_blank">
+      📘 DOWNLOAD IMPLEMENT GUIDELINE (PDF)
+    </a>
+    <div style="color:var(--text-light); font-size:13.5px;">Click any step card below for detailed action checklist</div>
+  </div>
+
+  <div class="info-banner">
+    <span class="icon">🗺️</span>
+    <div>Implementation follows the <strong>PDCA sequence</strong>. Steps 1–4 = PLAN foundation. Steps 5–6 = DO implementation. Step 7 = CHECK. Step 8 = Pre-certification gap analysis. Steps 9–10 = Certification. Integration with ISO 9001/14001 saves 30–40% of implementation effort through shared processes.</div>
+  </div>
+
+  <div class="steps-timeline">
+    <div class="step-card" onclick="showImplDetail(1)">
+      <div class="step-num">1</div>
+      <div class="step-title">Awareness &amp; Commitment</div>
+      <div class="step-body">Top management briefing. Appoint OH&S Management Representative. Form OH&S steering team.</div>
+      <div class="step-duration">⏱ 2–4 weeks</div>
+    </div>
+    <div class="step-card ph2" onclick="showImplDetail(2)">
+      <div class="step-num">2</div>
+      <div class="step-title">Policy &amp; Objectives</div>
+      <div class="step-body">Draft and sign OH&S Policy. Set initial SMART objectives. Define scope statement. Assign process owners.</div>
+      <div class="step-duration">⏱ 2–3 weeks</div>
+    </div>
+    <div class="step-card ph2" onclick="showImplDetail(3)">
+      <div class="step-num">3</div>
+      <div class="step-title">Gap Analysis</div>
+      <div class="step-body">Assess current OH&S practices against all clauses 4–10. Identify gaps. Produce traffic-light report. Prioritize actions.</div>
+      <div class="step-duration">⏱ 3–6 weeks</div>
+    </div>
+    <div class="step-card ph3" onclick="showImplDetail(4)">
+      <div class="step-num">4</div>
+      <div class="step-title">Documentation Design</div>
+      <div class="step-body">Develop all Tier 1–4 documents: policy, procedures, WIs, forms. Hazard register. Legal register. Risk assessments.</div>
+      <div class="step-duration">⏱ 6–12 weeks</div>
+    </div>
+    <div class="step-card ph3" onclick="showImplDetail(5)">
+      <div class="step-num">5</div>
+      <div class="step-title">Implementation</div>
+      <div class="step-body">Issue documents. Deliver training. Begin generating records. Worker participation processes activated. Emergency drills conducted.</div>
+      <div class="step-duration">⏱ 6–12 weeks</div>
+    </div>
+    <div class="step-card ph4" onclick="showImplDetail(6)">
+      <div class="step-num">6</div>
+      <div class="step-title">Internal Audit</div>
+      <div class="step-body">Full clause audit (§4–10). Train internal auditors. Issue audit report. Raise and track NCs. Corrective actions assigned.</div>
+      <div class="step-duration">⏱ 3–4 weeks</div>
+    </div>
+    <div class="step-card ph4" onclick="showImplDetail(7)">
+      <div class="step-num">7</div>
+      <div class="step-title">Management Review</div>
+      <div class="step-body">Formal management review meeting. All §9.3 agenda items. Top management decisions. Actions assigned. Minutes documented.</div>
+      <div class="step-duration">⏱ 1–2 weeks</div>
+    </div>
+    <div class="step-card ph5" onclick="showImplDetail(8)">
+      <div class="step-num">8</div>
+      <div class="step-title">Pre-Cert Gap Analysis</div>
+      <div class="step-body">Comprehensive assessment by external consultant/lead auditor. Identify remaining NCs. Prioritize Majors for closure before Stage 2.</div>
+      <div class="step-duration">⏱ 1–2 weeks</div>
+    </div>
+    <div class="step-card ph5" onclick="showImplDetail(9)">
+      <div class="step-num">9</div>
+      <div class="step-title">CAPA Closure</div>
+      <div class="step-body">Close all major NCs. Verify CA effectiveness. Organize evidence by clause. Brief top management on audit day expectations.</div>
+      <div class="step-duration">⏱ 2–6 weeks</div>
+    </div>
+    <div class="step-card ph5" onclick="showImplDetail(10)">
+      <div class="step-num">10</div>
+      <div class="step-title">Certification Audit</div>
+      <div class="step-body">Stage 1 (document review) + Stage 2 (on-site). Top management leads. Demonstrate live OH&S controls. Close NCs within CB timeline.</div>
+      <div class="step-duration">⏱ 2–5 days audit</div>
+    </div>
+  </div>
+
+  <div id="implDetail" class="impl-detail-box">
+    <h3 id="implDetailTitle"></h3>
+    <ul class="impl-checklist" id="implDetailList"></ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ TAB 5: AUDIT -->
+<div id="tab-audit" class="tab-panel">
+  <div class="section-title">ISO 45001:2018 — Audit Guideline</div>
+  <div class="section-desc">Full-cycle audit process | 1st, 2nd &amp; 3rd party audits | Tools &amp; checklists for OH&S system assessment</div>
+
+  <div class="audit-btn-bar">
+    <a class="btn-download" href="https://docs.google.com/document/d/1W4ISWtzQj6_JQo5iOpE89tMDS937nux7/edit?usp=drive_link&ouid=109099777759712123575&rtpof=true&sd=true" target="_blank">
+      📋 GAP ANALYSIS CHECK LIST
+    </a>
+    <a class="btn-download btn-outline" href="https://drive.google.com/file/d/1vtPvx0lo4g7z61UMSMXNqNh3gac7fUNY/view?usp=drive_link" target="_blank">
+      ✅ READINESS CHECK LIST
+    </a>
+  </div>
+
+  <div class="info-banner">
+    <span class="icon">🔍</span>
+    <div>ISO 45001 uses <strong>Risk-Based Audit thinking</strong>: allocate more audit time to higher-risk activities, areas with previous NCs, and processes where human factors are critical. Worker participation in the audit process is a key requirement — workers should be interviewed, not just managers.</div>
+  </div>
+
+  <!-- Audit Cycle Phases -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-title"><span class="badge">AUDIT CYCLE</span> Full Audit Process — Phase by Phase</div>
+    <div class="audit-cycle">
+      <div class="audit-phase">
+        <div class="audit-phase-label">Phase 1</div>
+        <h3>📅 Audit Planning</h3>
+        <ul class="audit-list">
+          <li><div class="dot"></div>Develop annual audit programme (all clauses 4–10)</li>
+          <li><div class="dot"></div>Risk-based frequency: higher risk = more frequent</li>
+          <li><div class="dot"></div>Select impartial auditors (not own work area)</li>
+          <li><div class="dot"></div>Determine audit criteria and scope per audit</li>
+          <li><div class="dot"></div>Prepare clause-based audit checklists</li>
+          <li><div class="dot"></div>Notify auditees and agree logistics</li>
+          <li><div class="dot"></div>Review previous audit findings before audit</li>
+        </ul>
+      </div>
+      <div class="audit-phase p2">
+        <div class="audit-phase-label">Phase 2</div>
+        <h3>🚀 Audit Conduct</h3>
+        <ul class="audit-list">
+          <li><div class="dot"></div>Opening meeting: scope, criteria, method, logistics</li>
+          <li><div class="dot"></div>Document review: all mandatory documented information</li>
+          <li><div class="dot"></div>On-site observation: actual OH&S controls in practice</li>
+          <li><div class="dot"></div>Interview workers at ALL levels (not just managers)</li>
+          <li><div class="dot"></div>Walk-through: hazard identification, housekeeping, PPE use</li>
+          <li><div class="dot"></div>Test emergency systems: alarms, exits, first aid</li>
+          <li><div class="dot"></div>Review records: training, incidents, inspections, CAPA</li>
+        </ul>
+      </div>
+      <div class="audit-phase p3">
+        <div class="audit-phase-label">Phase 3</div>
+        <h3>📝 Audit Reporting</h3>
+        <ul class="audit-list">
+          <li><div class="dot"></div>Classify findings: NC Major / NC Minor / OFI / Observation</li>
+          <li><div class="dot"></div>Closing meeting: present findings to auditee</li>
+          <li><div class="dot"></div>Issue formal audit report within agreed timeframe</li>
+          <li><div class="dot"></div>NC descriptions: reference clause, objective evidence</li>
+          <li><div class="dot"></div>Distribute report to relevant management</li>
+          <li><div class="dot"></div>Enter all NCs in CAPA register</li>
+          <li><div class="dot"></div>Assign NC owners with target closure dates</li>
+        </ul>
+      </div>
+      <div class="audit-phase p4">
+        <div class="audit-phase-label">Phase 4</div>
+        <h3>✅ CAPA &amp; Closure</h3>
+        <ul class="audit-list">
+          <li><div class="dot"></div>Root cause analysis for each NC (5-Why, fishbone)</li>
+          <li><div class="dot"></div>Corrective action development — address root cause</li>
+          <li><div class="dot"></div>Implement CA with timeline and resource allocation</li>
+          <li><div class="dot"></div>Submit evidence of CA to audit lead</li>
+          <li><div class="dot"></div>Verify effectiveness before closing NC</li>
+          <li><div class="dot"></div>Update audit programme with lessons learned</li>
+          <li><div class="dot"></div>Report results to management review</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit Types -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-title"><span class="badge">AUDIT TYPES</span> 1st, 2nd &amp; 3rd Party Audits</div>
+    <div class="audit-types">
+      <div class="audit-type-card">
+        <h4>1st Party — Internal Audit</h4>
+        <p>Conducted by organization's own trained auditors. Must cover all clauses 4–10 annually. Auditors must not audit their own work areas. Risk-based programme — higher risk = more frequent. Results drive management review agenda. Unplanned "walk-through" audits recommended in addition to planned programme.</p>
+      </div>
+      <div class="audit-type-card">
+        <h4>2nd Party — External / Customer Audit</h4>
+        <p>Conducted by customers, regulatory authorities, or organizations on their behalf. No advance notice required from regulators — emphasizes need for OH&S readiness at all times. Provides independent view of OH&S performance. Findings drive CAPA. Results strengthen business relationships and demonstrate compliance commitment.</p>
+      </div>
+      <div class="audit-type-card">
+        <h4>3rd Party — Certification Audit</h4>
+        <p>Conducted by UKAS/IAF-accredited certification bodies. Stage 1 (document review) → Stage 2 (on-site assessment). Auditor determines audit-days based on scope, risk, and employee count. Certification valid 3 years with annual surveillance audits. Major NCs = CAPA required before certificate issued. Recertification every 3 years.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Audit Focus Areas for ISO 45001 -->
+  <div class="card">
+    <div class="card-title"><span class="badge">AUDIT FOCUS</span> Critical Areas Auditors Examine in ISO 45001</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+      <div>
+        <h4 style="color:var(--olive-dark); margin-bottom:12px; font-size:15px;">📋 Documentation Evidence</h4>
+        <ul class="audit-list" style="list-style:none;padding:0;">
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> OH&S Policy signed, displayed and current</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Hazard register with risk ratings and controls</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Legal register with compliance status</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Training records for all workers (incl. contractors)</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Incident and near-miss investigation reports</li>
+          <li style="padding:6px 0;font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Management review minutes (covering all §9.3 inputs)</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--olive-dark); margin-bottom:12px; font-size:15px;">👁️ On-Site Observation &amp; Worker Interviews</h4>
+        <ul class="audit-list" style="list-style:none;padding:0;">
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Are workers using PPE correctly in practice?</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Can workers describe the OH&S Policy commitments?</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Do workers know how to report a near miss?</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Are emergency exits clear and alarm systems tested?</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(151,172,159,0.15);font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Are controls documented in risk assessments actually in use?</li>
+          <li style="padding:6px 0;font-size:13.5px;color:var(--text-mid);display:flex;gap:8px;"><span style="color:var(--olive-mid);">›</span> Top management: demonstrate commitment and knowledge of OH&S MS</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ TAB 6: TRAINING -->
+<div id="tab-training" class="tab-panel">
+  <div class="section-title">ISO 45001:2018 — Training Matrix</div>
+  <div class="section-desc">Training requirement by clause and audience group | ● = Mandatory | ◑ = Recommended | ○ = Awareness</div>
+
+  <div class="info-banner" style="margin-bottom:24px;">
+    <span class="icon">🎓</span>
+    <div>ISO 45001 mandates competence (§7.2) and awareness (§7.3) for ALL workers including contractors. Worker participation (§5.4) requires workers to be involved in OH&S training development. <strong>Top management must be trained on their specific leadership obligations</strong> — auditors will interview them.</div>
+  </div>
+
+  <div class="training-table-wrapper">
+  <div class="scroll-x">
+  <table class="training-table">
+    <thead>
+      <tr>
+        <th style="width:80px;text-align:left">Clause</th>
+        <th style="width:240px;text-align:left">Training Topic</th>
+        <th>Staff / Operator</th>
+        <th>Supervisor / Team Leader</th>
+        <th>Production / Technical</th>
+        <th>QA / OH&S Officer</th>
+        <th>HR / Admin</th>
+        <th>Middle Management</th>
+        <th>Top Management</th>
+        <th>Contractor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§4</span></td>
+        <td>Context of Organization — OH&S MS Scope &amp; Purpose</td>
+        <td>○</td><td>◑</td><td>○</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§5.1</span></td>
+        <td>Leadership Commitment &amp; OH&S Culture Building</td>
+        <td>○</td><td>◑</td><td>○</td><td>◑</td><td>○</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§5.2</span></td>
+        <td>OH&S Policy — Understanding Commitments</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§5.4</span></td>
+        <td>Worker Consultation &amp; Participation Rights</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>◑</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§6.1.2</span></td>
+        <td>Hazard Identification — Methodology &amp; Worker Role</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>●</td><td>◑</td><td>●</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§6.1.2</span></td>
+        <td>Risk Assessment — HIRA, JSA, Risk Matrix</td>
+        <td>◑</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>●</td><td>◑</td><td>◑</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§6.1.2</span></td>
+        <td>Hierarchy of Controls — Application in Workplace</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§6.1.3</span></td>
+        <td>Legal &amp; Other OH&S Requirements Overview</td>
+        <td>○</td><td>◑</td><td>◑</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§7.2</span></td>
+        <td>OH&S Induction Training — Site Rules &amp; Hazard Awareness</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§7.2</span></td>
+        <td>Specific Hazard Training (chemical, machinery, working at height, etc.)</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>◑</td><td>○</td><td>●</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§7.3</span></td>
+        <td>OH&S Awareness — Policy, Risks, Reporting, Right to Remove from Danger</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§8.1</span></td>
+        <td>Safe Systems of Work / Permit-to-Work</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>◑</td><td>○</td><td>●</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§8.1.2</span></td>
+        <td>Personal Protective Equipment — Selection, Use, Maintenance</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>○</td><td>○</td><td>●</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§8.1.3</span></td>
+        <td>Management of Change — Process &amp; Responsibilities</td>
+        <td>○</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§8.2</span></td>
+        <td>Emergency Response — Evacuation, First Aid, Fire Safety</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td><td>●</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§8.2</span></td>
+        <td>First Aid Training (designated first aiders)</td>
+        <td>◑</td><td>●</td><td>◑</td><td>●</td><td>◑</td><td>◑</td><td>○</td><td>○</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§9.1</span></td>
+        <td>OH&S Monitoring, KPIs &amp; Leading/Lagging Indicators</td>
+        <td>○</td><td>◑</td><td>◑</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§9.2</span></td>
+        <td>Internal Auditor Training (ISO 45001)</td>
+        <td>○</td><td>◑</td><td>○</td><td>●</td><td>○</td><td>◑</td><td>○</td><td>○</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§9.3</span></td>
+        <td>Management Review — Agenda Requirements &amp; Leadership Role</td>
+        <td>○</td><td>○</td><td>○</td><td>●</td><td>○</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§10.2</span></td>
+        <td>Incident Reporting &amp; Near-Miss Investigation</td>
+        <td>●</td><td>●</td><td>●</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>●</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">§10.2</span></td>
+        <td>Root Cause Analysis Methods (5-Why, Fishbone)</td>
+        <td>○</td><td>●</td><td>◑</td><td>●</td><td>○</td><td>●</td><td>◑</td><td>○</td>
+      </tr>
+      <tr class="row-group-b">
+        <td><span class="clause-ref">§10.3</span></td>
+        <td>OH&S Continual Improvement &amp; Safety Culture</td>
+        <td>○</td><td>◑</td><td>◑</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+      <tr class="row-group-a">
+        <td><span class="clause-ref">Special</span></td>
+        <td>Mental Health &amp; Worker Wellbeing (§0.2 scope)</td>
+        <td>◑</td><td>●</td><td>◑</td><td>●</td><td>●</td><td>●</td><td>●</td><td>○</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="training-legend">
+    <span><strong style="color:var(--lavender);font-size:18px;">●</strong> Mandatory — Required training; records must be retained</span>
+    <span><strong style="color:var(--sage);font-size:16px;">◑</strong> Recommended — Strongly advised for role effectiveness</span>
+    <span><strong style="color:#aaa;font-size:14px;">○</strong> Awareness only — General understanding beneficial</span>
+  </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// Live Clock
+function updateClock() {
+  const now = new Date();
+  const opts = { weekday:'short', year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
+  document.getElementById('liveClock').textContent = now.toLocaleString('en-GB', opts);
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// Tab switching
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Clause detail switching
+function showClause(id, btn) {
+  document.querySelectorAll('.clause-detail').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.clause-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('clause-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Document filter
+function filterDocs(tier, btn) {
+  document.querySelectorAll('.doc-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#tab-documents .doc-row').forEach(row => {
+    if (tier === 'all') {
+      row.style.display = '';
+    } else {
+      row.style.display = row.classList.contains(tier) ? '' : 'none';
+    }
+  });
+}
+
+// Implement step detail
+const implDetails = {
+  1: {
+    title: 'Step 1 — Awareness Training &amp; Management Commitment',
+    items: [
+      'Brief top management on ISO 45001:2018 structure, benefits, and their specific leadership obligations under §5.1. This is non-delegable.',
+      'Appoint OH&S Management Representative (or equivalent role) with formal letter of authority and defined responsibilities.',
+      'Form OH&S Steering Team — cross-functional, including non-managerial worker representatives (§5.4 requirement).',
+      'Hold awareness sessions by level: Top Management (strategic obligations, audit day expectations), Middle Management (implementation responsibilities, process ownership), Workers (what ISO 45001 means for them, participation rights).',
+      'Communicate implementation timeline and expected resource commitment to all functions.',
+      'Confirm budget allocation for: external consultancy, training, audit fees, any PPE/engineering control upgrades identified.',
+      'Document all attendance records — first evidence of the OH&S MS is being established.'
+    ]
+  },
+  2: {
+    title: 'Step 2 — OH&S Policy &amp; Objectives Setting',
+    items: [
+      'Draft OH&S Policy with CEO/top management input. Must explicitly commit to: prevention of injury and ill health, safe and healthy workplaces, hazard elimination, legal compliance, worker consultation and participation, continual improvement.',
+      'Obtain CEO signature on final OH&S Policy before implementation activities begin.',
+      'Draft Scope Statement — define organizational boundaries, sites, activities, categories of workers covered. Cannot exclude areas to avoid compliance obligations.',
+      'Conduct cross-functional workshop to develop initial SMART OH&S objectives aligned to policy commitments.',
+      'Assign process owners for each objective with measurable KPIs, baseline data, targets, and timelines.',
+      'Communicate OH&S Policy to all workers. Display prominently at workplace. Include in induction pack. Available to interested parties on request.',
+      'Document objectives in an OH&S Objectives Matrix — this becomes the basis of management review performance reporting.'
+    ]
+  },
+  3: {
+    title: 'Step 3 — Internal Gap Analysis',
+    items: [
+      'Map all current OH&S practices, documents, and controls against each ISO 45001:2018 clause requirement (4.1 to 10.3).',
+      'Develop process map showing all activities within OH&S MS scope and interactions between processes.',
+      'Assess existing documentation: what exists, what is missing, what needs updating to meet standard requirements.',
+      'Evaluate current hazard identification process: is it systematic, does it cover all activity types, are workers involved, are all hazard categories considered?',
+      'Assess legal register status: which applicable regulations are identified, how is compliance evaluated, are any obligations being missed?',
+      'Evaluate worker participation mechanisms: are workers genuinely consulted, or is this top-down only? Identify gaps.',
+      'Produce gap analysis report: traffic light (Green/Amber/Red) status for each clause, priority action list, estimated resource and time requirements. Present to top management for resource decision.'
+    ]
+  },
+  4: {
+    title: 'Step 4 — Documentation Design',
+    items: [
+      'Tier 1: Finalize OH&S Policy (if not done in Step 2), Scope Statement, OH&S MS Manual/Framework document.',
+      'Tier 2: Write all procedures — HIRA, Legal Register, Document Control, Training &amp; Competence, Communication, MOC, Contractor Management, Emergency Preparedness, Internal Audit, Incident/NC/CAPA, Worker Participation.',
+      'Tier 3: Develop Safe Systems of Work (SOPs) and Work Instructions incorporating hierarchy of controls. Permit-to-Work system for high-risk activities. Site-specific Emergency Response Plans.',
+      'Tier 4: Design all forms — HIRA worksheet, Risk Assessment form, Legal Register (spreadsheet), Objectives Matrix, Training Matrix, MOC form, Inspection checklists, Near-Miss report cards, Incident Investigation form, CAPA form, Audit checklists.',
+      'Review all documents with workers who perform the tasks — they know the operational reality. Incorporate their input before approval.',
+      'Establish document control system: numbering convention, version control, master list, approval matrix, distribution method, archive and disposal.',
+      'Ensure documents are written at appropriate literacy level and available in relevant languages for all workers.'
+    ]
+  },
+  5: {
+    title: 'Step 5 — Documentation Implementation',
+    items: [
+      'Issue all documents through document control system with effective dates. Remove obsolete documents from point of use.',
+      'Deliver training to all workers on new procedures and work instructions relevant to their roles. Record all attendance.',
+      'Hold departmental implementation workshops: demonstrate new forms, explain HIRA participation, show near-miss reporting process.',
+      'Begin generating records as objective evidence: HIRA sign-offs, training records, inspection checklists, near-miss reports.',
+      'Implement emergency response plans: conduct first evacuation drill, first aid equipment check, alarm system test. Document and record results.',
+      'Activate worker participation mechanisms: first safety committee meeting, establish near-miss reporting system, toolbox talk programme.',
+      'Begin compliance evaluation against legal register — identify any immediate compliance gaps requiring urgent action.',
+      'Implement contractor management process: update contractor questionnaire, conduct contractor inductions, review method statements.'
+    ]
+  },
+  6: {
+    title: 'Step 6 — Internal Audit',
+    items: [
+      'Develop annual audit programme — all clauses 4–10 must be covered. Higher-risk areas audited more frequently.',
+      'Select and train internal auditors. Must be competent in ISO 45001 and audit techniques. Must not audit their own work areas.',
+      'Prepare clause-based audit checklists tailored to organizational context and known risk areas.',
+      'Conduct opening meeting: confirm scope, criteria, method, logistics, communication protocol with auditees.',
+      'Audit documentation: OH&S Manual, all procedures, HIRA records, legal register, training records, incident reports, management review minutes.',
+      'Conduct on-site observation: verify that documented controls are actually in use. Interview workers at all levels — not just managers.',
+      'Issue formal audit report within agreed timeframe (typically 5 working days). Classify all findings.',
+      'Track all NCs in CAPA register. Assign owners, root cause analysis responsibility, and target dates. Escalate Majors to top management immediately.'
+    ]
+  },
+  7: {
+    title: 'Step 7 — Management Review',
+    items: [
+      'Schedule formal management review meeting — CEO and all department heads must attend. Minimum annually; semi-annual recommended.',
+      'Prepare all §9.3 mandatory inputs: status of previous actions, changes to context/interested parties/legal requirements, OH&S performance data (incidents, near misses, KPIs, trends), audit results, worker consultation outcomes, resource adequacy, continual improvement opportunities.',
+      'Present OH&S performance data with trend analysis. Compare against objectives and KPIs. Identify gaps.',
+      'Review HIRA currency: have any process, equipment, or workforce changes occurred requiring hazard re-analysis?',
+      'Document all decisions and actions — these are the mandatory outputs of management review. Assign owners and timelines.',
+      'Authorize resources for improvement projects identified during review.',
+      'Retain management review minutes as documented information. Communicate relevant outcomes to workers.',
+      'Schedule next management review. Update objectives register with new targets.'
+    ]
+  },
+  8: {
+    title: 'Step 8 — Pre-Certification Gap Analysis',
+    items: [
+      'Conduct formal comprehensive gap analysis — ideally by an experienced external OH&S consultant or lead auditor with ISO 45001 certification experience.',
+      'Assess compliance of all implemented procedures and records against each clause requirement 4.1 to 10.3.',
+      'Test worker participation mechanisms under realistic conditions — interview workers to verify genuine involvement in HIRA, hazard reporting, and improvement.',
+      'Review HIRA completeness: systematic approach confirmed, all hazard categories addressed, hierarchy of controls applied, workers involved in sign-off.',
+      'Verify legal register is complete, current, and compliance status is documented with evidence.',
+      'Check management review minutes cover all §9.3 inputs and outputs are documented and communicated.',
+      'Produce pre-certification gap analysis report with clear NC classification (Major/Minor/OFI). Present to top management.',
+      'Prioritize Major NCs for immediate CA — these MUST be closed before Stage 2 certification audit.'
+    ]
+  },
+  9: {
+    title: 'Step 9 — CAPA Closure &amp; Readiness',
+    items: [
+      'All Major NCs from Step 8 must have completed corrective actions with verified effectiveness. No Majors open at Stage 2.',
+      'Minor NCs should have CAs in progress — may still be open at certification if positive trend demonstrated.',
+      'Ensure HIRA is updated if any process changes occurred during implementation period.',
+      'Organize evidence files by clause — auditor must be able to access evidence quickly during audit day.',
+      'Conduct final internal check: are all documents signed, dated, and version-controlled? Are distribution records complete?',
+      'Conduct emergency drill if not done recently. Verify first aid equipment, fire extinguishers, and escape routes are all compliant.',
+      'Brief all workers: what to expect on audit day, how to respond to auditor questions (be honest, be specific), where key documents are located.',
+      'Brief top management specifically: they WILL be interviewed by auditor. Must demonstrate leadership commitment and knowledge of OH&S MS performance.'
+    ]
+  },
+  10: {
+    title: 'Step 10 — Certification Audit',
+    items: [
+      'Stage 1 (Document Review): Certification body receives OH&S Manual, scope statement, HIRA records, legal register, procedures. Auditor identifies any major gaps before on-site visit. Address any Stage 1 findings before Stage 2.',
+      'Stage 2 (On-Site Audit): Full on-site assessment. Top management must open the audit and demonstrate commitment. Auditor will tour facility, interview workers at all levels.',
+      'Be prepared to demonstrate live: near-miss reporting system, HIRA process with worker involvement, permit-to-work system, emergency alarm test, calibration records, training records for specific workers auditor selects.',
+      'All workers should know: who to call if unsafe situation arises, how to report a near miss, what the OH&S Policy commits to, their right to remove themselves from imminent danger.',
+      'Accompany auditor professionally. Never argue NC findings on-site. Acknowledge finding, commit to CAPA within timeline. Evidence can be submitted within CB-agreed period for Minors.',
+      'Closing meeting: auditor presents findings, classifies NCs (Major/Minor), makes certification recommendation. Celebrate with team.',
+      'Major NCs: 30–90 day CAPA timeline depending on CB requirements. Submit evidence for remote review. Certificate issued on satisfaction.',
+      'Surveillance audits: annual. Recertification: every 3 years. Maintain system between audits — not just before them. Safety culture is the long-term goal.'
+    ]
+  }
+};
+
+function showImplDetail(step) {
+  const detail = implDetails[step];
+  document.getElementById('implDetailTitle').innerHTML = detail.title;
+  const list = document.getElementById('implDetailList');
+  list.innerHTML = detail.items.map(item => `<li><span class="chk">✓</span>${item}</li>`).join('');
+  const box = document.getElementById('implDetail');
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
