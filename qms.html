@@ -23,10 +23,10 @@
             overflow-x: hidden;
         }
 
-        /* Container designed for 16:9 Aspect Ratio aspect layout */
+        /* Container ออกแบบให้เหมาะกับหน้าจอแนวนอนสัดส่วน 16:9 */
         .container {
             width: 100%;
-            max-width: 1280px; /* Standard 16:9 baseline width */
+            max-width: 1280px; 
             background-color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -34,7 +34,7 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
 
-        /* Top Header Section */
+        /* ส่วนหัวข้อหลักด้านบน (Header) */
         .header-section {
             padding: 40px 20px 30px 20px;
             text-align: center;
@@ -63,7 +63,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* Main Integrated Management Standard Dashboard Banner (Clickable) */
+        /* 1. จุดลิงก์แบนเนอร์ระบบภาพรวมสีเขียวพาสเทล (Integrated Management Standard) */
         .integrated-banner-link {
             text-decoration: none;
             display: block;
@@ -71,7 +71,7 @@
         }
 
         .integrated-banner {
-            background-color: #b7d7b2; /* Sage green tone matching the image */
+            background-color: #b7d7b2; 
             padding: 25px 20px;
             text-align: center;
             transition: all 0.3s ease;
@@ -79,8 +79,7 @@
         }
 
         .integrated-banner:hover {
-            background-color: #a4c99e; /* Slightly darker green on hover */
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            background-color: #a4c99e; 
         }
 
         .integrated-banner .click-to-open {
@@ -102,12 +101,12 @@
         }
 
         .integrated-banner h2 .highlight {
-            color: #bfa100; /* Dark gold/yellow tone matching the image */
+            color: #bfa100; /* สีเหลืองทองหม่นตรงคำว่า DASHBOARD */
             display: block;
             margin-top: 5px;
         }
 
-        /* Hover behavior for text inside banner */
+        /* เอฟเฟกต์ทำตัวหนาและเข้มขึ้นเมื่อเอาเมาส์วางแบนเนอร์หลัก */
         .integrated-banner-link:hover .integrated-banner h2 {
             color: #111111;
             font-weight: 800;
@@ -118,7 +117,6 @@
             font-weight: bold;
         }
 
-        /* Small Sub-standards listed under the main banner */
         .standards-list {
             font-size: 16px;
             color: #666666;
@@ -128,18 +126,18 @@
         
         .standards-list span {
             margin: 0 5px;
-            color: #b7d7b2;
+            color: #ffffff;
         }
 
-        /* Bottom Individual Dashboard Section */
+        /* ส่วนโซนด้านล่างสีเทาอ่อนอ่อน */
         .individual-section {
-            background-color: #f2f2f2; /* Light grey bottom background */
+            background-color: #f2f2f2; 
             flex-grow: 1;
             padding: 40px 40px 60px 40px;
             text-align: center;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
         }
 
@@ -148,27 +146,37 @@
             font-weight: 400;
             color: #555555;
             letter-spacing: 1px;
-            margin-bottom: 40px;
             text-transform: uppercase;
+            margin-bottom: 5px;
         }
 
-        /* Grid layout for buttons (using inline-block/table fallback structure for wide compliance) */
+        /* ข้อความระบุใต้หัวข้อเพิ่มตามรูปภาพล่าสุด */
+        .individual-section .section-click-prompt {
+            font-size: 20px;
+            color: #555555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 35px;
+        }
+
+        /* กล่อง Grid จัดวางเหลือเพียง 2 ปุ่มให้สมดุลกึ่งกลาง */
         .button-grid {
             width: 100%;
-            max-width: 1100px;
+            max-width: 800px;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 40px; /* ระยะห่างระหว่าง 2 ปุ่ม */
         }
 
         .card-link {
             text-decoration: none;
-            display: inline-block;
-            width: 30%;
-            margin: 0 1.5%;
-            vertical-align: top;
+            display: block;
+            width: 45%; /* ขยายขนาดปุ่มให้พอดีเมื่อเหลือ 2 ปุ่ม */
+            max-width: 320px;
         }
 
         .card-button {
-            background-color: #f2f2f2;
             border: 1px solid #777777;
             border-radius: 12px;
             padding: 22px 15px;
@@ -179,6 +187,16 @@
             align-items: center;
             transition: all 0.25s ease;
             cursor: pointer;
+        }
+
+        /* 2. สีพื้นหลังเฉพาะของปุ่ม ISO 22000 (โทนชมพูอมม่วงพาสเทล) */
+        .bg-iso22000 {
+            background-color: #e4d3db;
+        }
+
+        /* 3. สีพื้นหลังเฉพาะของปุ่ม ISO 45001 (โทนส้มเนื้อ/ครีมพาสเทล) */
+        .bg-iso45001 {
+            background-color: #f3dfca;
         }
 
         .card-button .title {
@@ -197,25 +215,29 @@
             transition: all 0.25s ease;
         }
 
-        /* Hover effects for individual cards: Bold text, dark background, or color change */
+        /* เอฟเฟกต์การวางเมาส์ (Hover): เปลี่ยนสีฟอนต์เป็นตัวหนา/สีเข้มเขียวตามแนวสากล */
         .card-link:hover .card-button {
-            background-color: #ffffff;
-            border-color: #333333;
+            border-color: #111111;
             box-shadow: 0 6px 15px rgba(0,0,0,0.08);
             transform: translateY(-2px);
+            filter: brightness(1.03); /* สว่างขึ้นเล็กน้อยเวลาไฮไลต์ */
         }
 
         .card-link:hover .card-button .title,
         .card-link:hover .card-button .subtitle {
             font-weight: bold;
-            color: #055922; /* Highlighting corporate green tone on hover */
+            color: #055922; 
         }
 
-        /* Responsive styling for screen height/width adjustments */
-        @media (max-width: 900px) {
+        /* ปรับดีไซน์กรณีหน้าจอแคบลง */
+        @media (max-width: 768px) {
+            .button-grid {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
             .card-link {
                 width: 80%;
-                margin: 15px 0;
             }
             .header-section h1 { font-size: 40px; }
             .integrated-banner h2 { font-size: 28px; }
@@ -226,14 +248,12 @@
 
     <div class="container">
         
-        <!-- Header Section -->
         <div class="header-section">
             <h1>AI COWORK DEMO</h1>
             <div class="author">BY MR. SATHIT CHOBPIMAI</div>
             <div class="subtitle">APPLICATION TO MULTI INTERNATIONAL STANDARD IN FOOD INDUSTRY</div>
         </div>
 
-        <!-- 1. Integrated Management System Dashboard Link -->
         <a href="https://sathitcmu-maker.github.io/MDM/ims.html" target="_blank" class="integrated-banner-link">
             <div class="integrated-banner">
                 <div class="click-to-open">CLICK TO OPEN</div>
@@ -242,36 +262,26 @@
                     <span class="highlight">DASHBOARD</span>
                 </h2>
                 <div class="standards-list">
-                    GHPs/HACCP <span>|</span> ISO22000 <span>|</span> ISO14001 <span>|</span> ISO45001 <span>|</span> ISO 17025 <span>|</span> BAP <span>|</span> GLOBAL GAP
+                    GHPs/HACCP <span>|</span> ISO22000 <span>|</span> ISO14001 <span>|</span> ISO 45001 <span>|</span> ISO 17025 <span>|</span> BAP <span>|</span> GLOBAL GAP
                 </div>
             </div>
         </a>
 
-        <!-- Individual Dashboard Section -->
         <div class="individual-section">
             <h3>INDIVIDUAL DASHBOARD</h3>
+            <div class="section-click-prompt">CLICK TO OPEN</div>
             
             <div class="button-grid">
                 
-                <!-- 2. ISO 22000 FSMS Link -->
                 <a href="https://sathitcmu-maker.github.io/MDM/iso22000.html" target="_blank" class="card-link">
-                    <div class="card-button">
+                    <div class="card-button bg-iso22000">
                         <div class="title">ISO 22000</div>
                         <div class="subtitle">FSMS</div>
                     </div>
                 </a>
 
-                <!-- 3. ISO 14001 EMS Link -->
-                <a href="https://sathitcmu-maker.github.io/MDM/ISO14001.html" target="_blank" class="card-link">
-                    <div class="card-button">
-                        <div class="title">ISO 14001</div>
-                        <div class="subtitle">EMS</div>
-                    </div>
-                </a>
-
-                <!-- 4. ISO 45001 OH&S Link -->
                 <a href="https://sathitcmu-maker.github.io/MDM/ISO45001.html" target="_blank" class="card-link">
-                    <div class="card-button">
+                    <div class="card-button bg-iso45001">
                         <div class="title">ISO 45001</div>
                         <div class="subtitle">OH&S</div>
                     </div>
