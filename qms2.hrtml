@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>AI COWORK DEMO</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(255,215,0,0.08), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(0,255,170,0.06), transparent 20%),
+        #0f172a;
+
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* MAIN CONTAINER */
+
+.container{
+    width:100%;
+    max-width:1400px;
+    margin:auto;
+    padding:40px;
+}
+
+/* HERO */
+
+.hero{
+    text-align:center;
+    padding:70px 20px 60px;
+}
+
+.hero .tag{
+    display:inline-block;
+    padding:10px 22px;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius:999px;
+    font-size:14px;
+    letter-spacing:2px;
+    margin-bottom:28px;
+    color:#d1d5db;
+}
+
+.hero h1{
+    font-size:72px;
+    font-weight:800;
+    letter-spacing:-3px;
+    line-height:1;
+    margin-bottom:18px;
+}
+
+.hero h1 span{
+    background:linear-gradient(90deg,#FFD700,#FFF3B0);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.hero .subtitle{
+    font-size:20px;
+    color:#94a3b8;
+    max-width:900px;
+    margin:auto;
+    line-height:1.7;
+}
+
+/* MAIN DASHBOARD CARD */
+
+.main-dashboard{
+    margin-top:40px;
+    position:relative;
+}
+
+.main-link{
+    text-decoration:none;
+    color:white;
+}
+
+.dashboard-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(18px);
+
+    border-radius:32px;
+    padding:70px 50px;
+
+    transition:0.35s ease;
+
+    position:relative;
+    overflow:hidden;
+}
+
+.dashboard-card::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    background:rgba(255,215,0,0.08);
+    border-radius:50%;
+    top:-120px;
+    right:-100px;
+    filter:blur(20px);
+}
+
+.dashboard-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(255,215,0,0.35);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.4),
+        0 0 40px rgba(255,215,0,0.08);
+}
+
+.dashboard-label{
+    color:#cbd5e1;
+    font-size:15px;
+    letter-spacing:3px;
+    margin-bottom:18px;
+}
+
+.dashboard-title{
+    font-size:54px;
+    font-weight:800;
+    line-height:1.1;
+    margin-bottom:24px;
+}
+
+.dashboard-title span{
+    color:#FFD700;
+}
+
+.standard-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:35px;
+}
+
+.standard-item{
+    padding:12px 18px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.08);
+    color:#dbeafe;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.standard-item:hover{
+    background:rgba(255,215,0,0.12);
+    border-color:rgba(255,215,0,0.3);
+}
+
+/* SECTION */
+
+.section-title{
+    margin-top:90px;
+    margin-bottom:40px;
+    text-align:center;
+}
+
+.section-title h2{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.section-title p{
+    color:#94a3b8;
+    font-size:18px;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:28px;
+}
+
+/* CARD */
+
+.card{
+    position:relative;
+    padding:40px;
+    border-radius:28px;
+    overflow:hidden;
+
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(14px);
+
+    transition:0.35s ease;
+    text-decoration:none;
+    color:white;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(255,215,0,0.35);
+
+    box-shadow:
+        0 25px 50px rgba(0,0,0,0.35),
+        0 0 35px rgba(255,215,0,0.08);
+}
+
+.card::after{
+    content:"→";
+    position:absolute;
+    right:30px;
+    bottom:25px;
+    font-size:28px;
+    opacity:0.4;
+    transition:0.3s;
+}
+
+.card:hover::after{
+    transform:translateX(6px);
+    opacity:1;
+}
+
+.card-top{
+    font-size:14px;
+    letter-spacing:2px;
+    color:#cbd5e1;
+    margin-bottom:18px;
+}
+
+.card-title{
+    font-size:38px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.card-subtitle{
+    font-size:20px;
+    color:#e2e8f0;
+}
+
+/* ISO COLORS */
+
+.iso22000{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(168,85,247,0.18),
+            rgba(255,255,255,0.05)
+        );
+}
+
+.iso45001{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(251,191,36,0.18),
+            rgba(255,255,255,0.05)
+        );
+}
+
+/* FOOTER */
+
+.footer{
+    margin-top:80px;
+    padding:30px;
+    text-align:center;
+    color:#64748b;
+    font-size:14px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .container{
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:46px;
+    }
+
+    .dashboard-title{
+        font-size:36px;
+    }
+
+    .section-title h2{
+        font-size:32px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="tag">
+            AI POWERED MANAGEMENT PLATFORM
+        </div>
+
+        <h1>
+            AI COWORK <span>DEMO</span>
+        </h1>
+
+        <p class="subtitle">
+            Integrated management system platform for international standards,
+            compliance governance, food industry operations, and AI-enabled dashboard management.
+        </p>
+
+    </section>
+
+    <!-- MAIN DASHBOARD -->
+
+    <section class="main-dashboard">
+
+        <a href="https://sathitcmu-maker.github.io/MDM/ims.html"
+           target="_blank"
+           class="main-link">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-label">
+                    ENTERPRISE MANAGEMENT SYSTEM
+                </div>
+
+                <div class="dashboard-title">
+                    Integrated Management
+                    <span>Dashboard</span>
+                </div>
+
+                <div class="standard-list">
+
+                    <div class="standard-item">GHPs / HACCP</div>
+                    <div class="standard-item">ISO 22000</div>
+                    <div class="standard-item">ISO 14001</div>
+                    <div class="standard-item">ISO 45001</div>
+                    <div class="standard-item">ISO 17025</div>
+                    <div class="standard-item">BAP</div>
+                    <div class="standard-item">GLOBAL GAP</div>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </section>
+
+    <!-- INDIVIDUAL -->
+
+    <section class="section-title">
+
+        <h2>Individual Dashboard</h2>
+
+        <p>
+            Access each standard independently
+        </p>
+
+    </section>
+
+    <!-- GRID -->
+
+    <section class="grid">
+
+        <a href="https://sathitcmu-maker.github.io/MDM/iso22000.html"
+           target="_blank"
+           class="card iso22000">
+
+            <div class="card-top">
+                FOOD SAFETY MANAGEMENT
+            </div>
+
+            <div class="card-title">
+                ISO 22000
+            </div>
+
+            <div class="card-subtitle">
+                FSMS Dashboard
+            </div>
+
+        </a>
+
+        <a href="https://sathitcmu-maker.github.io/MDM/ISO45001.html"
+           target="_blank"
+           class="card iso45001">
+
+            <div class="card-top">
+                OCCUPATIONAL HEALTH & SAFETY
+            </div>
+
+            <div class="card-title">
+                ISO 45001
+            </div>
+
+            <div class="card-subtitle">
+                OH&S Dashboard
+            </div>
+
+        </a>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+        Designed by Sathit Chobpimai · AI Enterprise Platform
+    </div>
+
+</div>
+
+</body>
+</html>
