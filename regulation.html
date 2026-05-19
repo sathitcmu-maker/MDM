@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MVP International Food Regulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --bg-card: #ffffff;
+    --bg-glass: rgba(255,255,255,0.72);
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    --accent-blue: #0071e3;
+    --accent-blue-light: #e8f1fb;
+    --border: rgba(0,0,0,0.08);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 8px 32px rgba(0,0,0,0.10);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.14);
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, 'SF Pro Display', 'Inter', BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Hero Header */
+  .hero {
+    background: linear-gradient(145deg, #1d1d1f 0%, #2d2d2f 60%, #1a1a2e 100%);
+    padding: 56px 48px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,113,227,0.18) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(100,210,255,0.10) 0%, transparent 70%);
+    bottom: -150px; left: 100px;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,113,227,0.18);
+    border: 1px solid rgba(0,113,227,0.35);
+    color: #64b5f6;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    color: #f5f5f7;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .hero-title span {
+    background: linear-gradient(90deg, #64b5f6, #81e6d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    color: #86868b;
+    font-size: 16px;
+    font-weight: 400;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #86868b;
+    font-size: 13px;
+  }
+
+  .hero-meta-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #0071e3;
+  }
+
+  /* Main Layout */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .cards-grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .cards-grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .cards-grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+  /* Regulation Card */
+  .reg-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    position: relative;
+  }
+
+  .reg-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(0,113,227,0.25);
+  }
+
+  .reg-card:active {
+    transform: translateY(-1px) scale(0.99);
+  }
+
+  .card-accent {
+    height: 4px;
+    width: 100%;
+  }
+
+  .card-body {
+    padding: 20px 20px 16px;
+  }
+
+  .card-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .flag-badge {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .card-arrow {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-blue);
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .reg-card:hover .card-arrow {
+    background: var(--accent-blue);
+    color: white;
+    transform: rotate(45deg);
+  }
+
+  .card-country {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 4px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 50px;
+    border: 1px solid;
+  }
+
+  /* Global Standard Card */
+  .global-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .global-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(0,113,227,0.2);
+  }
+
+  .global-card-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .global-card-content { flex: 1; }
+
+  .global-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .global-card-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .global-card-link {
+    font-size: 12px;
+    color: var(--accent-blue);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Country Section Headers */
+  .country-section {
+    margin-bottom: 40px;
+  }
+
+  .country-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: var(--radius-lg);
+    padding: 40px 32px 36px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    gap: 0;
+  }
+
+  .country-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.18);
+    pointer-events: none;
+  }
+
+  .country-flag-big {
+    font-size: 72px;
+    line-height: 1;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+    position: relative;
+    z-index: 1;
+  }
+  .country-banner img {
+    transition: transform 0.2s;
+  }
+  .country-banner img:hover {
+    transform: scale(1.05);
+  }
+
+  .country-name {
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.35);
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .country-tagline {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.80);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .country-count {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    background: rgba(255,255,255,0.20);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 50px;
+    backdrop-filter: blur(8px);
+    z-index: 2;
+  }
+
+  .banner-codex   { background: linear-gradient(135deg, #3b2f7f 0%, #6c5ce7 50%, #a29bfe 100%); }
+  .banner-thai    { background: linear-gradient(135deg, #00247d 0%, #cf142b 50%, #00247d 100%); }
+  .banner-usa     { background: linear-gradient(135deg, #b22234 0%, #3c3b6e 60%, #b22234 100%); }
+  .banner-eu      { background: linear-gradient(135deg, #003399 0%, #1a4aaa 50%, #003399 100%); }
+  .banner-japan   { background: linear-gradient(135deg, #c00 0%, #8b0000 40%, #c00 100%); }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .stat-item {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* Color themes per country */
+  .accent-global { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .accent-thai   { background: linear-gradient(135deg, #2563eb, #dc2626); }
+  .accent-usa    { background: linear-gradient(135deg, #dc2626, #1e40af); }
+  .accent-eu     { background: linear-gradient(135deg, #003399, #ffcc00); }
+  .accent-japan  { background: linear-gradient(135deg, #dc2626, #ffffff); }
+
+  .tag-global { background: #f0edff; color: #6b46c1; border-color: #d6d1f0; }
+  .tag-usa    { background: #fff0f0; color: #c53030; border-color: #fed7d7; }
+  .tag-eu     { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+  .tag-japan  { background: #fff5f5; color: #c53030; border-color: #fecaca; }
+  .tag-thai   { background: #f0f7ff; color: #1e40af; border-color: #bfdbfe; }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  /* Footer */
+  .footer {
+    background: var(--text-primary);
+    color: #86868b;
+    text-align: center;
+    padding: 32px;
+    font-size: 13px;
+  }
+
+  .footer strong { color: #f5f5f7; }
+
+  /* Tooltip hover */
+  .reg-card::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: #f5f5f7;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+
+  .reg-card:hover::after { opacity: 1; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 24px 32px; }
+    .main { padding: 24px 16px 60px; }
+    .cards-grid-4 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🌏 Regulatory Intelligence Platform</div>
+  <h1 class="hero-title">MVP <span>International</span><br>Food Regulation</h1>
+  <p class="hero-subtitle">Unified access to global food safety laws, standards, and regulatory databases — from Codex to country-specific enforcement frameworks.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="dot"></div>4 Jurisdictions</div>
+    <div class="hero-meta-item"><div class="dot"></div>12 Regulatory Sources</div>
+    <div class="hero-meta-item"><div class="dot"></div>Global Standards Included</div>
+    <div class="hero-meta-item"><div class="dot"></div>Updated 2025</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Jurisdictions</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Regulatory Links</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">1</div>
+      <div class="stat-label">Global Body (Codex)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2025</div>
+      <div class="stat-label">Last Reviewed</div>
+    </div>
+  </div>
+
+  <!-- GLOBAL STANDARDS -->
+  <div class="section">
+    <div class="country-banner banner-codex" style="margin-bottom:20px;">
+      <div class="country-count">1 Source</div>
+      <div class="country-flag-big" style="font-size:56px; margin-bottom:12px; position:relative; z-index:1;">🌐</div>
+      <div class="country-name">Codex Alimentarius</div>
+      <div class="country-tagline">FAO / WHO · International Food Standards Body</div>
+    </div>
+
+    <div class="cards-grid cards-grid-2">
+
+      <a href="https://www.fao.org/fao-who-codexalimentarius/codex-texts/list-standards/en/" target="_blank" class="global-card" data-tip="Open Codex Website">
+        <div class="global-card-icon" style="background: linear-gradient(135deg,#667eea22,#764ba222); font-size:24px;">🌐</div>
+        <div class="global-card-content">
+          <div class="global-card-title">Codex Alimentarius</div>
+          <div class="global-card-sub">FAO/WHO international food standards, guidelines, and codes of practice. The gold standard for global harmonization.</div>
+          <div class="card-tags">
+            <span class="tag tag-global">FAO</span>
+            <span class="tag tag-global">WHO</span>
+            <span class="tag tag-global">Food Safety</span>
+          </div>
+          <div class="global-card-link" style="margin-top:10px;">View Standards List →</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- THAILAND -->
+  <div class="country-section">
+    <div class="country-banner banner-thai">
+      <div class="country-count">1 Source</div>
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABQAHgDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAcI/8QAIhAAAQMCBgMAAAAAAAAAAAAAAAEHGAVSBhGUldLiUVNl/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAUHBP/EABwRAAIABwAAAAAAAAAAAAAAAAACBBMUFVFTkf/aAAwDAQACEQMRAD8AkQK9HdxPia5eAju4nxNcvAnynwa3eIDavSQgr0d3E+Jrl4CO7ifE1y8BKfAvEBtXpIQV6O7ifE1y8BHdxPia5eAlPgXiA2r0kIK9HdxPia5eAju4nxNcvASnwLxAbV6SEFeju4nxNcvAR3cT4muXgJT4F4gNq9JCCvR3cT4muXgI7uJ8TXLwEp8C8QG1ekhBXo7uJ8TXLwEd3E+Jrl4CU+BeIDavSQgr0d3E+Jrl4ASnwLxAbV6a6BiuTLnXUHbu4ky511B27uWqdzIjagMVyZc66g7d3EmXOuoO3dxTuDagMVyZc66g7d3EmXOuoO3dxTuDagMVyZc66g7d3EmXOuoO3dxTuDagMVyZc66g7d3EmXOuoO3dxTuDagMVyZc66g7d3EmXOuoO3dxTuDagMVyZc66g7d3EmXOuoO3dxTuDagMVyZc66g7d3Ap3BFgAdwAAAAAAAAAAAAAAAAAAAAALXGRzL8P7gvARkcy/D+4LwNpA4ahwYtjI5l+H9wXgIyOZfh/cF4G0gKhwYtjI5l+H9wXgIyOZfh/cF4G0gKhwYtjI5l+H9wXgIyOZfh/cF4G0gKhwYtjI5l+H9wXgIyOZfh/cF4G0gKhwYtjI5l+H9wXgIyOZfh/cF4G0gKhwYtjI5l+H9wXgIyOZfh/cF4G0gKhwYtjI5l+H9wXgDaQFQ4MhSGcb2UbQdhIZxvZRtB2JJmnlBmnlCLNfJrtngNS8K3IZxvZRtB2EhnG9lG0HYkmaeUGaeUE18izwGpeFbkM43so2g7CQzjeyjaDsSTNPKDNPKCa+RZ4DUvCtyGcb2UbQdhIZxvZRtB2JJmnlBmnlBNfIs8BqXhW5DON7KNoOwkM43so2g7EkzTygzTygmvkWeA1LwrchnG9lG0HYSGcb2UbQdiSZp5QZp5QTXyLPAal4VuQzjeyjaDsJDON7KNoOxJM08oM08oJr5FngNS8K3IZxvZRtB2BJM08oBNfIs8BqXh//2Q==" style="height:52px; width:auto; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.30); margin-bottom:12px; display:block; position:relative; z-index:1;" alt="Thailand Flag">
+      <div class="country-name">Thailand</div>
+      <div class="country-tagline">Thai FDA — Ministry of Public Health</div>
+    </div>
+
+    <div class="cards-grid cards-grid-2">
+      <a href="https://food.fda.moph.go.th/food-law/" target="_blank" class="reg-card" data-tip="Open Thai FDA">
+        <div class="card-accent accent-thai"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇹🇭</div>
+              <div class="card-country">Thailand · MOPH</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">Thai FDA Food Law</div>
+          <div class="card-desc">Official Thai food legislation, food standards, and regulatory notices from Food and Drug Administration under Ministry of Public Health.</div>
+          <div class="card-tags">
+            <span class="tag tag-thai">Thai FDA</span>
+            <span class="tag tag-thai">Food Act</span>
+            <span class="tag tag-thai">Labeling</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- USA -->
+  <div class="country-section">
+    <div class="country-banner banner-usa">
+      <div class="country-count">3 Sources</div>
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABQAHgDASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAcIAQIEBQMG/8QAQRAAAAAKBgcGAgoCAwAAAAAAAAECAwQFBhESEwcWGFaU0hQVFyExVFUyQZKT0dMiMwgjNTZCUVJTYZGBoTREcf/EABoBAQADAQEBAAAAAAAAAAAAAAABBgcFAwT/xAAyEQABAAUJBQkBAQAAAAAAAAAAAQISFfADBAZRUlRVoeIRIUGCkQUUIyYxYqLR4fGB/9oADAMBAAIRAxEAPwCA0ZDZtJYk3o55YnWuOLIRshEINvMlIwydxQhiE+KLdD/nhuD6asUNUNHeta560kaBK+rkQufwfHHuh49/DcH1UYlaqGbQmqVbQnTLWoi3IEjIBJkQ4TZJMRJ4RT9/xuE528e5zt4dmsCNEr9WdIr3r6bocgUX6p8T/wBzdC7juc4LglKdu6vP6OIhCNkRtPO1YoaoaO9a1z1pI0CV9XIhc/g+OPdDx7+G4GrFDVDR3rWuetJGgSvq5ELn8Hxx7oePfw3B6OsCNEr9WdIr3r6bocgUX6p8T/3N0LuO5zgawI0Sv1Z0ivevpuhyBRfqnxP/AHN0LuO5zgbVor+idiIj1PO1YoaoaO9a1z1pI0CV9XIhc/g+OPdDx7+G4NDyEziOxZQj51YmmuNrOUWiFm4TJKMIntDGMT4o90P+eG4PU1gRolfqzpFe9fTdDkCi/VPif+5uhdx3OcHKudWrVnktq1o0J0+1qUuStJV5RkQojYxRFHhlP3fG8Tnbh7nO3gQlPGE/RGxHCP0lQmhKlIZIhiZI/wAOZMZwzsRpSukfxRjOEsm/pSK0kgkmpibuEIX/ADiMobWpVbcxNxxGUKGzJVm4o7RpLdleusiTYjSldI/ijGcGxGlK6R/FGM4S3alVtzE3HEZQWpVbcxNxxGUDMlWHjSW7K9dZEmxGlK6R/FGM4NiNKV0j+KMZwlu1KrbmJuOIygtSq25ibjiMoGZKsPGkt2V66yJNiNKV0j+KMZwbEaUrpH8UYzhLdqVW3MTccRlBalVtzE3HEZQMyVYeNJbsr11kSbEaUrpH8UYzgCW7UqtuYm44jKADMlWHjSW7K9dZU9nkc2o2eQW7QF+hCXKEuCCDKqLNjKOOJJiEdGLgM2/4R/nwDv00/L2qVgV9ZNfzNVSRxP7c2HhKi+F3D8IcLOKw+pVAgUikJSoSiENcEGBK0+OM4cKJJjeUQMThmxucMf8AsQw73JTtrj1B94PsaEXa+a6VC6V3P/LviC9rb0pj/DD0ekdTGmn5e1SsCvrJr+ZqqSOJ/bmw8JUXwu4fhBpp+XtUrAr6ya/maqkjif25sPCVF8LuH4Qy5KdtceoPvB9jQi7XzXSoXSu5/wCXfEByU7a49QfeD7GhF2vmulQuldz/AMu+II/mn9Jj9Maafl7VKwK+smv5mqpI4n9ubDwlRfC7h+EOJeIxpfKNMbpYL9CGuE5dFGzyqINjJOOKFEM6IXARt/wi/LgHc5KdtceoPvB9jQi7XzXSoXSu5/5d8QcLQKtIXSiTqRCklUIpKauS0catRxwHDZRQo3kkCE4RsT3CH/t4SjcnL8Cd8Zl2jf0d6NRmyRjQ1oIYxC/75YbWdqNeTWmPLCuhLL0zQicqW1c79Z/MGar0z9Jbbxn8wUVpWwbIjs6eYl8tRYqztRrya0x5YLO1GvJrTHlhXWq9M/SW28Z/MCq9M/SW28Z/MBpWwHbPMS+WosVZ2o15NaY8sFnajXk1pjywrrVemfpLbeM/mBVemfpLbeM/mA0rYDtnmJfLUWKs7Ua8mtMeWCztRrya0x5YV1qvTP0ltvGfzAqvTP0ltvGfzAaVsB2zzEvlqLFWdqNeTWmPLAFdar0z9Jbbxn8wANK2A7Z5iXy1EUs4pUxVqVApDSkFXrBSoq4IRDiKePkvPlkkiODNjIfE4Yu927iHfoh2btV1EqKvVglaqnEwxfNkQ9qGHc938haayOwMqVWJqpb3waSZh/qWCyOwMqVWJqpb3waSZh/qWFtT2jIJTt25cI4mQom0ojdsKs6Idm7VdRKir1YJWqpxMMXzZEPahh3Pd/INEOzdquolRV6sErVU4mGL5siHtQw7nu/kLTWR2BlSqxNVLe+DSTMP9SwWR2BlSqxNVLe+DSTMP9Swh4SFeSfSOI7tKVf0qzoh2btV1EqKvVglaqnEwxfNkQ9qGHc938hxL5TJiyVKbSKjIKvV6kSVyUim0QyfJiMFjFMEbJIfE4RPe7fxC2dkdgZUqsTVS3vg0kzD/UsAvojsDLlViaqW98GkmYX/APksJR2jII3oTlwjiO7SifVB6Rv6TbFEmySdSNBuEIXyjPuBtadYrojQeUZ9wNrMTD9ZaHzjXtgsxsP1lofONe2FW8U0jyx78zW06xXRGg8oz7gLTrFdEaDyjPuBtZjYfrLQ+ca9sFmNh+stD5xr2weKT5X9+ZradYrojQeUZ9wFp1iuiNB5Rn3A2sxsP1lofONe2CzGw/WWh8417YPFHlf35mtp1iuiNB5Rn3AWnWK6I0HlGfcDazGw/WWh8417YLMbD9ZaHzjXtg8UeV/fma2nWK6I0HlGfcAG1mNh+stD5xr2wA8UeV/fmQVWSmjqjceFIygrJTR1RuPCkZQsRaLo25la4Ev1BaLo25la4Ev1DzZVtnWeU9w3LSV3rJTR1RuPCkZQVkpo6o3HhSMoWItF0bcytcCX6gtF0bcytcCX6gZVth5T3DctJXeslNHVG48KRlBWSmjqjceFIyhYi0XRtzK1wJfqC0XRtzK1wJfqBlW2HlPcNy0ld6yU0dUbjwpGUFZKaOqNx4UjKFiLRdG3MrXAl+oLRdG3MrXAl+oGVbYeU9w3LSV3rJTR1RuPCkZQVkpo6o3HhSMoWItF0bcytcCX6gtF0bcytcCX6gZVth5T3DctJXeslNHVG48KRlBWSmjqjceFIyhYi0XRtzK1wJfqC0XRtzK1wJfqBlW2HlPcNy0ld6yU0dUbjwpGUFZKaOqNx4UjKFiLRdG3MrXAl+oLRdG3MrXAl+oGVbYeU9w3LSV3rJTR1RuPCkZQBYi0XRtzK1wJfqADKtsPKe4blpPyllpWXyTsEbzAstKy+SdgiMwRDtspRvekYcxkBtspRvekYcxkCGpKo+p3UkvKschL1lpWXyTsERmBZaVl8k7BEZgiHbZSje9Iw5jIDbZSje9Iw5jIBqSqDupJeVY5CXrLSsvknYIjMCy0rL5J2CIzBEO2ylG96RhzGQG2ylG96RhzGQDUlUHdSS8qxyEvWWlZfJOwRGYFlpWXyTsERmCIdtlKN70jDmMgNtlKN70jDmMgGpKoO6kl5VjkJestKy+SdgiMwLLSsvknYIjMEQ7bKUb3pGHMZAbbKUb3pGHMZANSVQd1JLyrHIS9ZaVl8k7BEZgWWlZfJOwRGYIh22Uo3vSMOYyA22Uo3vSMOYyAakqg7qSXlWOQl6y0rL5J2CIzAstKy+SdgiMwRDtspRvekYcxkBtspRvekYcxkA1JVB3UkvKschL1lpWXyTsERmAEQ7bKUb3pGHMZAAakqg7qSXlWOQ//2Q==" style="height:52px; width:auto; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.30); margin-bottom:12px; display:block; position:relative; z-index:1;" alt="USA Flag">
+      <div class="country-name">United States</div>
+      <div class="country-tagline">FDA · USDA · eCFR · FAS</div>
+    </div>
+
+    <div class="cards-grid cards-grid-3">
+
+      <a href="https://www.ecfr.gov/current/title-21" target="_blank" class="reg-card" data-tip="Open eCFR Title 21">
+        <div class="card-accent accent-usa"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇺🇸</div>
+              <div class="card-country">USA · FDA / eCFR</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">US Food Law — CFR Title 21</div>
+          <div class="card-desc">Code of Federal Regulations — food and drugs. GMP, labeling, additives, HACCP, FSMA rules all consolidated here.</div>
+          <div class="card-tags">
+            <span class="tag tag-usa">FDA</span>
+            <span class="tag tag-usa">FSMA</span>
+            <span class="tag tag-usa">CFR</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.fas.usda.gov/data/search" target="_blank" class="reg-card" data-tip="Open USDA GAIN Reports">
+        <div class="card-accent accent-usa"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇺🇸</div>
+              <div class="card-country">USA · USDA / FAS</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">GAIN Reports</div>
+          <div class="card-desc">USDA Global Agricultural Information Network — market and regulatory intelligence reports by country and commodity.</div>
+          <div class="card-tags">
+            <span class="tag tag-usa">USDA</span>
+            <span class="tag tag-usa">Market Intel</span>
+            <span class="tag tag-usa">GAIN</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://usda-eu.org/food-drinks/food-additives/" target="_blank" class="reg-card" data-tip="Open US Food Additives DB">
+        <div class="card-accent accent-usa"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇺🇸</div>
+              <div class="card-country">USA · USDA-EU</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">US Food Additives</div>
+          <div class="card-desc">US food additives database for food & beverage exporters. GRAS substances, permitted additives, and approved colorings reference.</div>
+          <div class="card-tags">
+            <span class="tag tag-usa">Additives</span>
+            <span class="tag tag-usa">GRAS</span>
+            <span class="tag tag-usa">Ingredients</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- EU -->
+  <div class="country-section">
+    <div class="country-banner banner-eu">
+      <div class="country-count">4 Sources</div>
+      <img src="data:image/jpeg;base64,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" style="height:52px; width:auto; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.30); margin-bottom:12px; display:block; position:relative; z-index:1;" alt="EU Flag">
+      <div class="country-name">European Union</div>
+      <div class="country-tagline">EUR-Lex · European Commission · USDA GAIN · Pesticides DB</div>
+    </div>
+
+    <div class="cards-grid cards-grid-2">
+
+      <a href="https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=FAIRS%20Country%20Report%20Annual_Brussels%20USEU_European%20Union_E42025-0004" target="_blank" class="reg-card" data-tip="Download EU FAIRS Report 2025">
+        <div class="card-accent accent-eu"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇪🇺</div>
+              <div class="card-country">EU · USDA GAIN 2025</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">EU Food Law Report 2025</div>
+          <div class="card-desc">USDA FAIRS Country Report 2025 — comprehensive EU food additive, contaminant, and labeling regulatory summary. Most current consolidated source.</div>
+          <div class="card-tags">
+            <span class="tag tag-eu">FAIRS 2025</span>
+            <span class="tag tag-eu">Exporters</span>
+            <span class="tag tag-eu">PDF</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://eur-lex.europa.eu/homepage.html" target="_blank" class="reg-card" data-tip="Open EUR-Lex">
+        <div class="card-accent accent-eu"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇪🇺</div>
+              <div class="card-country">EU · EUR-Lex</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">EUR-Lex — EU Law Portal</div>
+          <div class="card-desc">Official EU legislation database. All regulations, directives, and decisions including EC No 852/2004 (Food Hygiene), 853/2004, Novel Foods, etc.</div>
+          <div class="card-tags">
+            <span class="tag tag-eu">Regulations</span>
+            <span class="tag tag-eu">Directives</span>
+            <span class="tag tag-eu">Official Journal</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://ec.europa.eu/food/plant/pesticides/eu-pesticides-database/start/screen/mrls" target="_blank" class="reg-card" data-tip="Open EU MRL Database">
+        <div class="card-accent accent-eu"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇪🇺</div>
+              <div class="card-country">EU · European Commission</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">EU Pesticide MRLs</div>
+          <div class="card-desc">Maximum Residue Levels database for pesticides in food and feed. Critical for fresh produce, grain, and processed food exporters into EU.</div>
+          <div class="card-tags">
+            <span class="tag tag-eu">MRL</span>
+            <span class="tag tag-eu">Pesticides</span>
+            <span class="tag tag-eu">Produce</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://food.ec.europa.eu/plants/pesticides/eu-pesticides-database_en" target="_blank" class="reg-card" data-tip="Open EU Pesticide Database">
+        <div class="card-accent accent-eu"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇪🇺</div>
+              <div class="card-country">EU · EC Food Safety</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">EU Pesticides Database</div>
+          <div class="card-desc">Full EU pesticides regulatory database — approved active substances, product authorizations, and safety data across all EU member states.</div>
+          <div class="card-tags">
+            <span class="tag tag-eu">Active Sub.</span>
+            <span class="tag tag-eu">Authorization</span>
+            <span class="tag tag-eu">EC</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- JAPAN -->
+  <div class="country-section">
+    <div class="country-banner banner-japan">
+      <div class="country-count">3 Sources</div>
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABQAHgDASIAAhEBAxEB/8QAHAABAAMAAgMAAAAAAAAAAAAAAAIGCAEJAwQH/8QALRAAAQMCAwcCBwEAAAAAAAAAAQACAwQFBhETBxIhQVFSkTFxCBRCYYKxszP/xAAbAQEAAgMBAQAAAAAAAAAAAAAABAcCAwUGAf/EACkRAAEDAQYFBQEAAAAAAAAAAAABAgMRBAUGEiFRFTFBcZEyM2GhscH/2gAMAwEAAhEDEQA/ANloiIAiIgCIiAIi432727vDe6Z8UByiIgCIiAIiIAiIgCIiAIiIAvmW2rbBZNnVOKNsYuN8mZvRUbX5CMH0fIfpb0HqfbirPtQxZT4JwNcsRTtbI6mjygiJ/wBZXHdY32JIz+wK6/L7da+93iqu10qX1NbVymWaVx4ucf0OQHIABapH5dEPX4Vw8283rNP7bdKbrt2TqWzGm1nHuK53m4YgqqenceFJRvMELR0yac3fkSVS/majU1deXfzz3t85+V4kUZVrzLZgssFnbkiYjU+EoXnBe1nHuFJ2Ot+IKqopmnjSVjzPC4dMnHNv4kFaw2K7YLLtFpzRujFuvkLN6Wjc/MSAer4z9Teo9R7cVhZe7YrrX2S8Ut2tdS+mraSUSwytPFrh+xyI5gkLNj1acO+cNWS8Y1VrUbJ0VNPO/wCnZSirOy/FlPjbA1txFA1sbqmPKeIH/KVp3Xt9gQcvsQrMpSLXUpeaJ8Mjo3pRUWi90CIi+msIiIAiIgCIiAzr8cFyliw5h20teRHU1cs7wOemwNH9CsprVnxwWyWbDeHbu1hMdLVywPI5ajAR/MrKaiS+pS6MG5eEx5edXV71X+UCIiwPUBERAas+B+5SzYcxFaXPJjpquKdgPLUYQf5haKWdfgftksOG8RXd7CI6qrigYTz02En+gWilKi9KFHYpy8Wmy8qp5olfsIiLYcAIiIAiIgCIiArW0/CdNjbA9yw7UObG6pjzhlIz0pWneY72DgM/tmuvy/Wm4WO81doulM+mraSUxTRO9WuH7B9QeYIK7KF80207ILJtFphVb4t17hZuw1rGZh45Mkb9Teh9Ry6HVJHm1Q9fhbELbsesM/tu+l37L1MKIr5jTZFj7Ck7xXWCpqqZp4VVCwzxOHXNozb+QCpXydXq6Xys+pnlu6bs/GSjLpzLZgtcFoZniejk+FPAvesNpuF8vNJaLXTPqa2rlEUMTfVzj+gPUnkASrbgvZFj7Fc7BQ2CppaZx41dawwRNHXNwzd+IK1hsW2QWTZ1TGq3xcb3MzdmrXsyDBzZG36W9T6nn0GbWK44d84msl3RqjXI6Toia+dv0s2zDCdNgnA9tw7TubI6mjzmlA/1lcd57vYuJy+2SsqIpSJTQpeaV80jpHrVVWq91CIi+msIiIAijqR97fKakfe3ygJIo6kfe3ympH3t8oCSKOpH3t8pqR97fKAkuMhnnlxXGpH3t8pqR97fKAkijqR97fKakfe3ygJIo6kfe3ympH3t8oCSKOpH3t8pqR97fKAkijqR97fKID//2Q==" style="height:52px; width:auto; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.30); margin-bottom:12px; display:block; position:relative; z-index:1;" alt="Japan Flag">
+      <div class="country-name">Japan</div>
+      <div class="country-tagline">MHLW · Japanese Law Translation</div>
+    </div>
+
+    <div class="cards-grid cards-grid-3">
+
+      <a href="https://www.japaneselawtranslation.go.jp/en/laws/view/3687/en#je_ch2" target="_blank" class="reg-card" data-tip="Open Japan Food Sanitation Act">
+        <div class="card-accent accent-japan"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇯🇵</div>
+              <div class="card-country">Japan · Law Translation</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">Food Sanitation Act</div>
+          <div class="card-desc">English translation of Japan's Food Sanitation Act — the foundational statute governing food safety, additives, labeling, and import controls.</div>
+          <div class="card-tags">
+            <span class="tag tag-japan">Food Sanitation</span>
+            <span class="tag tag-japan">Import</span>
+            <span class="tag tag-japan">English</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.mhlw.go.jp/english/topics/foodsafety/" target="_blank" class="reg-card" data-tip="Open MHLW Food Safety">
+        <div class="card-accent accent-japan"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇯🇵</div>
+              <div class="card-country">Japan · MHLW</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">Japan Food Safety Portal</div>
+          <div class="card-desc">Ministry of Health, Labour and Welfare — official food safety topics, import inspection policy, MRLs, and quarantine standards in English.</div>
+          <div class="card-tags">
+            <span class="tag tag-japan">MHLW</span>
+            <span class="tag tag-japan">Inspection</span>
+            <span class="tag tag-japan">MRL</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://warp.ndl.go.jp/web/20150405182452/http://www.mhlw.go.jp/english/topics/foodsafety/foodadditives/" target="_blank" class="reg-card" data-tip="Open Japan Food Additives">
+        <div class="card-accent accent-japan"></div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <div class="flag-badge">🇯🇵</div>
+              <div class="card-country">Japan · MHLW Archive</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+          <div class="card-title">Japan Food Additives</div>
+          <div class="card-desc">Archived MHLW food additives reference — permitted substances, specifications, and use standards for food manufacturing and import compliance.</div>
+          <div class="card-tags">
+            <span class="tag tag-japan">Additives</span>
+            <span class="tag tag-japan">Specifications</span>
+            <span class="tag tag-japan">Archive</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>MVP International Food Regulation Dashboard</strong><br>
+  Compiled for regulatory intelligence use. All links direct to official government and international sources.<br>
+  <span style="font-size:11px; margin-top:8px; display:block;">Thai FDA · Codex Alimentarius · US FDA/USDA · European Commission · Japan MHLW · 2025</span>
+</div>
+
+</body>
+</html>
